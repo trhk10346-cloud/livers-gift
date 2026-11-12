@@ -1,0 +1,1082 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light">
+<meta name="theme-color" content="#ffffff">
+<meta name="robots" content="noindex">
+<meta name="description" content="名前やテーマを入れると、初ライブの30分台本ができます。ライブ前に確認するモードと、ライブ中に横で見るモードがあります。">
+<title>初ライブ30分台本｜SCENE 1 ライバーズ</title>
+<style>
+  :root {
+    --blue: #2F6FE4;
+    --blue-dark: #2358B8;
+    --blue-soft: #EAF2FF;
+    --blue-line: #CFE0FB;
+    --navy: #1F2A44;
+    --gray: #5A6B85;
+    --bg: #F6F9FF;
+    --white: #FFFFFF;
+    color-scheme: light;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+  html { -webkit-text-size-adjust: 100%; }
+  [hidden] { display: none !important; }
+  body {
+    background: var(--bg);
+    color: var(--navy);
+    font-family: "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Noto Sans JP", "Yu Gothic", "Meiryo", sans-serif;
+    font-size: 17px;
+    line-height: 1.65;
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+  .sr {
+    position: absolute; width: 1px; height: 1px; overflow: hidden;
+    clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap;
+  }
+  .page { max-width: 560px; margin: 0 auto; }
+  .page.wide { max-width: 900px; }
+
+  /* ---- ヘッダー ---- */
+  .hero { padding: calc(20px + env(safe-area-inset-top)) 20px 22px; background: linear-gradient(180deg, #EEF4FF 0%, var(--bg) 100%); }
+  .hero.is-script { display: none; }
+  .tabs { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+  .tab {
+    text-align: center; padding: 10px 6px; border-radius: 999px; white-space: nowrap;
+    border: 1.5px solid var(--blue-line); background: var(--white); color: var(--gray);
+    font-size: 14px; font-weight: 600; text-decoration: none; line-height: 1.3;
+  }
+  .tab:last-child:nth-child(odd) { grid-column: 1 / -1; }
+  .tab[aria-current="page"] { background: var(--blue); border-color: var(--blue); color: #fff; }
+  .tab:focus-visible { outline: 3px solid var(--navy); outline-offset: 2px; }
+  .brand {
+    display: inline-block; margin-top: 20px; padding: 6px 14px; border-radius: 999px;
+    background: var(--white); border: 1.5px solid var(--blue-line);
+    color: var(--blue); font-size: 13px; font-weight: 600; letter-spacing: .04em;
+  }
+  h1 { margin-top: 14px; font-size: clamp(25px, 7.4vw, 32px); line-height: 1.3; font-weight: 700; letter-spacing: .01em; }
+  h1 em { font-style: normal; color: var(--blue); }
+  .intro { margin-top: 12px; font-size: 15px; color: var(--gray); text-wrap: pretty; word-break: auto-phrase; }
+
+  main { padding: 18px 16px 8px; }
+  .step-label { margin: 22px 4px 10px; font-size: 13px; font-weight: 700; color: var(--blue-dark); letter-spacing: .04em; }
+  .step-label:first-child { margin-top: 0; }
+
+  /* ---- 事務所の一文・30分の流れ ---- */
+  .notice { padding: 14px 16px; background: var(--white); border: 1.5px solid var(--blue-line); border-left: 6px solid var(--blue); border-radius: 6px 18px 18px 6px; }
+  .notice p { font-size: 16px; font-weight: 700; line-height: 1.55; }
+  .notice small { display: block; margin-top: 2px; font-size: 12.5px; color: var(--gray); }
+  .flow { margin-top: 14px; padding: 14px; background: var(--white); border: 1.5px solid var(--blue-line); border-radius: 20px; }
+  .flow h2 { font-size: 15px; line-height: 1.4; }
+  .flow ol { list-style: none; margin-top: 8px; display: grid; gap: 6px; }
+  .flow li { display: flex; align-items: center; gap: 10px; font-size: 14.5px; font-weight: 600; }
+  .flow li span { flex: none; min-width: 78px; text-align: center; padding: 1px 8px; border-radius: 999px; background: var(--blue-soft); color: var(--blue-dark); font-size: 12.5px; font-weight: 700; }
+
+  /* ---- 使い方を選ぶ ---- */
+  .modes { display: grid; gap: 10px; }
+  .mode { display: flex; gap: 12px; align-items: flex-start; padding: 14px; background: var(--white); border: 2px solid var(--blue-line); border-radius: 20px; cursor: pointer; transition: background-color .15s ease, border-color .15s ease; }
+  .mode:active { background: var(--blue-soft); }
+  .mode.on { background: var(--blue-soft); border-color: var(--blue); box-shadow: inset 0 0 0 1px var(--blue); }
+  .mode:has(.sr:focus-visible) { outline: 3px solid var(--blue); outline-offset: 3px; }
+  .dot { flex: none; width: 26px; height: 26px; margin-top: 2px; border-radius: 50%; border: 2.5px solid var(--blue-line); background: var(--white); display: flex; align-items: center; justify-content: center; }
+  .dot::after { content: ""; width: 12px; height: 12px; border-radius: 50%; background: var(--blue); transform: scale(0); transition: transform .15s ease; }
+  .mode.on .dot { border-color: var(--blue); }
+  .mode.on .dot::after { transform: scale(1); }
+  .mode b { display: block; font-size: 17px; line-height: 1.45; text-wrap: balance; word-break: auto-phrase; }
+  .mode .mname { display: block; margin-top: 2px; font-size: 12.5px; font-weight: 700; color: var(--blue); }
+  .mode p { margin-top: 4px; font-size: 14px; color: var(--gray); line-height: 1.65; text-wrap: pretty; word-break: auto-phrase; }
+  .mode-err { margin: 8px 4px 0; font-size: 13.5px; font-weight: 700; color: var(--blue-dark); }
+
+  /* ---- 入力 ---- */
+  .fields { display: grid; gap: 14px; }
+  .field label { display: block; margin-bottom: 4px; font-size: 14px; font-weight: 700; color: var(--blue-dark); }
+  .field small { display: block; margin-top: 3px; font-size: 12.5px; color: var(--gray); }
+  .field input {
+    display: block; width: 100%; padding: 12px 14px; font: inherit; font-size: 16px; line-height: 1.5; color: var(--navy);
+    background: var(--white); border: 2px solid var(--blue-line); border-radius: 14px; appearance: none; -webkit-appearance: none;
+  }
+  .field input::placeholder { color: #8FA0BB; }
+  .field input:focus { outline: none; border-color: var(--blue); box-shadow: 0 0 0 3px rgba(47, 111, 228, .18); }
+  .make {
+    display: block; width: 100%; margin-top: 20px; min-height: 60px; padding: 14px; border: none; border-radius: 18px;
+    background: var(--blue); color: #fff; font: inherit; font-size: 19px; font-weight: 700; letter-spacing: .04em; cursor: pointer;
+    box-shadow: 0 8px 18px rgba(47, 111, 228, .22);
+  }
+  .make:active { background: var(--blue-dark); }
+  .make:focus-visible, .act:focus-visible, .ctl:focus-visible, .back:focus-visible, .neta:focus-visible { outline: 3px solid var(--navy); outline-offset: 3px; }
+  .make-note { margin-top: 8px; text-align: center; font-size: 12.5px; color: var(--gray); }
+
+  /* ---- 台本の画面（共通） ---- */
+  .bar { display: flex; align-items: center; justify-content: space-between; gap: 10px; min-height: 48px; margin-bottom: 8px; padding-top: env(safe-area-inset-top); }
+  .back { display: inline-flex; align-items: center; gap: 6px; min-height: 44px; padding: 0 4px; background: none; border: none; color: var(--blue-dark); font: inherit; font-size: 14.5px; font-weight: 700; cursor: pointer; }
+  .back svg { width: 14px; height: 14px; stroke: currentColor; stroke-width: 3; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+  .modename { padding: 3px 12px; border-radius: 999px; background: var(--blue-soft); border: 1.5px solid var(--blue-line); color: var(--blue-dark); font-size: 12.5px; font-weight: 700; }
+  .v-title { font-size: 24px; line-height: 1.35; }
+  .v-lead { margin-top: 4px; font-size: 14px; color: var(--gray); }
+  .v-lead b { color: var(--navy); }
+  .filled { color: var(--blue-dark); font-weight: 700; background: var(--blue-soft); border-radius: 4px; padding: 0 2px; }
+  .empty { color: var(--blue); background: #fff; border: 1px solid var(--blue-line); border-radius: 4px; padding: 0 2px; font-weight: 600; }
+  .blank { color: var(--blue); font-weight: 700; }
+
+  /* ---- 確認モード ---- */
+  .memo { margin-top: 14px; padding: 14px 16px; background: var(--blue); color: #fff; border-radius: 20px; }
+  .memo b { display: block; font-size: 15px; letter-spacing: .04em; }
+  .memo ul { list-style: none; margin-top: 4px; display: grid; gap: 2px; }
+  .memo li { font-size: 14.5px; line-height: 1.65; padding-left: 16px; position: relative; }
+  .memo li::before { content: ""; position: absolute; left: 3px; top: .72em; width: 6px; height: 6px; border-radius: 50%; background: #fff; }
+  #preParts { margin-top: 14px; }
+  .pp { margin-bottom: 10px; padding: 14px 14px 12px; background: var(--white); border: 1.5px solid var(--blue-line); border-radius: 20px; }
+  .pp-head { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+  .pp-time { padding: 2px 10px; border-radius: 999px; background: var(--blue); color: #fff; font-size: 12.5px; font-weight: 700; white-space: nowrap; }
+  .pp-name { font-size: 18px; font-weight: 700; line-height: 1.4; }
+  .pp ul { list-style: none; margin-top: 8px; display: grid; gap: 4px; }
+  .pp li { position: relative; padding-left: 18px; font-size: 15px; line-height: 1.6; }
+  .pp li::before { content: ""; position: absolute; left: 4px; top: .7em; width: 6px; height: 6px; border-radius: 50%; background: var(--blue); }
+  .pp-first { margin-top: 10px; padding: 10px 12px; background: var(--blue-soft); border-radius: 12px; font-size: 14.5px; line-height: 1.75; }
+  .pp-first b { display: block; font-size: 12.5px; color: var(--blue-dark); }
+  .actions { margin-top: 16px; display: grid; gap: 10px; }
+  .act { display: block; width: 100%; min-height: 56px; padding: 12px 14px; border-radius: 16px; font: inherit; font-size: 16.5px; font-weight: 700; cursor: pointer; border: 2px solid var(--blue); background: var(--white); color: var(--blue-dark); }
+  .act.primary { background: var(--blue); color: #fff; box-shadow: 0 8px 18px rgba(47, 111, 228, .22); }
+  .act:active { background: var(--blue-soft); }
+  .act.primary:active { background: var(--blue-dark); }
+  .act.ghost { min-height: 48px; font-size: 14.5px; border-color: var(--blue-line); color: var(--gray); }
+  .act-msg { min-height: 22px; margin-top: 8px; text-align: center; font-size: 13.5px; font-weight: 600; color: var(--blue-dark); }
+  .act-msg.err { color: var(--gray); }
+  .shotprev { margin-top: 10px; padding: 10px; background: var(--white); border: 1.5px solid var(--blue-line); border-radius: 18px; }
+  .shotprev img { display: block; width: 100%; height: auto; border-radius: 10px; border: 1px solid var(--blue-line); }
+  .shotprev figcaption { margin-top: 8px; font-size: 12.5px; color: var(--gray); text-align: center; }
+  details.full { margin-top: 16px; background: var(--white); border: 1.5px solid var(--blue-line); border-radius: 18px; }
+  details.full summary { min-height: 52px; padding: 12px 16px; font-size: 15.5px; font-weight: 700; cursor: pointer; display: flex; align-items: center; }
+  details.full .fbody { padding: 0 14px 14px; }
+  .fp { margin-top: 12px; }
+  .fp h3 { font-size: 15.5px; line-height: 1.5; }
+  .fp h4 { margin-top: 8px; font-size: 12.5px; color: var(--blue-dark); }
+  .fp ol, .fp ul { margin-top: 2px; padding-left: 1.3em; font-size: 14.5px; line-height: 1.75; }
+
+  /* ---- ライブ中モード ---- */
+  .live { --s: 1; }
+  .live[data-size="L"] { --s: 1.25; }
+  .live[data-size="XL"] { --s: 1.5; }
+  .topbar { position: sticky; top: 0; z-index: 20; margin: 0 -16px; padding: calc(8px + env(safe-area-inset-top)) 16px 10px; background: rgba(255, 255, 255, .97); border-bottom: 1.5px solid var(--blue-line); }
+  .times { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; font-size: 14px; font-weight: 600; color: var(--gray); font-variant-numeric: tabular-nums; }
+  .times b { font-size: 26px; color: var(--navy); font-weight: 700; margin-left: 4px; }
+  .segs { margin-top: 6px; display: grid; grid-template-columns: repeat(5, 1fr); gap: 4px; }
+  .seg { position: relative; padding-top: 18px; }
+  .seg .here { position: absolute; top: 0; left: 50%; transform: translateX(-50%); padding: 0 8px; border-radius: 999px; background: var(--blue); color: #fff; font-size: 11px; font-weight: 700; line-height: 17px; white-space: nowrap; display: none; }
+  .seg.cur .here { display: block; }
+  .seg .trk { height: 10px; border-radius: 999px; background: var(--blue-soft); overflow: hidden; }
+  .seg .fil { height: 100%; width: 0; background: var(--blue); }
+  .seg .lb { display: block; margin-top: 2px; text-align: center; font-size: 11.5px; font-weight: 600; color: var(--gray); line-height: 1.3; }
+  .seg.cur .lb { color: var(--blue-dark); font-weight: 700; }
+
+  .banner { margin-top: 12px; padding: 12px 16px; border-radius: 16px; background: var(--navy); color: #fff; font-size: calc(17px * var(--s)); font-weight: 700; line-height: 1.5; text-align: center; }
+  .banner.switch { background: var(--blue); }
+
+  .now { margin-top: 12px; padding: 18px 16px 16px; background: var(--white); border: 2px solid var(--blue); border-radius: 26px; box-shadow: 0 8px 22px rgba(47, 111, 228, .1); }
+  .now-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
+  .chip { padding: 3px 14px; border-radius: 999px; background: var(--blue); color: #fff; font-size: calc(14px * var(--s)); font-weight: 700; }
+  .range { font-size: calc(14px * var(--s)); font-weight: 700; color: var(--gray); }
+  .now h2 { margin-top: 6px; font-size: calc(34px * var(--s)); line-height: 1.25; letter-spacing: .01em; }
+  .partleft { margin-top: 2px; font-size: calc(15px * var(--s)); color: var(--gray); font-variant-numeric: tabular-nums; }
+  .partleft b { font-size: calc(22px * var(--s)); color: var(--navy); }
+  .now h3 { margin-top: 16px; font-size: calc(13.5px * var(--s)); font-weight: 700; color: var(--blue-dark); letter-spacing: .04em; }
+  .points { list-style: none; margin-top: 6px; display: grid; gap: 2px; }
+  .points li { position: relative; padding-left: 20px; font-size: calc(18px * var(--s)); font-weight: 600; line-height: 1.55; }
+  .points li::before { content: ""; position: absolute; left: 4px; top: .7em; width: 8px; height: 8px; border-radius: 50%; background: var(--blue); }
+  .says { list-style: none; margin-top: 6px; display: grid; gap: 8px; counter-reset: s; }
+  .says li { position: relative; padding: 10px 12px 10px 42px; background: var(--blue-soft); border-radius: 14px; font-size: calc(21px * var(--s)); font-weight: 700; line-height: 1.6; counter-increment: s; }
+  .says li::before { content: counter(s); position: absolute; left: 10px; top: 12px; width: 24px; height: 24px; border-radius: 50%; background: var(--blue); color: #fff; font-size: 14px; line-height: 24px; text-align: center; }
+  .bridge { list-style: none; margin-top: 6px; display: grid; gap: 6px; }
+  .bridge li { padding: 8px 12px; border: 2px dashed var(--blue-line); border-radius: 12px; font-size: calc(18px * var(--s)); font-weight: 600; line-height: 1.6; }
+  .gacha { margin-top: 16px; }
+  .neta { display: block; width: 100%; min-height: 60px; padding: 12px; border-radius: 16px; border: 2px solid var(--blue); background: var(--white); color: var(--blue-dark); font: inherit; font-size: calc(18px * var(--s)); font-weight: 700; cursor: pointer; }
+  .neta:active { background: var(--blue-soft); }
+  .neta-out { margin-top: 10px; padding: 14px 14px; background: var(--blue); color: #fff; border-radius: 16px; font-size: calc(22px * var(--s)); font-weight: 700; line-height: 1.6; animation: pop .3s cubic-bezier(.2, 1.3, .4, 1); }
+  .neta-out small { display: block; margin-bottom: 2px; font-size: calc(12.5px * var(--s)); opacity: .9; letter-spacing: .04em; }
+  @keyframes pop { from { opacity: 0; transform: scale(.94); } to { opacity: 1; transform: none; } }
+  .next { margin-top: 14px; padding-top: 10px; border-top: 1.5px solid var(--blue-line); font-size: calc(14.5px * var(--s)); color: var(--gray); font-weight: 600; }
+
+  .now.warn { background: var(--navy); border-color: var(--navy); color: #fff; }
+  .now.warn .chip { background: #fff; color: var(--navy); }
+  .now.warn .range, .now.warn .partleft, .now.warn .next { color: rgba(255, 255, 255, .85); }
+  .now.warn .partleft b { color: #fff; }
+  .now.warn .now-head + h2, .now.warn h3 { color: #fff; }
+  .now.warn h3 { opacity: .85; }
+  .now.warn .points li::before { background: #fff; }
+  .now.warn .says li { background: rgba(255, 255, 255, .14); }
+  .now.warn .bridge li { border-color: rgba(255, 255, 255, .4); }
+  .now.warn .neta { background: transparent; border-color: #fff; color: #fff; }
+  .now.warn .neta-out { background: #fff; color: var(--navy); }
+  .now.warn .filled { background: rgba(255, 255, 255, .2); color: #fff; }
+  .now.warn .empty { background: transparent; border-color: rgba(255, 255, 255, .5); color: #fff; }
+  .now.warn .blank { color: #BFD6FF; }
+  .now.warn .next { border-top-color: rgba(255, 255, 255, .3); }
+
+  .finish { margin-top: 12px; padding: 24px 18px; text-align: center; background: linear-gradient(135deg, var(--blue) 0%, var(--blue-dark) 100%); color: #fff; border-radius: 26px; }
+  .finish h2 { font-size: calc(28px * var(--s)); line-height: 1.35; }
+  .finish p { margin-top: 8px; font-size: calc(16px * var(--s)); line-height: 1.7; }
+  .finish a { display: inline-block; margin-top: 12px; padding: 10px 18px; border-radius: 999px; background: #fff; color: var(--blue-dark); font-weight: 700; text-decoration: none; font-size: 15px; }
+
+  .size { margin-top: 14px; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; font-size: 13px; font-weight: 700; color: var(--gray); }
+  .size button { min-height: 40px; padding: 6px 14px; border-radius: 999px; border: 1.5px solid var(--blue-line); background: var(--white); color: var(--gray); font: inherit; font-size: 13.5px; font-weight: 700; cursor: pointer; }
+  .size button[aria-pressed="true"] { background: var(--blue); border-color: var(--blue); color: #fff; }
+  .wake { margin-top: 8px; font-size: 12.5px; color: var(--gray); }
+
+  .ctrl { position: sticky; bottom: 0; z-index: 20; margin: 14px -16px 0; padding: 10px 16px calc(10px + env(safe-area-inset-bottom)); background: #fff; border-top: 1.5px solid var(--blue-line); display: grid; grid-template-columns: 1.6fr .8fr 1fr; gap: 8px; }
+  .ctl { min-height: 56px; padding: 10px 8px; border-radius: 16px; border: 2px solid var(--blue-line); background: var(--white); color: var(--gray); font: inherit; font-size: 15px; font-weight: 700; cursor: pointer; white-space: nowrap; }
+  .ctl.main { border-color: var(--blue); background: var(--blue); color: #fff; font-size: 18px; box-shadow: 0 6px 14px rgba(47, 111, 228, .22); }
+  .ctl.main:active { background: var(--blue-dark); }
+  .ctl:disabled { opacity: .5; cursor: default; }
+
+  /* ---- 行き来・公式LINE ---- */
+  .links { margin-top: 26px; }
+  .linkcard {
+    display: flex; align-items: center; justify-content: space-between; gap: 12px;
+    margin: 0 0 12px; padding: 16px 18px; background: var(--white);
+    border: 1.5px solid var(--blue-line); border-radius: 20px; text-decoration: none; color: var(--navy);
+    box-shadow: 0 6px 18px rgba(47, 111, 228, .06);
+  }
+  .linkcard:active { background: var(--blue-soft); }
+  .linkcard:focus-visible { outline: 3px solid var(--blue); outline-offset: 3px; }
+  .lc-label { display: block; font-size: 12.5px; font-weight: 600; color: var(--gray); }
+  .lc-title { display: block; margin-top: 2px; font-size: 17px; font-weight: 700; }
+  .lc-arrow { flex: none; width: 34px; height: 34px; border-radius: 50%; background: var(--blue); display: flex; align-items: center; justify-content: center; }
+  .lc-arrow svg { width: 16px; height: 16px; stroke: #fff; stroke-width: 3; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+
+  .ask { margin-top: 14px; padding: 8px 4px 4px; text-align: center; }
+  .cta {
+    display: block; width: 100%; padding: 18px 16px; border-radius: 18px;
+    background: var(--blue); color: #fff; text-decoration: none;
+    font-size: 17px; font-weight: 700; line-height: 1.45;
+    box-shadow: 0 8px 18px rgba(47, 111, 228, .22);
+  }
+  .cta:active { background: var(--blue-dark); }
+  .cta:focus-visible { outline: 3px solid var(--navy); outline-offset: 3px; }
+  .ask small { display: block; margin-top: 10px; font-size: 13px; color: var(--gray); }
+
+  footer { padding: 22px 20px 36px; text-align: center; font-size: 12.5px; color: var(--gray); }
+  footer p + p { margin-top: 4px; }
+  .foot-brand { margin-top: 16px; font-weight: 700; color: var(--navy); letter-spacing: .02em; }
+  noscript p { margin: 16px; padding: 12px 14px; background: var(--blue-soft); border-radius: 12px; font-size: 14px; }
+
+  @media (min-width: 700px) {
+    .now h2 { font-size: calc(44px * var(--s)); }
+    .says li { font-size: calc(26px * var(--s)); }
+    .points li { font-size: calc(22px * var(--s)); }
+    .bridge li { font-size: calc(22px * var(--s)); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    * { transition: none !important; animation: none !important; }
+  }
+</style>
+</head>
+<body>
+<div class="page" id="page">
+
+  <header class="hero" id="hero">
+    <nav class="tabs" aria-label="ページの切りかえ">
+      <a class="tab" href="index.html">チェックリスト</a>
+      <a class="tab" href="gacha.html">ネタガチャ</a>
+      <a class="tab" href="guide.html">見せ方ガイド</a>
+      <a class="tab" href="prompts.html">AIプロンプト</a>
+      <a class="tab" href="script.html" aria-current="page">30分台本</a>
+    </nav>
+    <span class="brand">SCENE 1 ライバーズ</span>
+    <h1>初ライブの<br><em>30分台本</em></h1>
+    <p class="intro">何を話すか決まっていると、初ライブの緊張が少し軽くなります。名前やテーマを入れると、30分の台本ができあがります。顔を出して、声で話すライブが前提です。</p>
+  </header>
+
+  <noscript><p>台本をつくるには、JavaScriptをオンにしてください。</p></noscript>
+
+  <main>
+
+    <!-- ===== 入力の画面 ===== -->
+    <section id="setup">
+      <div class="notice">
+        <p>事務所に入る前の練習配信にも使えます。</p>
+        <small>事務所への所属は、18歳以上の方が対象です。</small>
+      </div>
+
+      <section class="flow" aria-labelledby="flowTitle">
+        <h2 id="flowTitle">30分の流れ</h2>
+        <ol id="flowList"></ol>
+      </section>
+
+      <p class="step-label">① どうやって使う？</p>
+      <div class="modes" role="radiogroup" aria-label="使い方" id="modes">
+        <label class="mode" data-mode="pre">
+          <input class="sr" type="radio" name="mode" value="pre">
+          <span class="dot" aria-hidden="true"></span>
+          <span><b>スマホ1台だけ</b><span class="mname">ライブ前に確認するモード</span><p>台本を短い要点にまとめて見ます。スクショやメモに残して、ライブの前に声に出して読んでおこう。</p></span>
+        </label>
+        <label class="mode" data-mode="live">
+          <input class="sr" type="radio" name="mode" value="live">
+          <span class="dot" aria-hidden="true"></span>
+          <span><b>2台目のスマホやタブレットがある</b><span class="mname">ライブ中に横で見るモード</span><p>30分のタイマーつきで、いまどのパートかが大きく出ます。配信に使わない画面を、横に置いて見てね。</p></span>
+        </label>
+      </div>
+      <p class="mode-err" id="modeErr" role="alert" hidden>どちらで使うか、ひとつ選んでね。</p>
+
+      <p class="step-label">② 入力する</p>
+      <div class="fields" id="fields"></div>
+      <button class="make" id="make" type="button">台本をつくる</button>
+      <p class="make-note" id="makeNote">空欄のところは、あとから自分の言葉に置きかえられるよう、【 】のまま出ます。</p>
+
+      <div class="links">
+        <a class="linkcard" href="index.html">
+          <span><span class="lc-label">準備はできてる？</span><span class="lc-title">初ライブ前の準備チェックリスト</span></span>
+          <span class="lc-arrow" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg></span>
+        </a>
+        <a class="linkcard" href="gacha.html">
+          <span><span class="lc-label">話すネタに迷ったら</span><span class="lc-title">初ライブのネタガチャ</span></span>
+          <span class="lc-arrow" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg></span>
+        </a>
+        <a class="linkcard" href="guide.html">
+          <span><span class="lc-label">見せ方に迷ったら</span><span class="lc-title">初ライブの見せ方ガイド</span></span>
+          <span class="lc-arrow" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg></span>
+        </a>
+        <a class="linkcard" href="prompts.html">
+          <span><span class="lc-label">AIに相談してみるなら</span><span class="lc-title">AIで配信を考えるプロンプト集</span></span>
+          <span class="lc-arrow" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg></span>
+        </a>
+      </div>
+    </section>
+
+    <!-- ===== 台本の画面 ===== -->
+    <section id="script" hidden>
+      <div class="bar">
+        <button class="back" id="backBtn" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>入力にもどる</button>
+        <span class="modename" id="modeName"></span>
+      </div>
+
+      <!-- ---- ライブ前に確認するモード ---- -->
+      <div id="viewPre" hidden>
+        <h2 class="v-title">ライブ前に確認する台本</h2>
+        <p class="v-lead">ニックネーム：<b id="whoName"></b>／今日のテーマ：<b id="whoTheme"></b></p>
+        <div class="memo">
+          <b>覚えるコツ</b>
+          <ul>
+            <li>ライブ前に1回、声に出して読んでみよう。</li>
+            <li>ぜんぶ覚えなくて大丈夫。各パートの「はじめのひと言」だけ覚えておこう。</li>
+            <li>立って、表情もつけて読むと、本番に近づきます。</li>
+          </ul>
+        </div>
+        <div id="preParts"></div>
+        <div class="actions">
+          <button class="act primary" id="btnShot" type="button">画像で保存（スクショ用）</button>
+          <button class="act" id="btnCopy" type="button">コピー（メモアプリ用）</button>
+          <button class="act ghost" id="btnCopyFull" type="button">セリフ例もふくめた全文をコピー</button>
+        </div>
+        <p class="act-msg" id="actMsg" aria-live="polite"></p>
+        <figure class="shotprev" id="shotPrev" hidden>
+          <img id="shotImg" alt="台本を1枚にまとめた画像">
+          <figcaption>保存できないときは、この画像を長押しして保存するか、この画面をスクショしてね。</figcaption>
+        </figure>
+        <details class="full">
+          <summary>セリフ例とつなぎのひと言を、ぜんぶ見る</summary>
+          <div class="fbody" id="fullParts"></div>
+        </details>
+      </div>
+
+      <!-- ---- ライブ中に横で見るモード ---- -->
+      <div id="viewLive" class="live" data-size="M" hidden>
+        <div class="topbar">
+          <div class="times"><span>経過<b id="tEl">00:00</b></span><span>のこり<b id="tRem">30:00</b></span></div>
+          <div class="segs" id="segs"></div>
+        </div>
+        <div class="banner" id="banner" role="status" hidden></div>
+
+        <article class="now" id="now">
+          <div class="now-head"><span class="chip" id="nowChip">じゅんび中</span><span class="range" id="nowRange"></span></div>
+          <h2 id="nowName"></h2>
+          <p class="partleft">このパートあと<b id="tPart"> 03:00</b></p>
+          <h3>やること</h3>
+          <ul class="points" id="nowPoints"></ul>
+          <h3>そのまま言えるセリフ</h3>
+          <ol class="says" id="nowSays"></ol>
+          <h3>つなぎのひと言（話が止まりそうなときに）</h3>
+          <ul class="bridge" id="nowBridge"></ul>
+          <div class="gacha">
+            <button class="neta" id="netaBtn" type="button">ネタガチャ（話題を出す）</button>
+            <div class="neta-out" id="netaOut" role="status" hidden></div>
+          </div>
+          <p class="next" id="nowNext"></p>
+        </article>
+
+        <section class="finish" id="finish" hidden>
+          <h2>30分、おつかれさまでした！</h2>
+          <p>顔を出して、声で話しきった自分を、ほめてあげてね。<br>ふり返りは、AIプロンプト集の「ふり返り」でもできます。</p>
+          <a href="prompts.html">AIプロンプト集を開く</a>
+        </section>
+
+        <div class="size" role="group" aria-label="文字の大きさ">
+          <span>文字の大きさ</span>
+          <button type="button" data-size="M" aria-pressed="true">ふつう</button>
+          <button type="button" data-size="L" aria-pressed="false">大きい</button>
+          <button type="button" data-size="XL" aria-pressed="false">とても大きい</button>
+        </div>
+        <p class="wake" id="wakeNote">スタートを押すと、画面が自動で消えにくくなります（対応している端末のみ）。</p>
+
+        <div class="ctrl">
+          <button class="ctl main" id="tPrimary" type="button">スタート</button>
+          <button class="ctl" id="tNext" type="button" aria-label="次のパートへ" title="次のパートへ">次へ</button>
+          <button class="ctl" id="tReset" type="button">リセット</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== 公式LINEへの案内（どの画面でも、いちばん下に出る） ===== -->
+    <section class="ask">
+      <!-- 公式LINEのURLが決まったら、下のボタンのリンク先（href）を、そのURLに置き換える（このページでは1か所だけ） -->
+      <a class="cta" id="lineBtn" href="【LINE URL】">わからないことは<br>公式LINEで気軽に聞いてね</a>
+      <small>台本のことも、気軽にどうぞ。</small>
+    </section>
+
+  </main>
+
+  <footer>
+    <p>入力した内容は、この端末のブラウザに保存されます（こちらには送られません）。</p>
+    <p>本名・住所・勤務先など、個人が特定される情報は、台本に入れないでね。</p>
+    <p>このページは、18歳以上の方に向けた内容です。</p>
+    <p class="foot-brand">SCENE 1 ライバーズ</p>
+  </footer>
+
+</div>
+
+<script>
+(function () {
+  // =========================================================
+  //  台本のデータ（【 】は入力した言葉に置きかわる。◯◯は、その場で自分の言葉に置きかえる所）
+  // =========================================================
+  var BOUNDS = [0, 3, 10, 22, 27, 30];   // 各パートの始まり（分）。最後は終わり
+  var TOTAL = 30 * 60;                    // 30分（秒）
+  var WARN_SEC = 60;                      // パートが変わる、何秒前に知らせるか
+
+  var FIELDS = [
+    { key: 'ニックネーム', ph: '例：はる', hint: '本名ではなく、呼ばれたい名前で。' },
+    { key: '今日のテーマ', ph: '例：休みの日の過ごし方' },
+    { key: '好きなこと', ph: '例：映画、散歩' },
+    { key: 'ライブを始めた理由', ph: '例：話すのが好きで、やってみたくなった' },
+    { key: '次のライブの予告', ph: '例：好きな映画の話' }
+  ];
+
+  var PARTS = [
+    {
+      short: 'あいさつ', name: 'あいさつ',
+      aim: '初ライブであること・来てくれたお礼・今日やることを、ひと言で',
+      points: ['初ライブだと伝える', '来てくれたお礼を言う', '今日やることを、ひと言で言う'],
+      says: [
+        'こんばんは、【ニックネーム】です！今日がはじめてのライブです。来てくれて、ありがとう。',
+        '今日は30分、【今日のテーマ】の話をします。ゆっくり付き合ってね。',
+        '緊張してるけど、声に出して話していくので、よろしくお願いします！'
+      ],
+      bridge: ['まず、聞こえてるかな？私の声、ちゃんと届いてるといいな。', 'ちょっと深呼吸しますね。……ふぅ。よし、始めます。'],
+      extra: [
+        '手を振ってみます！ひらひら〜。来てくれてありがとう！',
+        '初ライブなので、うまく話せなくても、あたたかく見守ってもらえるとうれしいです。',
+        '今日が終わったら、ちょっとだけ自分をほめたいと思います。',
+        'いま、どんな気分で見てくれてますか？ひと言で教えてね。',
+        'ここまで来るのに、ちょっとドキドキしました。でも、始められてうれしいです。'
+      ]
+    },
+    {
+      short: '自己紹介', name: '自己紹介',
+      aim: '名前・好きなこと・ライブを始めた理由',
+      points: ['名前（ニックネーム）を言う', '好きなことを話す', 'ライブを始めた理由を話す'],
+      says: [
+        '改めて、【ニックネーム】です。好きなことは【好きなこと】です。',
+        '【好きなこと】の話を始めると、止まらなくなっちゃうんです。',
+        'ライブを始めたのは、【ライブを始めた理由】からです。'
+      ],
+      bridge: ['えーっと、ほかにも好きなことがあって……。', '自己紹介、もうちょっとだけ続けますね。'],
+      extra: [
+        '好きな食べ物を3つ、早口で言ってみます。いくよ、せーの！',
+        '最近ハマっていることを、ひとつ紹介します。',
+        '子どものころ好きだったものを思い出してみます。……あ、あれだ。',
+        '好きなことを始めたきっかけを、思い出して話しますね。',
+        '自分のいいところを、ひとつだけ言ってみます。'
+      ]
+    },
+    {
+      short: 'テーマ', name: '今日のテーマ',
+      aim: 'メインの話題と、見ている人への問いかけ',
+      points: ['今日のテーマを伝える', '自分の話を2〜3つ話す', '見ている人に問いかける'],
+      says: [
+        'ここからは、今日のテーマ、【今日のテーマ】の話です。',
+        '【今日のテーマ】って聞いて、最初に思い浮かぶのは何ですか？私は、◯◯です。',
+        'みんなは、【今日のテーマ】について、どう思う？……私は、◯◯だと思います。'
+      ],
+      bridge: ['ちょっと立ち上がって、伸びをしますね。ん〜っ。はい、続けます。', 'いま話してて思ったんだけど、……。'],
+      extra: [
+        '話が止まったので、テーマと関係ない話をします。まずは、今日の天気から。',
+        'みんなは、朝型？夜型？ちなみに、私は◯◯型です。',
+        'ちょっと深呼吸しよう。吸って〜、吐いて〜。よし、続けます。',
+        'ここまでの感想を自分で言います。緊張はするけど、意外と楽しい。',
+        '見てくれてる人、猫派？犬派？どっちでもない派もOKです。'
+      ]
+    },
+    {
+      short: 'コメント', name: 'コメントタイム',
+      aim: '来てくれた人の質問や話に答える',
+      points: ['コメントを読んで、名前を呼ぶ', '質問に答える・質問を返す', 'コメントがないときは、ネタガチャ'],
+      says: [
+        'ここからはコメントタイムです。まずは私から質問するね。みんなは、今日はどんな一日だった？',
+        '◯◯さん、コメントありがとう！それ、いい質問だね。……私は、◯◯かな。',
+        'うん、うん、なるほど。それって、いつからなの？もうちょっと聞かせて！'
+      ],
+      bridge: ['コメント、まだ来ないから、私から質問しますね。みんなは、朝型？夜型？', 'いま読んでるから、ちょっと待ってね。……お待たせ。'],
+      extra: [
+        'いま見てくれている人に質問です。最近、ちょっとうれしかったことは何ですか？',
+        '好きな色を聞いてもいいですか？ちなみに私は◯◯が好きです。',
+        'うまく答えられるかわからないけど、考えてみるね。',
+        'それ、あとでもう少し詳しく話してもいい？',
+        'ここまでのコメント、ぜんぶ読んでます。ありがとう。'
+      ]
+    },
+    {
+      short: '締め', name: '締め',
+      aim: 'お礼と、次のライブの予告',
+      points: ['見に来てくれたお礼を言う', '今日の感想を、ひと言', '次のライブの予告をする'],
+      says: [
+        'そろそろ時間なので、今日はここまでにします。来てくれて、ありがとう。',
+        '初ライブ、緊張したけど、楽しかったです。',
+        '次のライブでは、【次のライブの予告】の話をします。また見に来てね！'
+      ],
+      bridge: ['最後に、今日の感想をひと言だけ言わせてください。', 'あと少しなので、もう一回、お礼を言わせてね。'],
+      extra: [
+        '今日のライブの中で、いちばん話しやすかったところを思い出してみます。',
+        '次のライブまでに、やってみたいことをひとつ言います。',
+        '最後にもう一度、深呼吸して、お礼を言います。ありがとう！',
+        '今日の感想を、ひと言で言うと……「◯◯」です。',
+        '手を振って、おわりにします。ひらひら〜。またね！'
+      ]
+    }
+  ];
+  PARTS.forEach(function (p, i) {
+    p.from = BOUNDS[i]; p.to = BOUNDS[i + 1];
+    p.range = p.from + '〜' + p.to + '分';
+    p.pool = p.bridge.concat(p.extra);
+  });
+
+  // =========================================================
+  //  保存（この端末のブラウザだけ）
+  // =========================================================
+  var KEY = 'scene1-livers-script-v1';
+  var TKEY = 'scene1-livers-script-timer-v1';
+  var saved = { mode: '', values: {}, size: 'M' };
+  var values = saved.values;
+  function loadSaved() {
+    try {
+      var o = JSON.parse(localStorage.getItem(KEY) || '{}');
+      if (o && typeof o === 'object') {
+        if (o.mode === 'pre' || o.mode === 'live') { saved.mode = o.mode; }
+        if (o.size === 'M' || o.size === 'L' || o.size === 'XL') { saved.size = o.size; }
+        if (o.values && typeof o.values === 'object') {
+          Object.keys(o.values).forEach(function (k) { if (typeof o.values[k] === 'string') { values[k] = o.values[k]; } });
+        }
+      }
+    } catch (e) {}
+  }
+  function persist() {
+    try { localStorage.setItem(KEY, JSON.stringify(saved)); }
+    catch (e) { document.querySelector('footer p').textContent = 'このブラウザでは保存できないため、閉じると入力した内容は消えます。'; }
+  }
+
+  // =========================================================
+  //  ことば（【 】の置きかえ）
+  // =========================================================
+  function filled(k) { return typeof values[k] === 'string' && values[k].trim() !== ''; }
+  function plain(text) { return text.replace(/【([^】]+)】/g, function (m, k) { return filled(k) ? values[k].trim() : m; }); }
+  function el(tag, cls, text) { var e = document.createElement(tag); if (cls) { e.className = cls; } if (text !== undefined) { e.textContent = text; } return e; }
+  function rich(node, text) {
+    node.textContent = '';
+    var re = /【([^】]+)】|◯◯/g, last = 0, m;
+    while ((m = re.exec(text))) {
+      if (m.index > last) { node.appendChild(document.createTextNode(text.slice(last, m.index))); }
+      var s;
+      if (m[0] === '◯◯') { s = el('span', 'blank', '◯◯'); }
+      else if (filled(m[1])) { s = el('span', 'filled', values[m[1]].trim()); }
+      else { s = el('span', 'empty', m[0]); }
+      node.appendChild(s);
+      last = m.index + m[0].length;
+    }
+    if (last < text.length) { node.appendChild(document.createTextNode(text.slice(last))); }
+    return node;
+  }
+  function mmss(sec, floor) {
+    sec = Math.max(0, floor ? Math.floor(sec) : Math.ceil(sec));
+    var m = Math.floor(sec / 60), s = sec % 60;
+    return (m < 10 ? '0' : '') + m + ':' + (s < 10 ? '0' : '') + s;
+  }
+  function pick(arr, lastIdx) {
+    var i = Math.floor(Math.random() * arr.length);
+    if (arr.length > 1 && i === lastIdx) { i = (i + 1 + Math.floor(Math.random() * (arr.length - 1))) % arr.length; }
+    return i;
+  }
+
+  // ---- コピー（clipboard API → だめなら代わりの方法） ----
+  function fallbackCopy(text) {
+    return new Promise(function (resolve, reject) {
+      var ta = document.createElement('textarea');
+      ta.value = text; ta.setAttribute('readonly', '');
+      ta.style.cssText = 'position:fixed;top:0;left:0;width:1px;height:1px;opacity:0';
+      document.body.appendChild(ta);
+      ta.select(); ta.setSelectionRange(0, text.length);
+      var ok = false;
+      try { ok = document.execCommand('copy'); } catch (e) {}
+      document.body.removeChild(ta);
+      ok ? resolve() : reject(new Error('copy failed'));
+    });
+  }
+  function copyText(text) {
+    if (navigator.clipboard && window.isSecureContext) {
+      return navigator.clipboard.writeText(text).catch(function () { return fallbackCopy(text); });
+    }
+    return fallbackCopy(text);
+  }
+
+  // =========================================================
+  //  入力の画面
+  // =========================================================
+  var pageEl = document.getElementById('page');
+  var heroEl = document.getElementById('hero');
+  var setupEl = document.getElementById('setup');
+  var scriptEl = document.getElementById('script');
+  var modesEl = document.getElementById('modes');
+  var modeErr = document.getElementById('modeErr');
+  var fieldsEl = document.getElementById('fields');
+  var lineBtn = document.getElementById('lineBtn');
+
+  var flowList = document.getElementById('flowList');
+  PARTS.forEach(function (p) {
+    var li = el('li'); li.appendChild(el('span', '', p.range)); li.appendChild(document.createTextNode(p.name));
+    flowList.appendChild(li);
+  });
+
+  FIELDS.forEach(function (f, i) {
+    var wrap = el('div', 'field');
+    var lab = el('label', '', '【' + f.key + '】'); lab.setAttribute('for', 'f' + i);
+    var input = document.createElement('input');
+    input.type = 'text'; input.id = 'f' + i; input.placeholder = f.ph; input.maxLength = 120;
+    input.setAttribute('autocomplete', 'off'); input.setAttribute('autocapitalize', 'off'); input.spellcheck = false;
+    input.setAttribute('enterkeyhint', 'next');
+    input.value = values[f.key] || '';
+    input.addEventListener('input', function () { values[f.key] = input.value; persist(); });
+    wrap.appendChild(lab); wrap.appendChild(input);
+    if (f.hint) { wrap.appendChild(el('small', '', f.hint)); }
+    fieldsEl.appendChild(wrap);
+  });
+
+  function syncModeUI() {
+    Array.prototype.forEach.call(modesEl.querySelectorAll('.mode'), function (lab) {
+      var on = lab.getAttribute('data-mode') === saved.mode;
+      lab.classList.toggle('on', on);
+      lab.querySelector('input').checked = on;
+    });
+  }
+  Array.prototype.forEach.call(modesEl.querySelectorAll('input'), function (inp) {
+    inp.addEventListener('change', function () {
+      saved.mode = inp.value; persist(); modeErr.hidden = true; syncModeUI();
+    });
+  });
+
+  document.getElementById('make').addEventListener('click', function () {
+    if (!saved.mode) {
+      modeErr.hidden = false;
+      modesEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      return;
+    }
+    persist();
+    setupY = window.scrollY;
+    history.pushState({ v: 'script' }, '', '#script');
+    route();
+  });
+
+  // =========================================================
+  //  画面の切りかえ（入力 ⇔ 台本）
+  // =========================================================
+  var setupY = 0;
+  var view = 'setup';
+  function route() {
+    var want = location.hash === '#script' && saved.mode ? 'script' : 'setup';
+    if (location.hash === '#script' && !saved.mode) { try { history.replaceState(null, '', location.pathname + location.search); } catch (e) {} }
+    if (want === view && view === 'setup') { return; }
+    if (want === 'script') { enterScript(); } else { leaveScript(); }
+  }
+  function enterScript() {
+    view = 'script';
+    setupEl.hidden = true; scriptEl.hidden = false; heroEl.classList.add('is-script');
+    document.getElementById('modeName').textContent = saved.mode === 'pre' ? 'ライブ前に確認' : 'ライブ中に横で見る';
+    document.getElementById('viewPre').hidden = saved.mode !== 'pre';
+    document.getElementById('viewLive').hidden = saved.mode !== 'live';
+    pageEl.classList.toggle('wide', saved.mode === 'live');
+    if (saved.mode === 'pre') { renderPre(); } else { enterLive(); }
+    window.scrollTo(0, 0);
+  }
+  function leaveScript() {
+    if (view === 'script' && saved.mode === 'live') { exitLive(); }
+    view = 'setup';
+    scriptEl.hidden = true; setupEl.hidden = false; heroEl.classList.remove('is-script');
+    pageEl.classList.remove('wide');
+    window.scrollTo(0, setupY);
+  }
+  document.getElementById('backBtn').addEventListener('click', function () {
+    if (history.state && history.state.v === 'script') { history.back(); }
+    else { try { history.replaceState(null, '', location.pathname + location.search); } catch (e) {} route(); }
+  });
+  window.addEventListener('popstate', route);
+  window.addEventListener('hashchange', route);
+  try { history.scrollRestoration = 'manual'; } catch (e) {}
+
+  // =========================================================
+  //  ライブ前に確認するモード
+  // =========================================================
+  function shortText() {
+    var lines = ['初ライブ30分台本', 'ニックネーム：' + plain('【ニックネーム】') + '／今日のテーマ：' + plain('【今日のテーマ】'), '※ライブ前に1回、声に出して読んでみよう', ''];
+    PARTS.forEach(function (p) {
+      lines.push('■' + p.range + ' ' + p.name);
+      p.points.forEach(function (t) { lines.push('・' + plain(t)); });
+      lines.push('はじめのひと言：「' + plain(p.says[0]) + '」');
+      lines.push('');
+    });
+    return lines.join('\n').replace(/\n+$/, '\n');
+  }
+  function fullText() {
+    var lines = ['初ライブ30分台本（全文）', 'ニックネーム：' + plain('【ニックネーム】') + '／今日のテーマ：' + plain('【今日のテーマ】'), ''];
+    PARTS.forEach(function (p) {
+      lines.push('■' + p.range + ' ' + p.name);
+      lines.push('やること：' + p.aim);
+      lines.push('セリフ例');
+      p.says.forEach(function (t, i) { lines.push((i + 1) + '. ' + plain(t)); });
+      lines.push('つなぎのひと言');
+      p.bridge.forEach(function (t) { lines.push('・' + plain(t)); });
+      lines.push('');
+    });
+    return lines.join('\n').replace(/\n+$/, '\n');
+  }
+
+  function renderPre() {
+    var nm = document.getElementById('whoName'), th = document.getElementById('whoTheme');
+    rich(nm, '【ニックネーム】'); rich(th, '【今日のテーマ】');
+    var box = document.getElementById('preParts'); box.textContent = '';
+    PARTS.forEach(function (p) {
+      var card = el('section', 'pp');
+      var head = el('div', 'pp-head'); head.appendChild(el('span', 'pp-time', p.range)); head.appendChild(el('span', 'pp-name', p.name));
+      card.appendChild(head);
+      var ul = el('ul'); p.points.forEach(function (t) { ul.appendChild(rich(el('li'), t)); });
+      card.appendChild(ul);
+      var first = el('p', 'pp-first'); first.appendChild(el('b', '', 'はじめのひと言')); first.appendChild(rich(el('span'), '「' + p.says[0] + '」'));
+      card.appendChild(first);
+      box.appendChild(card);
+    });
+    var full = document.getElementById('fullParts'); full.textContent = '';
+    PARTS.forEach(function (p) {
+      var fp = el('section', 'fp');
+      fp.appendChild(el('h3', '', p.range + '　' + p.name));
+      fp.appendChild(el('h4', '', 'セリフ例'));
+      var ol = el('ol'); p.says.forEach(function (t) { ol.appendChild(rich(el('li'), t)); }); fp.appendChild(ol);
+      fp.appendChild(el('h4', '', 'つなぎのひと言'));
+      var ul = el('ul'); p.bridge.forEach(function (t) { ul.appendChild(rich(el('li'), t)); }); fp.appendChild(ul);
+      full.appendChild(fp);
+    });
+    actMsg('', false);
+    document.getElementById('shotPrev').hidden = true;
+  }
+
+  var actMsgEl = document.getElementById('actMsg');
+  function actMsg(text, isErr) { actMsgEl.textContent = text; actMsgEl.className = 'act-msg' + (isErr ? ' err' : ''); }
+  function doCopy(text, okText) {
+    copyText(text).then(function () { actMsg(okText, false); },
+      function () { actMsg('うまくコピーできませんでした。画面の文を長押しして、コピーしてね。', true); });
+  }
+  document.getElementById('btnCopy').addEventListener('click', function () { doCopy(shortText(), 'コピーしました。メモアプリに貼ってね。'); });
+  document.getElementById('btnCopyFull').addEventListener('click', function () { doCopy(fullText(), '全文をコピーしました。メモアプリに貼ってね。'); });
+
+  // ---- 1枚の画像にして保存 ----
+  var shotUrl = '';
+  function roundRect(ctx, x, y, w, h, r) {
+    ctx.beginPath(); ctx.moveTo(x + r, y);
+    ctx.arcTo(x + w, y, x + w, y + h, r); ctx.arcTo(x + w, y + h, x, y + h, r);
+    ctx.arcTo(x, y + h, x, y, r); ctx.arcTo(x, y, x + w, y, r); ctx.closePath();
+  }
+  function drawShot() {
+    var W = 1080, PAD = 56, INNER = 24;
+    var FONT = '"Hiragino Sans","Hiragino Kaku Gothic ProN","Noto Sans JP","Yu Gothic","Meiryo",sans-serif';
+    var mctx = document.createElement('canvas').getContext('2d');
+    function wrap(text, size, weight, maxW) {
+      mctx.font = weight + ' ' + size + 'px ' + FONT;
+      var out = [], line = '', chars = Array.from(text);
+      for (var i = 0; i < chars.length; i++) {
+        var ch = chars[i];
+        if (ch === '\n') { out.push(line); line = ''; continue; }
+        var t = line + ch;
+        if (mctx.measureText(t).width > maxW && line) { out.push(line); line = ch; } else { line = t; }
+      }
+      if (line) { out.push(line); }
+      return out;
+    }
+    var ops = [], y = 0;
+    function text(str, size, weight, color, x, maxW, lh) {
+      var ls = wrap(str, size, weight, maxW);
+      ls.forEach(function (l) { y += lh; ops.push({ t: 'text', s: l, x: x, y: y, font: weight + ' ' + size + 'px ' + FONT, c: color }); });
+    }
+    y = 70;
+    ops.push({ t: 'pill', x: PAD, y: y - 34, w: 330, h: 52, label: 'SCENE 1 ライバーズ' });
+    y += 30;
+    text('初ライブ30分台本', 64, 700, '#1F2A44', PAD, W - PAD * 2, 78);
+    text('ニックネーム：' + plain('【ニックネーム】'), 32, 600, '#5A6B85', PAD, W - PAD * 2, 46);
+    text('今日のテーマ：' + plain('【今日のテーマ】'), 32, 600, '#5A6B85', PAD, W - PAD * 2, 46);
+    y += 26;
+    PARTS.forEach(function (p) {
+      var cardTop = y, startOps = ops.length;
+      y += INNER;
+      ops.push({ t: 'tag', x: PAD + INNER, y: y, label: p.range });
+      var tagW = 0;
+      mctx.font = '700 28px ' + FONT; tagW = mctx.measureText(p.range).width + 36;
+      ops.push({ t: 'text', s: p.name, x: PAD + INNER + tagW + 16, y: y + 34, font: '700 40px ' + FONT, c: '#1F2A44' });
+      y += 44;
+      p.points.forEach(function (pt) {
+        var ls = wrap(plain(pt), 32, 500, W - PAD * 2 - INNER * 2 - 30);
+        ls.forEach(function (l, i) {
+          y += 46;
+          if (i === 0) { ops.push({ t: 'dot', x: PAD + INNER + 8, y: y - 12 }); }
+          ops.push({ t: 'text', s: l, x: PAD + INNER + 30, y: y, font: '500 32px ' + FONT, c: '#1F2A44' });
+        });
+      });
+      y += 16;
+      var fl = wrap('はじめのひと言：「' + plain(p.says[0]) + '」', 30, 600, W - PAD * 2 - INNER * 2 - 32);
+      var boxH = fl.length * 44 + 22;
+      ops.push({ t: 'soft', x: PAD + INNER, y: y, w: W - PAD * 2 - INNER * 2, h: boxH });
+      fl.forEach(function (l) { y += 44; ops.push({ t: 'text', s: l, x: PAD + INNER + 16, y: y - (-2) + 0, font: '600 30px ' + FONT, c: '#2358B8' }); });
+      y += 22 - 4;
+      y += INNER;
+      ops.splice(startOps, 0, { t: 'card', x: PAD, y: cardTop, w: W - PAD * 2, h: y - cardTop });
+      y += 22;
+    });
+    y += 8;
+    text('ライブ前に1回、声に出して読んでみよう', 36, 700, '#2F6FE4', PAD, W - PAD * 2, 52);
+    text('SCENE 1 ライバーズ', 28, 600, '#5A6B85', PAD, W - PAD * 2, 44);
+    var H = y + 56;
+
+    var c = document.createElement('canvas'); c.width = W; c.height = H;
+    var ctx = c.getContext('2d');
+    ctx.fillStyle = '#FFFFFF'; ctx.fillRect(0, 0, W, H);
+    ctx.fillStyle = '#F4F8FF'; ctx.fillRect(0, 0, W, 330);
+    ops.forEach(function (o) {
+      if (o.t === 'text') { ctx.font = o.font; ctx.fillStyle = o.c; ctx.textBaseline = 'alphabetic'; ctx.fillText(o.s, o.x, o.y); }
+      else if (o.t === 'card') { roundRect(ctx, o.x, o.y, o.w, o.h, 28); ctx.fillStyle = '#FFFFFF'; ctx.fill(); ctx.lineWidth = 3; ctx.strokeStyle = '#CFE0FB'; ctx.stroke(); }
+      else if (o.t === 'pill') { roundRect(ctx, o.x, o.y, o.w, o.h, 26); ctx.fillStyle = '#FFFFFF'; ctx.fill(); ctx.lineWidth = 3; ctx.strokeStyle = '#CFE0FB'; ctx.stroke(); ctx.font = '600 26px ' + FONT; ctx.fillStyle = '#2F6FE4'; ctx.fillText(o.label, o.x + 24, o.y + 36); }
+      else if (o.t === 'tag') { ctx.font = '700 28px ' + FONT; var w = ctx.measureText(o.label).width + 36; roundRect(ctx, o.x, o.y, w, 46, 23); ctx.fillStyle = '#2F6FE4'; ctx.fill(); ctx.fillStyle = '#FFFFFF'; ctx.fillText(o.label, o.x + 18, o.y + 33); }
+      else if (o.t === 'dot') { ctx.beginPath(); ctx.arc(o.x, o.y, 6, 0, Math.PI * 2); ctx.fillStyle = '#2F6FE4'; ctx.fill(); }
+      else if (o.t === 'soft') { roundRect(ctx, o.x, o.y, o.w, o.h, 16); ctx.fillStyle = '#EAF2FF'; ctx.fill(); }
+    });
+    return c;
+  }
+  document.getElementById('btnShot').addEventListener('click', function () {
+    var canvas;
+    try { canvas = drawShot(); } catch (e) { actMsg('画像をつくれませんでした。この画面をスクショしてね。', true); return; }
+    canvas.toBlob(function (blob) {
+      if (!blob) { actMsg('画像をつくれませんでした。この画面をスクショしてね。', true); return; }
+      if (shotUrl) { URL.revokeObjectURL(shotUrl); }
+      shotUrl = URL.createObjectURL(blob);
+      document.getElementById('shotImg').src = shotUrl;
+      document.getElementById('shotPrev').hidden = false;
+      var file = null;
+      try { file = new File([blob], 'shodebut-30min-script.png', { type: 'image/png' }); } catch (e) {}
+      if (file && navigator.canShare && navigator.canShare({ files: [file] }) && navigator.share) {
+        navigator.share({ files: [file], title: '初ライブ30分台本' }).then(function () { actMsg('画像を保存できます。保存できないときは、下の画像を長押ししてね。', false); },
+          function (err) { if (!err || err.name !== 'AbortError') { actMsg('下の画像を長押しして、保存してね。', false); } });
+      } else {
+        var a = document.createElement('a'); a.href = shotUrl; a.download = '初ライブ30分台本.png';
+        document.body.appendChild(a); a.click(); document.body.removeChild(a);
+        actMsg('画像を保存しました。保存されないときは、下の画像を長押ししてね。', false);
+      }
+    }, 'image/png');
+  });
+
+  // =========================================================
+  //  ライブ中に横で見るモード
+  // =========================================================
+  var live = { running: false, acc: 0, start: 0, idx: 0, finished: false, bannerUntil: 0, timer: null, lastNeta: {}, shownIdx: -1 };
+  var L = {
+    root: document.getElementById('viewLive'), tEl: document.getElementById('tEl'), tRem: document.getElementById('tRem'), segs: document.getElementById('segs'),
+    banner: document.getElementById('banner'), now: document.getElementById('now'), chip: document.getElementById('nowChip'), range: document.getElementById('nowRange'),
+    name: document.getElementById('nowName'), tPart: document.getElementById('tPart'), points: document.getElementById('nowPoints'), says: document.getElementById('nowSays'),
+    bridge: document.getElementById('nowBridge'), netaBtn: document.getElementById('netaBtn'), netaOut: document.getElementById('netaOut'), next: document.getElementById('nowNext'),
+    finish: document.getElementById('finish'), primary: document.getElementById('tPrimary'), nextBtn: document.getElementById('tNext'), resetBtn: document.getElementById('tReset'),
+    wake: document.getElementById('wakeNote')
+  };
+
+  // 上のバー（5つのパート）
+  PARTS.forEach(function (p) {
+    var seg = el('div', 'seg');
+    seg.appendChild(el('span', 'here', '今ここ'));
+    var trk = el('div', 'trk'); trk.appendChild(el('div', 'fil')); seg.appendChild(trk);
+    seg.appendChild(el('span', 'lb', p.short));
+    L.segs.appendChild(seg);
+  });
+  var segEls = Array.prototype.slice.call(L.segs.children);
+
+  function elapsedSec() {
+    var ms = live.acc + (live.running ? Date.now() - live.start : 0);
+    return Math.max(0, Math.min(ms / 1000, TOTAL));
+  }
+  function partIdx(sec) {
+    if (sec >= TOTAL) { return 5; }
+    for (var i = 0; i < 5; i++) { if (sec < BOUNDS[i + 1] * 60) { return i; } }
+    return 5;
+  }
+  function saveTimer() {
+    try { localStorage.setItem(TKEY, JSON.stringify({ acc: live.acc, start: live.start, running: live.running, savedAt: Date.now() })); } catch (e) {}
+  }
+  function clearTimer() { try { localStorage.removeItem(TKEY); } catch (e) {} }
+
+  // 画面を消えにくくする（対応している端末だけ）
+  var wl = null;
+  function lockOn() {
+    if (!('wakeLock' in navigator)) { return Promise.resolve(false); }
+    return navigator.wakeLock.request('screen').then(function (s) {
+      wl = s; s.addEventListener('release', function () { if (wl === s) { wl = null; } }); return true;
+    }, function () { return false; });
+  }
+  function lockOff() { if (wl) { try { wl.release(); } catch (e) {} wl = null; } }
+  function wakeNote(ok) {
+    L.wake.textContent = ok ? '画面が自動で消えにくい設定にしています。' : 'この端末では、画面が自動で消えるのを止められませんでした。スマホの設定で、画面が消えるまでの時間を長くしておいてね。';
+  }
+  document.addEventListener('visibilitychange', function () {
+    if (document.visibilityState === 'visible' && live.running && !wl && view === 'script' && saved.mode === 'live') { lockOn().then(wakeNote); }
+  });
+
+  function buildPart(i) {
+    var p = PARTS[i];
+    live.shownIdx = i;
+    L.range.textContent = p.range;
+    rich(L.name, p.name);
+    L.points.textContent = ''; p.points.forEach(function (t) { L.points.appendChild(rich(el('li'), t)); });
+    L.says.textContent = ''; p.says.forEach(function (t) { L.says.appendChild(rich(el('li'), t)); });
+    L.bridge.textContent = ''; p.bridge.forEach(function (t) { L.bridge.appendChild(rich(el('li'), t)); });
+    L.netaOut.hidden = true;
+    var nx = PARTS[i + 1];
+    L.next.textContent = nx ? 'つぎ：' + nx.name + '（' + nx.range + '）' : 'このパートが、さいごです。';
+  }
+
+  function paint(sec) {
+    var idx = live.idx, running = live.running;
+    L.tEl.textContent = mmss(sec, true);
+    L.tRem.textContent = mmss(TOTAL - sec);
+    segEls.forEach(function (s, i) {
+      var pct = idx > i ? 100 : idx === i ? ((sec - BOUNDS[i] * 60) / ((BOUNDS[i + 1] - BOUNDS[i]) * 60)) * 100 : 0;
+      s.querySelector('.fil').style.width = Math.max(0, Math.min(100, pct)).toFixed(1) + '%';
+      s.classList.toggle('cur', idx === i);
+    });
+    var done = idx >= 5;
+    L.now.hidden = done; L.finish.hidden = !done;
+    if (!done) {
+      var partLeft = BOUNDS[idx + 1] * 60 - sec;
+      L.tPart.textContent = ' ' + mmss(partLeft);
+      var warn = running && partLeft <= WARN_SEC;
+      L.now.classList.toggle('warn', warn);
+      var txt = '', cls = 'banner';
+      if (running && Date.now() < live.bannerUntil) { txt = 'いま「' + PARTS[idx].name + '」が始まりました'; cls = 'banner switch'; }
+      else if (warn) { txt = idx < 4 ? 'あと1分で、次は「' + PARTS[idx + 1].name + '」' : 'あと1分で、終わりです。お礼と予告を言おう'; }
+      L.banner.hidden = txt === '';
+      if (txt) { L.banner.textContent = txt; L.banner.className = cls; }
+      L.chip.textContent = running ? 'いまここ' : (sec > 0 ? 'いったん停止中' : 'じゅんび中');
+    } else {
+      L.banner.hidden = true;
+    }
+    L.primary.textContent = done ? 'もう一回' : running ? '一時停止' : (sec > 0 ? 'さいかい' : 'スタート');
+    L.nextBtn.disabled = done;
+    L.resetBtn.disabled = (!running && sec === 0);
+  }
+
+  function tick() {
+    if (view !== 'script' || saved.mode !== 'live') { return; }
+    var sec = elapsedSec();
+    var idx = partIdx(sec);
+    if (idx === 5 && !live.finished) { finishLive(); }
+    if (idx !== live.idx) {
+      var prev = live.idx; live.idx = idx;
+      if (live.running && idx < 5 && idx > prev) { live.bannerUntil = Date.now() + 6000; }
+    }
+    if (idx < 5 && live.shownIdx !== idx) { buildPart(idx); }
+    paint(sec);
+  }
+  function ensureTimer() { if (!live.timer) { live.timer = setInterval(tick, 250); } }
+  function stopTimer() { if (live.timer) { clearInterval(live.timer); live.timer = null; } }
+
+  function startLive() { live.running = true; live.start = Date.now(); saveTimer(); lockOn().then(wakeNote); tick(); }
+  function pauseLive() { live.acc += Date.now() - live.start; live.running = false; saveTimer(); lockOff(); tick(); }
+  function finishLive() { live.finished = true; live.running = false; live.acc = TOTAL * 1000; lockOff(); saveTimer(); }
+  function resetLive(force) {
+    if (!force && (live.running || live.acc > 0) && !window.confirm('タイマーを、はじめにもどします。よろしいですか？')) { return; }
+    live.running = false; live.acc = 0; live.finished = false; live.idx = 0; live.bannerUntil = 0; live.shownIdx = -1;
+    lockOff(); clearTimer(); L.wake.textContent = 'スタートを押すと、画面が自動で消えにくくなります（対応している端末のみ）。';
+    tick();
+  }
+  function nextPart() {
+    var idx = live.idx; if (idx >= 5) { return; }
+    var target = idx >= 4 ? TOTAL : BOUNDS[idx + 1] * 60;
+    live.acc = target * 1000; if (live.running) { live.start = Date.now(); }
+    saveTimer(); tick();
+  }
+  L.primary.addEventListener('click', function () {
+    if (live.finished || live.idx >= 5) { resetLive(true); return; }
+    if (live.running) { pauseLive(); } else { startLive(); }
+  });
+  L.nextBtn.addEventListener('click', nextPart);
+  L.resetBtn.addEventListener('click', function () { resetLive(false); });
+
+  // ネタガチャ（いまのパートに合う話題を1つ出す）
+  L.netaBtn.addEventListener('click', function () {
+    var i = Math.min(live.idx, 4), p = PARTS[i];
+    var n = pick(p.pool, live.lastNeta[i]); live.lastNeta[i] = n;
+    L.netaOut.textContent = '';
+    L.netaOut.appendChild(el('small', '', 'ネタガチャ：声に出して言ってみよう'));
+    L.netaOut.appendChild(rich(el('span'), p.pool[n]));
+    L.netaOut.hidden = false;
+    L.netaOut.style.animation = 'none'; void L.netaOut.offsetWidth; L.netaOut.style.animation = '';
+  });
+
+  // 文字の大きさ
+  var sizeBtns = Array.prototype.slice.call(document.querySelectorAll('.size button'));
+  function applySize(s) {
+    L.root.setAttribute('data-size', s);
+    sizeBtns.forEach(function (b) { b.setAttribute('aria-pressed', b.getAttribute('data-size') === s ? 'true' : 'false'); });
+  }
+  sizeBtns.forEach(function (b) { b.addEventListener('click', function () { saved.size = b.getAttribute('data-size'); persist(); applySize(saved.size); }); });
+
+  function enterLive() {
+    applySize(saved.size);
+    // 前に動かしていたタイマーが残っていれば、続きから（6時間以内）
+    try {
+      var t = JSON.parse(localStorage.getItem(TKEY) || 'null');
+      if (t && typeof t.acc === 'number' && Date.now() - (t.savedAt || 0) < 6 * 3600 * 1000) {
+        live.acc = t.acc; live.running = !!t.running; live.start = t.start || Date.now();
+        if (elapsedSec() >= TOTAL) { live.finished = true; live.running = false; live.acc = TOTAL * 1000; }
+      } else { live.acc = 0; live.running = false; live.finished = false; }
+    } catch (e) { live.acc = 0; live.running = false; live.finished = false; }
+    live.idx = partIdx(elapsedSec()); live.shownIdx = -1; live.bannerUntil = 0;
+    if (live.running) { lockOn().then(wakeNote); }
+    ensureTimer(); tick();
+  }
+  function exitLive() {
+    if (live.running) { pauseLive(); }
+    stopTimer(); lockOff();
+  }
+
+  // =========================================================
+  //  はじめ
+  // =========================================================
+  lineBtn.addEventListener('click', function (e) {
+    if (!/^https?:\/\//.test(lineBtn.getAttribute('href') || '')) { e.preventDefault(); }
+  });
+  loadSaved();
+  fieldsEl.querySelectorAll('input').forEach(function (inp, i) { inp.value = values[FIELDS[i].key] || ''; });
+  syncModeUI();
+  route();
+})();
+</script>
+</body>
+</html>

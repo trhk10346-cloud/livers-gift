@@ -1,0 +1,298 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light">
+<meta name="theme-color" content="#ffffff">
+<meta name="robots" content="noindex">
+<meta name="description" content="初ライブや事務所について、よくある質問をまとめたページです。">
+<title>よくある質問｜SCENE 1 ライバーズ</title>
+<style>
+  :root {
+    --blue: #2F6FE4;
+    --blue-dark: #2358B8;
+    --blue-soft: #EAF2FF;
+    --blue-line: #CFE0FB;
+    --navy: #1F2A44;
+    --gray: #5A6B85;
+    --bg: #F6F9FF;
+    --white: #FFFFFF;
+    color-scheme: light;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    background: var(--bg);
+    color: var(--navy);
+    font-family: "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Noto Sans JP", "Yu Gothic", "Meiryo", sans-serif;
+    font-size: 17px;
+    line-height: 1.65;
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+  .sr {
+    position: absolute; width: 1px; height: 1px; overflow: hidden;
+    clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap;
+  }
+  .page { max-width: 560px; margin: 0 auto; }
+
+  /* ---- ヘッダー ---- */
+  .hero { padding: calc(28px + env(safe-area-inset-top)) 20px 22px; background: linear-gradient(180deg, #EEF4FF 0%, var(--bg) 100%); }
+  .brand {
+    display: inline-block; padding: 6px 14px; border-radius: 999px;
+    background: var(--white); border: 1.5px solid var(--blue-line);
+    color: var(--blue); font-size: 13px; font-weight: 600; letter-spacing: .04em;
+  }
+  h1 { margin-top: 14px; font-size: clamp(25px, 7.4vw, 32px); line-height: 1.3; font-weight: 700; letter-spacing: .01em; }
+  h1 em { font-style: normal; color: var(--blue); }
+  .intro { margin-top: 12px; font-size: 15px; color: var(--gray); }
+
+  /* ---- ページの切りかえ ---- */
+  .tabs { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-bottom: 18px; }
+  .tab {
+    text-align: center; padding: 10px 6px; border-radius: 999px; white-space: nowrap;
+    border: 1.5px solid var(--blue-line); background: var(--white); color: var(--gray);
+    font-size: 14px; font-weight: 600; text-decoration: none; line-height: 1.3;
+  }
+  .tab[aria-current="page"] { background: var(--blue); border-color: var(--blue); color: #fff; }
+  .tab:last-child:nth-child(odd) { grid-column: 1 / -1; }
+  .tab:focus-visible { outline: 3px solid var(--navy); outline-offset: 2px; }
+
+  .linkcard {
+    display: flex; align-items: center; justify-content: space-between; gap: 12px;
+    margin: 4px 0 16px; padding: 16px 18px; background: var(--white);
+    border: 1.5px solid var(--blue-line); border-radius: 20px; text-decoration: none; color: var(--navy);
+    box-shadow: 0 6px 18px rgba(47, 111, 228, .06);
+  }
+  .linkcard:active { background: var(--blue-soft); }
+  .linkcard:focus-visible { outline: 3px solid var(--blue); outline-offset: 3px; }
+  .lc-label { display: block; font-size: 12.5px; font-weight: 600; color: var(--gray); }
+  .lc-title { display: block; margin-top: 2px; font-size: 17px; font-weight: 700; }
+  .lc-arrow { flex: none; width: 34px; height: 34px; border-radius: 50%; background: var(--blue); display: flex; align-items: center; justify-content: center; }
+  .lc-arrow svg { width: 16px; height: 16px; stroke: #fff; stroke-width: 3; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+
+  /* ---- 公式LINEへの案内 ---- */
+  .ask { padding: 8px 4px 4px; text-align: center; }
+  .cta {
+    display: block; width: 100%; padding: 18px 16px; border-radius: 18px;
+    background: var(--blue); color: #fff; text-decoration: none;
+    font-size: 17px; font-weight: 700; line-height: 1.45;
+    box-shadow: 0 8px 18px rgba(47, 111, 228, .22);
+  }
+  .cta:active { background: var(--blue-dark); }
+  .cta:focus-visible { outline: 3px solid var(--navy); outline-offset: 3px; }
+  .ask small { display: block; margin-top: 10px; font-size: 13px; color: var(--gray); }
+
+  /* ---- フッター ---- */
+  footer { padding: 22px 20px 36px; text-align: center; font-size: 12.5px; color: var(--gray); }
+  footer p + p { margin-top: 4px; }
+  .reset { margin-top: 14px; padding: 8px 14px; background: none; border: 1.5px solid var(--blue-line); border-radius: 999px; color: var(--gray); font: inherit; font-size: 13px; cursor: pointer; }
+  .reset:active { background: var(--blue-soft); }
+  .foot-brand { margin-top: 16px; font-weight: 700; color: var(--navy); letter-spacing: .02em; }
+  noscript p { margin: 16px; padding: 12px 14px; background: var(--blue-soft); border-radius: 12px; font-size: 14px; }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { transition: none !important; animation: none !important; }
+  }
+
+  /* ---- 事務所・よくある質問ページ用 ---- */
+  main { padding: 18px 16px 8px; }
+  .lead {
+    margin-bottom: 16px; padding: 18px 18px; background: var(--white);
+    border: 1.5px solid var(--blue-line); border-radius: 20px; font-size: 16px; line-height: 1.8;
+    box-shadow: 0 6px 18px rgba(47, 111, 228, .06);
+  }
+  .cat { background: var(--white); border: 1.5px solid var(--blue-line); border-radius: 24px; padding: 18px 16px 16px; margin-bottom: 16px; box-shadow: 0 6px 18px rgba(47, 111, 228, .06); }
+  .cat-head { display: flex; align-items: center; gap: 12px; }
+  .cat-num {
+    flex: none; width: 34px; height: 34px; border-radius: 50%;
+    background: var(--blue); color: #fff; font-weight: 700; font-size: 16px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .cat-title { flex: 1; font-size: 19px; font-weight: 700; line-height: 1.4; }
+  .pt-main { margin-top: 12px; font-size: 16.5px; font-weight: 600; line-height: 1.65; }
+  .pt-sub { margin-top: 8px; font-size: 14.5px; color: var(--gray); line-height: 1.7; }
+  .plain { margin-top: 12px; font-size: 15.5px; line-height: 1.75; }
+  .plain + .plain { margin-top: 8px; }
+  .tip { margin: 14px 0 0; padding: 12px 14px; border-left: 4px solid var(--blue); background: var(--blue-soft); border-radius: 4px 14px 14px 4px; }
+  .tip-label { font-size: 12px; font-weight: 700; color: var(--blue-dark); letter-spacing: .04em; }
+  .tip p { margin-top: 2px; font-size: 14.5px; line-height: 1.65; color: var(--navy); }
+  .ways { list-style: none; display: grid; gap: 8px; margin-top: 12px; }
+  .ways li { padding: 12px 14px; background: var(--blue-soft); border-radius: 14px; font-size: 15px; line-height: 1.6; }
+  .ways b { display: block; font-size: 16px; }
+
+  .grp { margin: 22px 4px 10px; font-size: 14px; font-weight: 700; color: var(--blue-dark); letter-spacing: .04em; }
+  .grp:first-child { margin-top: 4px; }
+  .grp ~ .linkcard { margin-top: 20px; }
+  .qa { background: var(--white); border: 1.5px solid var(--blue-line); border-radius: 16px; margin-bottom: 8px; }
+  .qa summary {
+    list-style: none; display: flex; align-items: center; gap: 12px;
+    min-height: 60px; padding: 12px 14px; cursor: pointer;
+    font-size: 16px; font-weight: 700; line-height: 1.5;
+  }
+  .qa summary::-webkit-details-marker { display: none; }
+  .qa summary:focus-visible { outline: 3px solid var(--blue); outline-offset: 2px; border-radius: 14px; }
+  .qa summary:active { background: var(--blue-soft); border-radius: 14px; }
+  .qmark {
+    flex: none; width: 28px; height: 28px; border-radius: 50%;
+    background: var(--blue); color: #fff; font-size: 14px; font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .qtxt { flex: 1; min-width: 0; }
+  .qa summary::after {
+    content: ""; flex: none; width: 9px; height: 9px; margin: 0 4px 3px 0;
+    border-right: 3px solid var(--blue); border-bottom: 3px solid var(--blue);
+    transform: rotate(45deg); transition: transform .15s ease;
+  }
+  .qa[open] summary::after { transform: rotate(-135deg); margin-bottom: -3px; }
+  .ans { margin: 0 14px; padding: 12px 2px 16px; border-top: 1.5px dashed var(--blue-line); font-size: 15.5px; line-height: 1.8; }
+  .ans p + p { margin-top: 10px; }
+  .ans a { color: var(--blue-dark); font-weight: 700; }
+  .ans a:focus-visible { outline: 3px solid var(--blue); outline-offset: 2px; }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <header class="hero">
+    <nav class="tabs" aria-label="ページの切りかえ">
+      <a class="tab" href="office.html">事務所でできること</a>
+      <a class="tab" href="faq.html" aria-current="page">よくある質問</a>
+    </nav>
+    <span class="brand">SCENE 1 ライバーズ</span>
+    <h1>初ライブと事務所の<br><em>よくある質問</em></h1>
+    <p class="intro">気になるところを、タップして開いてね。見つからないときは、公式LINEで気軽に聞いてください。</p>
+  </header>
+
+  <main>
+
+    <h2 class="grp">ライブを始める前に</h2>
+    <details class="qa">
+      <summary><span class="qmark" aria-hidden="true">Q</span><span class="qtxt">顔を出さないと、だめですか？</span></summary>
+      <div class="ans">
+        <p>ライブは、顔と声と動きがある配信が前提です。事務所に所属して配信する場合も、顔を出して配信できる方が対象になります。</p>
+        <p>顔を出すのが不安なのは、自然なことです。光や角度を少し整えるだけで、気持ちが軽くなる人もいます。<a href="guide.html">初ライブの見せ方ガイド</a>も見てみてね。</p>
+      </div>
+    </details>
+    <details class="qa">
+      <summary><span class="qmark" aria-hidden="true">Q</span><span class="qtxt">何を話せばいいか、分かりません。</span></summary>
+      <div class="ans">
+        <p><a href="gacha.html">ネタガチャ</a>を回してみてね。はじめのひと言から、話が止まったときのひと言まで、そのまま言える形で入っています。</p>
+        <p>話の順番を決めたいときは、<a href="script.html">30分台本</a>にテーマを入れてみてください。</p>
+      </div>
+    </details>
+    <details class="qa">
+      <summary><span class="qmark" aria-hidden="true">Q</span><span class="qtxt">見に来る人がいなかったら、どうしよう。</span></summary>
+      <div class="ans">
+        <p>最初のうちは、見に来る人が少ないことも、ふつうにあります。はじめは、声を出して配信に慣れることが目標です。</p>
+        <p>見ている人がいるつもりで、「みんなはどう？」と問いかけながら話す練習をしてみてね。</p>
+      </div>
+    </details>
+    <details class="qa">
+      <summary><span class="qmark" aria-hidden="true">Q</span><span class="qtxt">機材は、何が必要ですか？</span></summary>
+      <div class="ans">
+        <p>まずは、いま持っているスマホで試してみてください。買い足す前に、<a href="index.html">準備チェックリスト</a>の「光と背景」「画角と音」を見て、置き方や場所を整えてみてね。</p>
+      </div>
+    </details>
+    <details class="qa">
+      <summary><span class="qmark" aria-hidden="true">Q</span><span class="qtxt">何分くらい配信すればいいですか？</span></summary>
+      <div class="ans">
+        <p>初ライブは、慣れることが目標です。最初は、30分台本の流れで、短めに終えても大丈夫です。</p>
+        <p>慣れてきたら、少しずつ長くしていく形もあります。長さのめやすは、相談のときに聞いてね。</p>
+      </div>
+    </details>
+    <details class="qa">
+      <summary><span class="qmark" aria-hidden="true">Q</span><span class="qtxt">緊張して、うまく話せなさそうです。</span></summary>
+      <div class="ans">
+        <p>最初はみんな緊張します。台本をそばに置いて、声に出す練習をしてみてね。</p>
+        <p>「聞こえてるかな？」と、まず自分から問いかけてみるのもおすすめです。</p>
+      </div>
+    </details>
+
+    <h2 class="grp">事務所のこと</h2>
+    <details class="qa">
+      <summary><span class="qmark" aria-hidden="true">Q</span><span class="qtxt">事務所に入らないと、ライブはできませんか？</span></summary>
+      <div class="ans">
+        <p>個人で始める方法もあります。ただ、個人の場合は条件があることもあるので、最新の内容はTikTokのアプリ内の案内で確認してください。</p>
+        <p>事務所を通す場合の流れや条件は、相談のときにお話しします。</p>
+      </div>
+    </details>
+    <details class="qa">
+      <summary><span class="qmark" aria-hidden="true">Q</span><span class="qtxt">何歳から入れますか？</span></summary>
+      <div class="ans">
+        <p>事務所への所属は、18歳以上の方が対象です。17歳以下の方は、まず「初ライブ準備セット」を楽しんでね。</p>
+      </div>
+    </details>
+    <details class="qa">
+      <summary><span class="qmark" aria-hidden="true">Q</span><span class="qtxt">収益は、どれくらいになりますか？</span></summary>
+      <div class="ans">
+        <p>投げ銭などの形で、収益につながる場合もあります。ただ、出方には個人差があります。</p>
+        <p>約束できることではないので、金額の目安はここには書いていません。気になる人は、相談のときに聞いてね。</p>
+      </div>
+    </details>
+    <details class="qa">
+      <summary><span class="qmark" aria-hidden="true">Q</span><span class="qtxt">サポートって、どんなことですか？</span></summary>
+      <div class="ans">
+        <p>伸ばし方についての相談など、続けていくうえでの迷いを一緒に考えるサポートです。具体的な中身は、お話しするときに説明します。</p>
+      </div>
+    </details>
+    <details class="qa">
+      <summary><span class="qmark" aria-hidden="true">Q</span><span class="qtxt">相談したら、入らないといけませんか？</span></summary>
+      <div class="ans">
+        <p>相談だけでも大丈夫です。話を聞いてから、入るかどうかをゆっくり決めてください。</p>
+      </div>
+    </details>
+
+    <h2 class="grp">公式LINEのこと</h2>
+    <details class="qa">
+      <summary><span class="qmark" aria-hidden="true">Q</span><span class="qtxt">相談は、どうやってするの？</span></summary>
+      <div class="ans">
+        <p>LINEのメニューの「気軽に相談する」を押して、「LINEで相談する」か「Zoomや電話で話したい」を選んでください。</p>
+        <p>LINEなら、気になることをそのまま送ってOKです。Zoomや電話は、15分くらいで、事務所でできることと、始めるまでの流れをお話しします。</p>
+      </div>
+    </details>
+    <details class="qa">
+      <summary><span class="qmark" aria-hidden="true">Q</span><span class="qtxt">お知らせは、どれくらい届きますか？</span></summary>
+      <div class="ans">
+        <p>友だち追加のあと、約2週間のあいだに、準備に役立つお知らせが数回届きます。</p>
+        <p>不要なときは、トークの通知をオフにするか、ブロックしてください。</p>
+      </div>
+    </details>
+    <details class="qa">
+      <summary><span class="qmark" aria-hidden="true">Q</span><span class="qtxt">個人情報は、送っていいですか？</span></summary>
+      <div class="ans">
+        <p>LINEでは、住所・電話番号・パスワードなどは送らないでください。相談は、それらを書かなくても大丈夫です。</p>
+      </div>
+    </details>
+
+    <a class="linkcard" href="index.html">
+      <span><span class="lc-label">はじめてのライブの前に</span><span class="lc-title">初ライブ準備セットを見る</span></span>
+      <span class="lc-arrow" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg></span>
+    </a>
+
+    <section class="ask">
+      <!-- 公式LINEのURLが決まったら、下のボタンのリンク先（href）を、そのURLに置き換える（このページでは1か所だけ） -->
+      <a class="cta" id="lineBtn" href="【LINE URL】">見つからないことは<br>公式LINEで気軽に聞いてね</a>
+      <small>小さなことでも、気軽にどうぞ。</small>
+    </section>
+
+  </main>
+
+  <footer>
+    <p>このページは、18歳以上の方に向けた内容です。</p>
+    <p class="foot-brand">SCENE 1 ライバーズ</p>
+  </footer>
+
+</div>
+
+<script>
+(function () {
+  var lineBtn = document.getElementById('lineBtn');
+  // URLが入るまでは、押しても何も起きないようにする
+  lineBtn.addEventListener('click', function (e) {
+    if (!/^https?:\/\//.test(lineBtn.getAttribute('href') || '')) e.preventDefault();
+  });
+})();
+</script>
+</body>
+</html>

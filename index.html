@@ -1,0 +1,409 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light">
+<meta name="theme-color" content="#ffffff">
+<meta name="robots" content="noindex">
+<meta name="description" content="はじめてのライブ前に、ひとつずつ確認できる準備チェックリストです。">
+<title>初ライブ前の準備チェックリスト｜SCENE 1 ライバーズ</title>
+<style>
+  :root {
+    --blue: #2F6FE4;
+    --blue-dark: #2358B8;
+    --blue-soft: #EAF2FF;
+    --blue-line: #CFE0FB;
+    --navy: #1F2A44;
+    --gray: #5A6B85;
+    --bg: #F6F9FF;
+    --white: #FFFFFF;
+    color-scheme: light;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    background: var(--bg);
+    color: var(--navy);
+    font-family: "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Noto Sans JP", "Yu Gothic", "Meiryo", sans-serif;
+    font-size: 17px;
+    line-height: 1.65;
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+  .sr {
+    position: absolute; width: 1px; height: 1px; overflow: hidden;
+    clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap;
+  }
+  .page { max-width: 560px; margin: 0 auto; }
+
+  /* ---- ヘッダー ---- */
+  .hero { padding: calc(28px + env(safe-area-inset-top)) 20px 22px; background: linear-gradient(180deg, #EEF4FF 0%, var(--bg) 100%); }
+  .brand {
+    display: inline-block; padding: 6px 14px; border-radius: 999px;
+    background: var(--white); border: 1.5px solid var(--blue-line);
+    color: var(--blue); font-size: 13px; font-weight: 600; letter-spacing: .04em;
+  }
+  h1 { margin-top: 14px; font-size: clamp(25px, 7.4vw, 32px); line-height: 1.3; font-weight: 700; letter-spacing: .01em; }
+  h1 em { font-style: normal; color: var(--blue); }
+  .intro { margin-top: 12px; font-size: 15px; color: var(--gray); }
+
+  /* ---- ページの切りかえ ---- */
+  .tabs { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-bottom: 18px; }
+  .tab {
+    text-align: center; padding: 10px 6px; border-radius: 999px; white-space: nowrap;
+    border: 1.5px solid var(--blue-line); background: var(--white); color: var(--gray);
+    font-size: 14px; font-weight: 600; text-decoration: none; line-height: 1.3;
+  }
+  .tab[aria-current="page"] { background: var(--blue); border-color: var(--blue); color: #fff; }
+  .tab:last-child:nth-child(odd) { grid-column: 1 / -1; }
+  .tab:focus-visible { outline: 3px solid var(--navy); outline-offset: 2px; }
+
+  .linkcard {
+    display: flex; align-items: center; justify-content: space-between; gap: 12px;
+    margin: 4px 0 16px; padding: 16px 18px; background: var(--white);
+    border: 1.5px solid var(--blue-line); border-radius: 20px; text-decoration: none; color: var(--navy);
+    box-shadow: 0 6px 18px rgba(47, 111, 228, .06);
+  }
+  .linkcard:active { background: var(--blue-soft); }
+  .linkcard:focus-visible { outline: 3px solid var(--blue); outline-offset: 3px; }
+  .lc-label { display: block; font-size: 12.5px; font-weight: 600; color: var(--gray); }
+  .lc-title { display: block; margin-top: 2px; font-size: 17px; font-weight: 700; }
+  .lc-arrow { flex: none; width: 34px; height: 34px; border-radius: 50%; background: var(--blue); display: flex; align-items: center; justify-content: center; }
+  .lc-arrow svg { width: 16px; height: 16px; stroke: #fff; stroke-width: 3; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+
+  /* ---- 進み具合（上に固定） ---- */
+  .progress {
+    position: sticky; top: 0; z-index: 10;
+    background: rgba(255, 255, 255, .96);
+    -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px);
+    border-bottom: 1.5px solid var(--blue-line);
+    padding: calc(10px + env(safe-area-inset-top)) 20px 12px;
+  }
+  .progress-row { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
+  .progress-label { font-size: 13px; font-weight: 600; color: var(--gray); }
+  .progress-count { font-size: 15px; font-weight: 700; color: var(--navy); font-variant-numeric: tabular-nums; }
+  .progress-count b { font-size: 22px; color: var(--blue); font-weight: 700; }
+  .track { margin-top: 8px; height: 12px; border-radius: 999px; background: var(--blue-soft); overflow: hidden; }
+  .fill { height: 100%; width: 0; border-radius: 999px; background: var(--blue); transition: width .3s ease; }
+
+  /* ---- カテゴリ ---- */
+  main { padding: 18px 16px 8px; }
+  .cat { background: var(--white); border: 1.5px solid var(--blue-line); border-radius: 24px; padding: 18px 14px 14px; margin-bottom: 16px; box-shadow: 0 6px 18px rgba(47, 111, 228, .06); }
+  .cat-head { display: flex; align-items: center; gap: 12px; padding: 0 4px; }
+  .cat-num {
+    flex: none; width: 34px; height: 34px; border-radius: 50%;
+    background: var(--blue); color: #fff; font-weight: 700; font-size: 16px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .cat-title { flex: 1; font-size: 20px; font-weight: 700; line-height: 1.3; }
+  .cat-count { font-size: 13px; font-weight: 600; color: var(--blue); background: var(--blue-soft); padding: 3px 10px; border-radius: 999px; font-variant-numeric: tabular-nums; }
+  .cat.is-done .cat-count { background: var(--blue); color: #fff; }
+
+  .tip { margin: 14px 4px 12px; padding: 12px 14px; border-left: 4px solid var(--blue); background: var(--blue-soft); border-radius: 4px 14px 14px 4px; }
+  .tip-label { font-size: 12px; font-weight: 700; color: var(--blue-dark); letter-spacing: .04em; }
+  .tip p { margin-top: 2px; font-size: 14.5px; line-height: 1.6; color: var(--navy); }
+
+  .items { list-style: none; display: grid; gap: 8px; }
+  .item {
+    display: flex; align-items: center; gap: 14px;
+    min-height: 60px; padding: 12px 14px;
+    background: var(--white); border: 2px solid var(--blue-line); border-radius: 16px;
+    cursor: pointer; user-select: none; -webkit-user-select: none;
+    transition: background-color .15s ease, border-color .15s ease;
+  }
+  .item:active { background: var(--blue-soft); }
+  .box {
+    flex: none; width: 30px; height: 30px; border-radius: 9px;
+    border: 2.5px solid var(--blue-line); background: var(--white);
+    display: flex; align-items: center; justify-content: center;
+    transition: background-color .15s ease, border-color .15s ease, transform .15s ease;
+  }
+  .box svg { width: 18px; height: 18px; stroke: #fff; stroke-width: 3.4; fill: none; stroke-linecap: round; stroke-linejoin: round; opacity: 0; transform: scale(.6); transition: opacity .15s ease, transform .15s ease; }
+  .txt { display: block; min-width: 0; }
+  .main { display: block; font-size: 16.5px; font-weight: 600; line-height: 1.45; }
+  .sub { display: block; margin-top: 2px; font-size: 13px; color: var(--gray); line-height: 1.45; }
+  .item.on { background: var(--blue-soft); border-color: var(--blue); }
+  .item.on .box { background: var(--blue); border-color: var(--blue); }
+  .item.on .box svg { opacity: 1; transform: scale(1); }
+  .item.on .main { color: var(--gray); }
+  .sr:focus-visible + .box { outline: 3px solid var(--blue); outline-offset: 3px; }
+
+  /* ---- 完了メッセージ ---- */
+  .done {
+    margin: 4px 0 16px; padding: 26px 20px; text-align: center; color: #fff;
+    background: linear-gradient(135deg, var(--blue) 0%, var(--blue-dark) 100%);
+    border-radius: 24px; box-shadow: 0 10px 24px rgba(47, 111, 228, .25);
+    animation: pop .35s ease;
+  }
+  .done[hidden] { display: none; }
+  .done-icon { width: 52px; height: 52px; margin: 0 auto 10px; border-radius: 50%; background: rgba(255, 255, 255, .2); display: flex; align-items: center; justify-content: center; }
+  .done-icon svg { width: 28px; height: 28px; stroke: #fff; stroke-width: 3.4; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+  .done h2 { font-size: 24px; line-height: 1.35; }
+  .done p { margin-top: 6px; font-size: 15px; opacity: .95; }
+  @keyframes pop { from { opacity: 0; transform: translateY(8px) scale(.97); } to { opacity: 1; transform: none; } }
+
+  /* ---- 公式LINEへの案内 ---- */
+  .ask { padding: 8px 4px 4px; text-align: center; }
+  .cta {
+    display: block; width: 100%; padding: 18px 16px; border-radius: 18px;
+    background: var(--blue); color: #fff; text-decoration: none;
+    font-size: 17px; font-weight: 700; line-height: 1.45;
+    box-shadow: 0 8px 18px rgba(47, 111, 228, .22);
+  }
+  .cta:active { background: var(--blue-dark); }
+  .cta:focus-visible { outline: 3px solid var(--navy); outline-offset: 3px; }
+  .ask small { display: block; margin-top: 10px; font-size: 13px; color: var(--gray); }
+
+  /* ---- フッター ---- */
+  footer { padding: 22px 20px 36px; text-align: center; font-size: 12.5px; color: var(--gray); }
+  footer p + p { margin-top: 4px; }
+  .reset { margin-top: 14px; padding: 8px 14px; background: none; border: 1.5px solid var(--blue-line); border-radius: 999px; color: var(--gray); font: inherit; font-size: 13px; cursor: pointer; }
+  .reset:active { background: var(--blue-soft); }
+  .foot-brand { margin-top: 16px; font-weight: 700; color: var(--navy); letter-spacing: .02em; }
+  noscript p { margin: 16px; padding: 12px 14px; background: var(--blue-soft); border-radius: 12px; font-size: 14px; }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { transition: none !important; animation: none !important; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <header class="hero">
+    <nav class="tabs" aria-label="ページの切りかえ">
+      <a class="tab" href="index.html" aria-current="page">チェックリスト</a>
+      <a class="tab" href="gacha.html">ネタガチャ</a>
+      <a class="tab" href="guide.html">見せ方ガイド</a>
+      <a class="tab" href="prompts.html">AIプロンプト</a>
+      <a class="tab" href="script.html">30分台本</a>
+    </nav>
+    <span class="brand">SCENE 1 ライバーズ</span>
+    <h1>初ライブ前の<br><em>準備チェックリスト</em></h1>
+    <p class="intro">はじめてのライブ前に、ひとつずつ確認していくリストです。最初はみんな緊張します。できたところから、ゆっくり進めてね。</p>
+  </header>
+
+  <noscript><p>チェックを付けるには、JavaScriptをオンにしてください。</p></noscript>
+
+  <div class="progress">
+    <div class="progress-row">
+      <span class="progress-label">準備の進み具合</span>
+      <span class="progress-count" aria-live="polite"><b id="doneNum">0</b> / <span id="totalNum">17</span> 完了</span>
+    </div>
+    <div class="track" role="progressbar" aria-label="準備の進み具合" aria-valuemin="0" aria-valuemax="17" aria-valuenow="0" id="bar">
+      <div class="fill" id="fill"></div>
+    </div>
+  </div>
+
+  <main>
+
+    <section class="cat" data-cat>
+      <div class="cat-head">
+        <span class="cat-num" aria-hidden="true">1</span>
+        <h2 class="cat-title">スマホと通信</h2>
+        <span class="cat-count" data-count>0/4</span>
+      </div>
+      <div class="tip">
+        <div class="tip-label">撮影のプロから ひとこと</div>
+        <p>本番の前に、カメラを5分ほど点けたままにしてみてください。電池の減りや熱くなり方が、先に分かります。</p>
+      </div>
+      <ul class="items">
+        <li><label class="item"><input class="sr" type="checkbox" data-id="c1-1"><span class="box" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span><span class="txt"><span class="main">充電は満タン</span><span class="sub">または、充電しながら</span></span></label></li>
+        <li><label class="item"><input class="sr" type="checkbox" data-id="c1-2"><span class="box" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span><span class="txt"><span class="main">スマホを固定している</span><span class="sub">スタンドや、身近なものでもOK</span></span></label></li>
+        <li><label class="item"><input class="sr" type="checkbox" data-id="c1-3"><span class="box" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span><span class="txt"><span class="main">Wi-Fiなど通信が安定している</span></span></label></li>
+        <li><label class="item"><input class="sr" type="checkbox" data-id="c1-4"><span class="box" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span><span class="txt"><span class="main">通知をオフにした</span></span></label></li>
+      </ul>
+    </section>
+
+    <section class="cat" data-cat>
+      <div class="cat-head">
+        <span class="cat-num" aria-hidden="true">2</span>
+        <h2 class="cat-title">光と背景</h2>
+        <span class="cat-count" data-count>0/3</span>
+      </div>
+      <div class="tip">
+        <div class="tip-label">撮影のプロから ひとこと</div>
+        <p>窓の光を顔の正面から当てると、自然にきれいに映りやすいです。スマホのライトより、やわらかい印象になります。</p>
+      </div>
+      <ul class="items">
+        <li><label class="item"><input class="sr" type="checkbox" data-id="c2-1"><span class="box" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span><span class="txt"><span class="main">顔が明るく見える</span></span></label></li>
+        <li><label class="item"><input class="sr" type="checkbox" data-id="c2-2"><span class="box" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span><span class="txt"><span class="main">窓を背にしていない</span><span class="sub">逆光になっていない</span></span></label></li>
+        <li><label class="item"><input class="sr" type="checkbox" data-id="c2-3"><span class="box" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span><span class="txt"><span class="main">背景に映ってほしくない物がない</span></span></label></li>
+      </ul>
+    </section>
+
+    <section class="cat" data-cat>
+      <div class="cat-head">
+        <span class="cat-num" aria-hidden="true">3</span>
+        <h2 class="cat-title">画角と音</h2>
+        <span class="cat-count" data-count>0/3</span>
+      </div>
+      <div class="tip">
+        <div class="tip-label">撮影のプロから ひとこと</div>
+        <p>カメラは目の高さに近いほど、自然に見えやすいです。声の聞こえ方は、本番前に一言しゃべって確かめてみてください。</p>
+      </div>
+      <ul class="items">
+        <li><label class="item"><input class="sr" type="checkbox" data-id="c3-1"><span class="box" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span><span class="txt"><span class="main">カメラが目線の高さにある</span></span></label></li>
+        <li><label class="item"><input class="sr" type="checkbox" data-id="c3-2"><span class="box" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span><span class="txt"><span class="main">声が聞き取りやすい</span></span></label></li>
+        <li><label class="item"><input class="sr" type="checkbox" data-id="c3-3"><span class="box" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span><span class="txt"><span class="main">生活音が入りにくい場所を選んだ</span></span></label></li>
+      </ul>
+    </section>
+
+    <section class="cat" data-cat>
+      <div class="cat-head">
+        <span class="cat-num" aria-hidden="true">4</span>
+        <h2 class="cat-title">話す準備</h2>
+        <span class="cat-count" data-count>0/4</span>
+      </div>
+      <div class="tip">
+        <div class="tip-label">撮影のプロから ひとこと</div>
+        <p>最初のひと言は、声に出して一度練習しておくと、本番で出てきやすくなります。表情も、少し大きめに。</p>
+      </div>
+      <ul class="items">
+        <li><label class="item"><input class="sr" type="checkbox" data-id="c4-1"><span class="box" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span><span class="txt"><span class="main">顔がはっきり映る位置にスマホを置いた</span></span></label></li>
+        <li><label class="item"><input class="sr" type="checkbox" data-id="c4-2"><span class="box" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span><span class="txt"><span class="main">最初のあいさつを決めた</span></span></label></li>
+        <li><label class="item"><input class="sr" type="checkbox" data-id="c4-3"><span class="box" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span><span class="txt"><span class="main">今日のテーマを決めた</span></span></label></li>
+        <li><label class="item"><input class="sr" type="checkbox" data-id="c4-4"><span class="box" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span><span class="txt"><span class="main">コメントがないときの話題を3つメモした</span><span class="sub">無言の時間を作らないために</span></span></label></li>
+      </ul>
+    </section>
+
+    <section class="cat" data-cat>
+      <div class="cat-head">
+        <span class="cat-num" aria-hidden="true">5</span>
+        <h2 class="cat-title">終わり方</h2>
+        <span class="cat-count" data-count>0/3</span>
+      </div>
+      <div class="tip">
+        <div class="tip-label">撮影のプロから ひとこと</div>
+        <p>終わり方が決まっていると、気持ちよく締めやすくなります。次の予告まで言えると、見てくれた人も覚えやすいです。</p>
+      </div>
+      <ul class="items">
+        <li><label class="item"><input class="sr" type="checkbox" data-id="c5-1"><span class="box" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span><span class="txt"><span class="main">1回10分以上を目安に配信する</span></span></label></li>
+        <li><label class="item"><input class="sr" type="checkbox" data-id="c5-2"><span class="box" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span><span class="txt"><span class="main">締めのあいさつを決めた</span></span></label></li>
+        <li><label class="item"><input class="sr" type="checkbox" data-id="c5-3"><span class="box" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span><span class="txt"><span class="main">次のライブの予告を決めた</span></span></label></li>
+      </ul>
+    </section>
+
+    <section class="done" id="done" hidden aria-live="polite">
+      <div class="done-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></div>
+      <h2>準備OK！いってらっしゃい</h2>
+      <p>最初はみんな緊張します。<br>声に出して、楽しんでね。</p>
+    </section>
+
+    <a class="linkcard" href="gacha.html">
+      <span><span class="lc-label">話すネタに迷ったら</span><span class="lc-title">初ライブのネタガチャ</span></span>
+      <span class="lc-arrow" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg></span>
+    </a>
+    <a class="linkcard" href="guide.html">
+      <span><span class="lc-label">見せ方に迷ったら</span><span class="lc-title">初ライブの見せ方ガイド</span></span>
+      <span class="lc-arrow" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg></span>
+    </a>
+    <a class="linkcard" href="prompts.html">
+      <span><span class="lc-label">AIに相談してみるなら</span><span class="lc-title">AIで配信を考えるプロンプト集</span></span>
+      <span class="lc-arrow" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg></span>
+    </a>
+    <a class="linkcard" href="script.html">
+      <span><span class="lc-label">本番の流れを決めたいなら</span><span class="lc-title">初ライブ30分台本</span></span>
+      <span class="lc-arrow" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg></span>
+    </a>
+
+    <section class="ask">
+      <!-- 公式LINEのURLが決まったら、下のボタンのリンク先（href）を、そのURLに置き換える（このページでは1か所だけ） -->
+      <a class="cta" id="lineBtn" href="【LINE URL】">わからないことは<br>公式LINEで気軽に聞いてね</a>
+      <small>全部チェックが付かなくても、気軽にどうぞ。</small>
+    </section>
+
+  </main>
+
+  <footer>
+    <p id="saveNote">チェックは、この端末のブラウザに保存されます。</p>
+    <p>このページは、18歳以上の方に向けた内容です。</p>
+    <button class="reset" id="reset" type="button">チェックをリセットする</button>
+    <p class="foot-brand">SCENE 1 ライバーズ</p>
+  </footer>
+
+</div>
+
+<script>
+(function () {
+  var KEY = 'scene1-livers-prep-checklist-v1';
+  var boxes = Array.prototype.slice.call(document.querySelectorAll('input[data-id]'));
+  var total = boxes.length;
+  var cats = Array.prototype.slice.call(document.querySelectorAll('[data-cat]'));
+  var doneNum = document.getElementById('doneNum');
+  var totalNum = document.getElementById('totalNum');
+  var bar = document.getElementById('bar');
+  var fill = document.getElementById('fill');
+  var doneCard = document.getElementById('done');
+  var saveNote = document.getElementById('saveNote');
+  var lineBtn = document.getElementById('lineBtn');
+
+  totalNum.textContent = total;
+  bar.setAttribute('aria-valuemax', total);
+
+  // 保存してあるチェックを読み込む（保存できない環境でも動く）
+  try {
+    var raw = localStorage.getItem(KEY);
+    var saved = raw ? JSON.parse(raw) : [];
+    if (Array.isArray(saved)) {
+      boxes.forEach(function (b) { b.checked = saved.indexOf(b.getAttribute('data-id')) !== -1; });
+    }
+  } catch (e) {}
+
+  function save() {
+    try {
+      var ids = boxes.filter(function (b) { return b.checked; }).map(function (b) { return b.getAttribute('data-id'); });
+      localStorage.setItem(KEY, JSON.stringify(ids));
+    } catch (e) {
+      saveNote.textContent = 'このブラウザでは保存できないため、閉じるとチェックは消えます。';
+    }
+  }
+
+  function render() {
+    var n = boxes.filter(function (b) { return b.checked; }).length;
+    doneNum.textContent = n;
+    bar.setAttribute('aria-valuenow', n);
+    fill.style.width = (total ? (n / total) * 100 : 0) + '%';
+    boxes.forEach(function (b) { b.closest('.item').classList.toggle('on', b.checked); });
+    cats.forEach(function (c) {
+      var inputs = c.querySelectorAll('input[data-id]');
+      var k = 0;
+      for (var i = 0; i < inputs.length; i++) { if (inputs[i].checked) k++; }
+      c.querySelector('[data-count]').textContent = k + '/' + inputs.length;
+      c.classList.toggle('is-done', k === inputs.length);
+    });
+    var all = n === total;
+    doneCard.hidden = !all;
+    return all;
+  }
+
+  var wasAll = render();
+
+  boxes.forEach(function (b) {
+    b.addEventListener('change', function () {
+      save();
+      var all = render();
+      if (all && !wasAll) {
+        var calm = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        doneCard.scrollIntoView({ behavior: calm ? 'auto' : 'smooth', block: 'center' });
+      }
+      wasAll = all;
+    });
+  });
+
+  document.getElementById('reset').addEventListener('click', function () {
+    if (!window.confirm('チェックをすべて外します。よろしいですか？')) return;
+    boxes.forEach(function (b) { b.checked = false; });
+    save();
+    wasAll = render();
+    window.scrollTo(0, 0);
+  });
+
+  // URLが入るまでは、押しても何も起きないようにする
+  lineBtn.addEventListener('click', function (e) {
+    if (!/^https?:\/\//.test(lineBtn.getAttribute('href') || '')) e.preventDefault();
+  });
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,599 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light">
+<meta name="theme-color" content="#ffffff">
+<meta name="robots" content="noindex">
+<meta name="description" content="AIに配信の相談をするための文章（プロンプト）を、書きかえてコピーできる、初ライブ向けのページです。">
+<title>AIで配信を考えるプロンプト集｜SCENE 1 ライバーズ</title>
+<style>
+  :root {
+    --blue: #2F6FE4;
+    --blue-dark: #2358B8;
+    --blue-soft: #EAF2FF;
+    --blue-line: #CFE0FB;
+    --navy: #1F2A44;
+    --gray: #5A6B85;
+    --bg: #F6F9FF;
+    --white: #FFFFFF;
+    color-scheme: light;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+  html { -webkit-text-size-adjust: 100%; }
+  [hidden] { display: none !important; }
+  body {
+    background: var(--bg);
+    color: var(--navy);
+    font-family: "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Noto Sans JP", "Yu Gothic", "Meiryo", sans-serif;
+    font-size: 17px;
+    line-height: 1.65;
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+  .sr {
+    position: absolute; width: 1px; height: 1px; overflow: hidden;
+    clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap;
+  }
+  .page { max-width: 560px; margin: 0 auto; }
+
+  /* ---- ヘッダー ---- */
+  .hero { padding: calc(20px + env(safe-area-inset-top)) 20px 22px; background: linear-gradient(180deg, #EEF4FF 0%, var(--bg) 100%); }
+  .tabs { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+  .tab {
+    text-align: center; padding: 10px 6px; border-radius: 999px; white-space: nowrap;
+    border: 1.5px solid var(--blue-line); background: var(--white); color: var(--gray);
+    font-size: 14px; font-weight: 600; text-decoration: none; line-height: 1.3;
+  }
+  .tab[aria-current="page"] { background: var(--blue); border-color: var(--blue); color: #fff; }
+  .tab:last-child:nth-child(odd) { grid-column: 1 / -1; }
+  .tab:focus-visible { outline: 3px solid var(--navy); outline-offset: 2px; }
+  .brand {
+    display: inline-block; margin-top: 20px; padding: 6px 14px; border-radius: 999px;
+    background: var(--white); border: 1.5px solid var(--blue-line);
+    color: var(--blue); font-size: 13px; font-weight: 600; letter-spacing: .04em;
+  }
+  h1 { margin-top: 14px; font-size: clamp(25px, 7.4vw, 32px); line-height: 1.3; font-weight: 700; letter-spacing: .01em; }
+  h1 em { font-style: normal; color: var(--blue); }
+  .intro { margin-top: 12px; font-size: 15px; color: var(--gray); text-wrap: pretty; word-break: auto-phrase; }
+
+  main { padding: 18px 16px 8px; }
+  .step-label { margin: 0 4px 10px; font-size: 13px; font-weight: 700; color: var(--blue-dark); letter-spacing: .04em; }
+
+  /* ---- 使い方（3ステップ） ---- */
+  .howto { padding: 18px 14px 16px; background: var(--white); border: 1.5px solid var(--blue-line); border-radius: 24px; box-shadow: 0 6px 18px rgba(47, 111, 228, .06); margin-bottom: 24px; }
+  .howto h2 { padding: 0 4px; font-size: 18px; line-height: 1.4; display: flex; align-items: center; gap: 10px; }
+  .howto h2::before { content: ""; flex: none; width: 6px; height: 22px; border-radius: 3px; background: var(--blue); }
+  .steps { list-style: none; margin-top: 12px; display: grid; gap: 8px; }
+  .steps li { display: flex; align-items: flex-start; gap: 12px; padding: 12px 12px 12px 10px; background: var(--blue-soft); border-radius: 16px; }
+  .steps .n { flex: none; width: 30px; height: 30px; border-radius: 50%; background: var(--blue); color: #fff; font-size: 15px; font-weight: 700; display: flex; align-items: center; justify-content: center; margin-top: 1px; }
+  .steps b { display: block; font-size: 16px; line-height: 1.5; }
+  .steps p { font-size: 14px; color: var(--gray); line-height: 1.6; text-wrap: pretty; word-break: auto-phrase; }
+  .howto-note { margin: 12px 4px 0; font-size: 13.5px; color: var(--gray); line-height: 1.65; text-wrap: pretty; word-break: auto-phrase; }
+
+  /* ---- 場面を選ぶ ---- */
+  .cats { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 22px; }
+  .catbtn {
+    display: flex; flex-direction: column; gap: 2px; min-height: 92px;
+    padding: 12px 12px 12px 14px; background: var(--white);
+    border: 2px solid var(--blue-line); border-radius: 18px; cursor: pointer;
+    transition: background-color .15s ease, border-color .15s ease;
+  }
+  .catbtn:active { background: var(--blue-soft); }
+  .catbtn .n { font-size: 12px; font-weight: 700; color: var(--blue); }
+  .catbtn .t { font-size: 16px; font-weight: 700; line-height: 1.3; text-wrap: balance; word-break: auto-phrase; }
+  .catbtn .d { font-size: 12.5px; color: var(--gray); line-height: 1.4; }
+  .catbtn.on { background: var(--blue-soft); border-color: var(--blue); box-shadow: inset 0 0 0 1px var(--blue); }
+  .catbtn:has(.sr:focus-visible) { outline: 3px solid var(--blue); outline-offset: 3px; }
+
+  /* ---- プロンプトのカード（開閉） ---- */
+  .plist { display: grid; gap: 12px; }
+  .pcard { background: var(--white); border: 1.5px solid var(--blue-line); border-radius: 22px; box-shadow: 0 6px 18px rgba(47, 111, 228, .06); overflow: hidden; }
+  .pcard.open { border-color: var(--blue); }
+  .phead {
+    display: flex; align-items: center; gap: 12px; width: 100%; min-height: 68px; padding: 12px 14px;
+    background: none; border: none; text-align: left; color: var(--navy); font: inherit; cursor: pointer;
+  }
+  .phead:active { background: var(--blue-soft); }
+  .phead:focus-visible { outline: 3px solid var(--blue); outline-offset: -3px; }
+  .pnum { flex: none; width: 30px; height: 30px; border-radius: 50%; background: var(--blue-soft); color: var(--blue-dark); font-size: 14px; font-weight: 700; display: flex; align-items: center; justify-content: center; }
+  .pcard.open .pnum { background: var(--blue); color: #fff; }
+  .ptitle { flex: 1; min-width: 0; }
+  .ptitle b { display: block; font-size: 16.5px; line-height: 1.4; text-wrap: balance; word-break: auto-phrase; }
+  .ptitle small { display: block; margin-top: 1px; font-size: 12.5px; color: var(--gray); line-height: 1.45; }
+  .pchev { flex: none; width: 20px; height: 20px; stroke: var(--gray); stroke-width: 3; fill: none; stroke-linecap: round; stroke-linejoin: round; transition: transform .2s ease; }
+  .pcard.open .pchev { transform: rotate(180deg); }
+  .pbody { padding: 4px 14px 16px; }
+
+  .fields { display: grid; gap: 12px; }
+  .field label { display: block; margin-bottom: 4px; font-size: 14px; font-weight: 700; color: var(--blue-dark); }
+  .field input, .field textarea {
+    display: block; width: 100%; padding: 12px 14px; font: inherit; font-size: 16px; line-height: 1.5; color: var(--navy);
+    background: var(--white); border: 2px solid var(--blue-line); border-radius: 14px; appearance: none; -webkit-appearance: none;
+  }
+  .field textarea { min-height: 92px; resize: vertical; }
+  .field input::placeholder, .field textarea::placeholder { color: #8FA0BB; }
+  .field input:focus, .field textarea:focus { outline: none; border-color: var(--blue); box-shadow: 0 0 0 3px rgba(47, 111, 228, .18); }
+
+  .pv-label { margin: 6px 2px 6px; font-size: 13px; font-weight: 700; color: var(--gray); }
+  .preview {
+    padding: 14px 14px; background: var(--bg); border: 1.5px dashed var(--blue-line); border-radius: 14px;
+    font-size: 14.5px; line-height: 1.8; white-space: pre-wrap; overflow-wrap: anywhere; user-select: text; -webkit-user-select: text;
+  }
+  .preview .filled { color: var(--blue-dark); font-weight: 700; background: var(--blue-soft); border-radius: 4px; padding: 0 2px; }
+  .preview .empty { color: var(--blue); background: #fff; border: 1px solid var(--blue-line); border-radius: 4px; padding: 0 2px; font-weight: 600; }
+  .pv-hint { margin: 14px 2px 0; font-size: 12.5px; color: var(--gray); }
+
+  .copy {
+    display: block; width: 100%; margin-top: 6px; min-height: 58px; padding: 14px; border: none; border-radius: 16px;
+    background: var(--blue); color: #fff; font: inherit; font-size: 18px; font-weight: 700; letter-spacing: .04em; cursor: pointer;
+    box-shadow: 0 8px 18px rgba(47, 111, 228, .22);
+  }
+  .copy:active { background: var(--blue-dark); }
+  .copy:focus-visible { outline: 3px solid var(--navy); outline-offset: 3px; }
+  .copy.done { background: var(--navy); }
+  .copy-msg { min-height: 22px; margin-top: 8px; text-align: center; font-size: 13.5px; color: var(--blue-dark); font-weight: 600; }
+  .copy-msg.err { color: var(--gray); }
+
+  .clear-row { margin-top: 16px; text-align: center; }
+  .linklike { padding: 8px 14px; background: none; border: 1.5px solid var(--blue-line); border-radius: 999px; color: var(--gray); font: inherit; font-size: 13px; cursor: pointer; }
+  .linklike:active { background: var(--blue-soft); }
+
+  /* ---- 行き来・公式LINE ---- */
+  .links { margin-top: 26px; }
+  .linkcard {
+    display: flex; align-items: center; justify-content: space-between; gap: 12px;
+    margin: 0 0 12px; padding: 16px 18px; background: var(--white);
+    border: 1.5px solid var(--blue-line); border-radius: 20px; text-decoration: none; color: var(--navy);
+    box-shadow: 0 6px 18px rgba(47, 111, 228, .06);
+  }
+  .linkcard:active { background: var(--blue-soft); }
+  .linkcard:focus-visible { outline: 3px solid var(--blue); outline-offset: 3px; }
+  .lc-label { display: block; font-size: 12.5px; font-weight: 600; color: var(--gray); }
+  .lc-title { display: block; margin-top: 2px; font-size: 17px; font-weight: 700; }
+  .lc-arrow { flex: none; width: 34px; height: 34px; border-radius: 50%; background: var(--blue); display: flex; align-items: center; justify-content: center; }
+  .lc-arrow svg { width: 16px; height: 16px; stroke: #fff; stroke-width: 3; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+
+  .ask { margin-top: 14px; padding: 8px 4px 4px; text-align: center; }
+  .cta {
+    display: block; width: 100%; padding: 18px 16px; border-radius: 18px;
+    background: var(--blue); color: #fff; text-decoration: none;
+    font-size: 17px; font-weight: 700; line-height: 1.45;
+    box-shadow: 0 8px 18px rgba(47, 111, 228, .22);
+  }
+  .cta:active { background: var(--blue-dark); }
+  .cta:focus-visible { outline: 3px solid var(--navy); outline-offset: 3px; }
+  .ask small { display: block; margin-top: 10px; font-size: 13px; color: var(--gray); }
+
+  footer { padding: 22px 20px 36px; text-align: center; font-size: 12.5px; color: var(--gray); }
+  footer p + p { margin-top: 4px; }
+  .foot-brand { margin-top: 16px; font-weight: 700; color: var(--navy); letter-spacing: .02em; }
+  noscript p { margin: 16px; padding: 12px 14px; background: var(--blue-soft); border-radius: 12px; font-size: 14px; }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { transition: none !important; animation: none !important; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <header class="hero">
+    <nav class="tabs" aria-label="ページの切りかえ">
+      <a class="tab" href="index.html">チェックリスト</a>
+      <a class="tab" href="gacha.html">ネタガチャ</a>
+      <a class="tab" href="guide.html">見せ方ガイド</a>
+      <a class="tab" href="prompts.html" aria-current="page">AIプロンプト</a>
+      <a class="tab" href="script.html">30分台本</a>
+    </nav>
+    <span class="brand">SCENE 1 ライバーズ</span>
+    <h1>AIで配信を考える<br><em>プロンプト集</em></h1>
+    <p class="intro">配信で何を話すか、AIに相談するための文章を用意しました。【 】を自分の言葉に書きかえて、コピーして、AIに貼ってね。</p>
+  </header>
+
+  <noscript><p>入力・コピーには、JavaScriptをオンにしてください。</p></noscript>
+
+  <main>
+
+    <section class="howto" aria-labelledby="howtoTitle">
+      <h2 id="howtoTitle">使い方（3ステップ）</h2>
+      <ol class="steps">
+        <li><span class="n">1</span><div><b>書きかえる</b><p>【 】の入力欄に、自分のことを書きます。</p></div></li>
+        <li><span class="n">2</span><div><b>コピーする</b><p>「コピー」ボタンを1回押します。</p></div></li>
+        <li><span class="n">3</span><div><b>AIに貼る</b><p>お使いのAI（文章で質問すると、文章で答えてくれるもの）の入力欄に貼って、送ります。</p></div></li>
+      </ol>
+      <p class="howto-note">「プロンプト」は、AIに送るお願いの文章のこと。スマホでは、入力欄を長押しすると「貼り付け」が出ることが多いです。AIの答えは、そのまま使わなくて大丈夫。自分の言葉に直して、声に出してみてね。</p>
+    </section>
+
+    <p class="step-label">場面を選ぶ</p>
+    <div class="cats" role="radiogroup" aria-label="プロンプトの場面" id="cats"></div>
+
+    <div class="plist" id="plist"></div>
+
+    <div class="clear-row"><button class="linklike" id="clearAll" type="button" hidden>入力した内容を、すべて消す</button></div>
+
+    <div class="links">
+      <a class="linkcard" href="index.html">
+        <span><span class="lc-label">準備はできてる？</span><span class="lc-title">初ライブ前の準備チェックリスト</span></span>
+        <span class="lc-arrow" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg></span>
+      </a>
+      <a class="linkcard" href="gacha.html">
+        <span><span class="lc-label">話すネタに迷ったら</span><span class="lc-title">初ライブのネタガチャ</span></span>
+        <span class="lc-arrow" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg></span>
+      </a>
+      <a class="linkcard" href="guide.html">
+        <span><span class="lc-label">見せ方に迷ったら</span><span class="lc-title">初ライブの見せ方ガイド</span></span>
+        <span class="lc-arrow" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg></span>
+      </a>
+      <a class="linkcard" href="script.html">
+        <span><span class="lc-label">本番の流れを決めたいなら</span><span class="lc-title">初ライブ30分台本</span></span>
+        <span class="lc-arrow" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg></span>
+      </a>
+    </div>
+
+    <section class="ask">
+      <!-- 公式LINEのURLが決まったら、下のボタンのリンク先（href）を、そのURLに置き換える（このページでは1か所だけ） -->
+      <a class="cta" id="lineBtn" href="【LINE URL】">わからないことは<br>公式LINEで気軽に聞いてね</a>
+      <small>AIの使い方も、気軽にどうぞ。</small>
+    </section>
+
+  </main>
+
+  <footer>
+    <p>AIに貼る文章に、本名・住所・勤務先など、個人が特定される情報は入れないでね。</p>
+    <p id="saveNote">入力した内容は、この端末のブラウザに保存されます（こちらには送られません）。</p>
+    <p>このページは、18歳以上の方に向けた内容です。</p>
+    <p class="foot-brand">SCENE 1 ライバーズ</p>
+  </footer>
+
+</div>
+
+<script>
+(function () {
+  // ---- 共通の前置きと条件（どのプロンプトにも入る） ----
+  var PREAMBLE = '私は、顔を出して声で話すライブ配信を、これから初めてやる初心者です。';
+  var COMMON = [
+    '初心者にもわかる、やさしい言葉で書く',
+    '専門用語は使わない（使うときは、ひと言で説明する）',
+    '顔を出して、声と表情で話す配信を前提にする',
+    '配信アプリの規約・機能・料金のことは書かない'
+  ];
+
+  // ---- 【 】に入れる言葉の入力欄（ラベル＝【 】の中の言葉） ----
+  var VARS = {
+    '好きなこと': { ph: '例：映画、料理、散歩' },
+    '得意なこと': { ph: '例：絵をかく、聞き役になる' },
+    '最近ハマっていること': { ph: '例：お菓子づくり、ゲーム' },
+    'テーマ候補1': { ph: '例：好きな映画の話' },
+    'テーマ候補2': { ph: '例：休みの日の過ごし方' },
+    'テーマ候補3': { ph: '例：最近ハマっていること' },
+    '配信テーマ': { ph: '例：好きな映画の話' },
+    'まわりからよく言われること': { ph: '例：聞き上手だね、と言われる' },
+    '今日のテーマ': { ph: '例：休みの日の過ごし方' },
+    '配信の長さ': { ph: '例：10分' },
+    '次に話したいこと': { ph: '例：最近ハマっていること' },
+    '配信内容': { ph: '例：好きな映画の話を、10分ほど話す' },
+    '今のタイトル': { ph: '例：はじめての配信' },
+    'ライブで起きたこと': { ph: '例：10分話せた。途中で話が止まった。', multi: true },
+    '感じたこと': { ph: '例：緊張したけど、少し楽しかった', multi: true },
+    '緊張した場面': { ph: '例：最初のあいさつのとき' },
+    'もらったコメント': { ph: '例：はじめまして！' },
+    '返した言葉': { ph: '例：ありがとう！来てくれてうれしい' },
+    '今回のふり返り': { ph: '例：最初は緊張したけど、途中から話せた', multi: true },
+    '次にやってみたいこと': { ph: '例：見ている人への問いかけを増やす' }
+  };
+
+  // ---- 4つの場面と、プロンプト ----
+  var SCENES = [
+    {
+      id: 'theme', name: '自分らしいテーマ探し', desc: '配信テーマの候補を出してもらう',
+      prompts: [
+        {
+          title: '好きなことから、配信テーマを探す', when: '何を話せばいいか浮かばないとき',
+          body: '次の3つから、私に合いそうな配信テーマの候補を5つ出してください。\n・好きなこと：【好きなこと】\n・得意なこと：【得意なこと】\n・最近ハマっていること：【最近ハマっていること】',
+          conds: ['テーマごとに、どんな内容を話すかを1〜2行で書く', 'テーマごとに、初回に言えそうなひと言を、話し言葉で1つ添える', '番号つきの箇条書きで書く']
+        },
+        {
+          title: '候補のテーマを、くらべる', when: 'テーマで迷っているとき',
+          body: '次の3つの配信テーマを、初心者が話しやすい順にくらべてください。\n1.【テーマ候補1】\n2.【テーマ候補2】\n3.【テーマ候補3】',
+          conds: ['テーマごとに、話しやすい点と、むずかしそうな点を1つずつ書く', '最後に、どれから始めるのがよいかを、理由つきで1つだけ提案する']
+        },
+        {
+          title: 'テーマを広げる質問を出す', when: '話せることが少ない気がするとき',
+          body: '【配信テーマ】で配信するとき、話を広げるための質問を10個出してください。自分に問いかけて、答えていける形にしてください。（例：いつから好きになった？）',
+          conds: ['質問は、答えやすいものから順に並べる', '質問ごとに、答えの書き出し例を、話し言葉で1つ付ける']
+        },
+        {
+          title: '自分らしさを、言葉にする', when: '自己紹介を考えたいとき',
+          body: '次の内容から、私らしさを3つの短い言葉にまとめてください。\n・好きなこと：【好きなこと】\n・まわりからよく言われること：【まわりからよく言われること】',
+          conds: ['3つの言葉それぞれに、どうしてそう言えるかを1行で書く', '配信の自己紹介で使える一文を、話し言葉で3つ作る', 'ほめすぎず、等身大の書き方にする']
+        }
+      ]
+    },
+    {
+      id: 'today', name: '今日の話題づくり', desc: '話す順番・問いかけ・沈黙対策',
+      prompts: [
+        {
+          title: '話す順番を、3つに分ける', when: '何から話すか決まらないとき',
+          body: '今日のライブ配信のテーマは【今日のテーマ】です。配信の長さは【配信の長さ】の予定です。\n話す順番を「はじめ」「なか」「おわり」の3つに分けて、それぞれ何を話すか、具体的に書いてください。',
+          conds: ['それぞれのパートに、時間の目安をつける', 'それぞれのパートに、話し言葉のセリフ例を1つずつ付ける']
+        },
+        {
+          title: '見ている人への問いかけを出す', when: 'コメントをもらいたいとき',
+          body: '今日のテーマは【今日のテーマ】です。見ている人が答えやすい問いかけを8個出してください。',
+          conds: ['ひと言で答えられるものを4個、「はい／いいえ」や2択で答えられるものを4個にする', '問いかけごとに、声に出して言うときの言い方を、話し言葉で書く']
+        },
+        {
+          title: '沈黙したときの話題を出す', when: 'コメントがなくて、話が止まったとき',
+          body: 'コメントが来なくて話が止まったときに、ひとりで声に出して話せる話題を10個出してください。今日のテーマは【今日のテーマ】、私の好きなことは【好きなこと】です。',
+          conds: ['今日のテーマに関係する話題を6個、関係なくてもよい話題を4個にする', '話題ごとに、話し出しのひと言を、話し言葉で添える', '10個のうち2つは、立ち上がる・手を動かす・身近な物を見せるなど、動きのある話題にする（顔は映したまま）']
+        },
+        {
+          title: '終わりのあいさつと次回予告を作る', when: '最後の締め方に迷うとき',
+          body: '今日のライブ配信のテーマは【今日のテーマ】でした。次回は【次に話したいこと】を話したいです。\n終わりのあいさつと、次回の予告を、3パターン作ってください。',
+          conds: ['1つのパターンは、30秒以内で言える長さにする', '見てくれた人へのお礼を入れる', '話し言葉で書く']
+        }
+      ]
+    },
+    {
+      id: 'title', name: 'タイトルづくり', desc: '入りたくなるタイトル候補',
+      prompts: [
+        {
+          title: '配信内容から、タイトルを考える', when: 'タイトルが浮かばないとき',
+          body: '次の内容のライブ配信につける、入りたくなるタイトルの候補を10個出してください。\n配信内容：【配信内容】',
+          conds: ['1つのタイトルは25文字以内にする', '配信の内容と合っていること（内容と違う、釣りのような言い方はしない）', '大げさな言い方や、言い切りの強い表現は使わない']
+        },
+        {
+          title: '3つの型で、タイトルを出す', when: 'いろいろな言い方を見たいとき',
+          body: '次の内容のライブ配信につけるタイトルを、3つの型で3つずつ作ってください。\n配信内容：【配信内容】\n型：①問いかけの型　②共感の型　③短く言い切る型（大げさにしない）',
+          conds: ['型ごとに、どうして入りやすいかを1行で書く', '数字は、私が書いた内容に出てくるものだけを使う（数字を作らない）']
+        },
+        {
+          title: '今のタイトルを、短く・やさしく直す', when: 'タイトルを直したいとき',
+          body: '今のライブのタイトルは「【今のタイトル】」です。これを直したいです。\n①短くしたもの（15文字以内）を3つ\n②やさしい言葉にしたものを3つ\n③初めて見る人にも内容が伝わるものを3つ\n作ってください。',
+          conds: ['元のタイトルの意味は変えない']
+        },
+        {
+          title: 'タイトルが伝わるか、チェックする', when: '決めたタイトルを確かめたいとき',
+          body: 'ライブのタイトルは「【今のタイトル】」、配信内容は【配信内容】です。\nこのタイトルを初めて見た人に、何の配信か伝わるかをチェックしてください。',
+          conds: ['よい点を1つ、わかりにくい点を1つ書く', '直した案を2つ出す']
+        }
+      ]
+    },
+    {
+      id: 'review', name: 'ふり返り', desc: 'よかった点と次に試すこと',
+      prompts: [
+        {
+          title: 'よかった点と、次に試すことを整理する', when: 'ライブが終わったあと',
+          body: '今日のライブ配信をふり返りたいです。\n・起きたこと：【ライブで起きたこと】\n・感じたこと：【感じたこと】\n次の3つを整理してください。\n①よかった点を3つ（小さなことでもよい）\n②次に試すことを3つ（1回でできる小さなこと）\n③次回のはじめのひと言の例を1つ（話し言葉で）',
+          conds: ['私を責めず、はげます言い方で書く']
+        },
+        {
+          title: '緊張した場面を整理する', when: '緊張して、うまく話せなかったとき',
+          body: 'ライブ配信で緊張した場面は、【緊張した場面】です。\n緊張は自然なことだと伝えたうえで、次に緊張をやわらげる工夫を3つ出してください。',
+          conds: ['工夫は、準備・話し方・見せ方から1つずつにする', 'ライブの前に声に出して言える、ひと言も1つ添える']
+        },
+        {
+          title: 'コメントへの返し方をふり返る', when: 'コメントの返事に迷ったとき',
+          body: 'ライブ配信で、次のコメントをもらいました。\nコメント：【もらったコメント】\n私が返した言葉：【返した言葉】\nこの返し方のよかった点と、次に使える返しの例を3つ教えてください。',
+          conds: ['返しの例は、話し言葉で書く', '相手の名前を呼ぶ・質問を広げる、などの型を使う']
+        },
+        {
+          title: '次のライブの流れを考える', when: '次の配信の準備をするとき',
+          body: '前回のライブ配信のふり返り：【今回のふり返り】\n次にやってみたいこと：【次にやってみたいこと】\nこれをもとに、次のライブ配信の流れを、はじめ・なか・おわりの3つで考えてください。',
+          conds: ['それぞれに、時間の目安と、話すことを書く', '初心者が無理なくできる量にする']
+        }
+      ]
+    }
+  ];
+
+  // ---- 部品 ----
+  var STORE_KEY = 'scene1-livers-prompts-v1';
+  var values = {};
+  var catsEl = document.getElementById('cats');
+  var plist = document.getElementById('plist');
+  var clearAll = document.getElementById('clearAll');
+  var saveNote = document.getElementById('saveNote');
+  var lineBtn = document.getElementById('lineBtn');
+  var current = SCENES[0];
+  var openIndex = 0;
+  var cards = [];   // 画面に出ているプロンプトのカード {p, text, keys, fields, preview, hint, copyBtn, msg, panel, head, root}
+
+  function buildText(p) {
+    return PREAMBLE + '\n' + p.body + '\n\n条件：\n' + p.conds.concat(COMMON).map(function (c) { return '・' + c; }).join('\n');
+  }
+  function keysOf(text) {
+    var seen = [], re = /【([^】]+)】/g, m;
+    while ((m = re.exec(text))) { if (seen.indexOf(m[1]) === -1) { seen.push(m[1]); } }
+    return seen;
+  }
+  function filled(k) { return typeof values[k] === 'string' && values[k].trim() !== ''; }
+  function fillPlain(text) {
+    return text.replace(/【([^】]+)】/g, function (m, k) { return filled(k) ? values[k].trim() : m; });
+  }
+  function anyValue() { return Object.keys(values).some(filled); }
+
+  // ---- 保存（この端末のブラウザだけ） ----
+  function load() {
+    try {
+      var raw = localStorage.getItem(STORE_KEY);
+      var o = raw ? JSON.parse(raw) : {};
+      if (o && typeof o === 'object' && !Array.isArray(o)) {
+        Object.keys(o).forEach(function (k) { if (typeof o[k] === 'string') { values[k] = o[k]; } });
+      }
+    } catch (e) {}
+  }
+  function save() {
+    try { localStorage.setItem(STORE_KEY, JSON.stringify(values)); }
+    catch (e) { saveNote.textContent = 'このブラウザでは保存できないため、閉じると入力した内容は消えます。'; }
+  }
+
+  // ---- プレビュー（書きかえた所だけ青くする） ----
+  function renderPreview(c) {
+    var box = c.preview;
+    box.textContent = '';
+    var re = /【([^】]+)】/g, last = 0, m, empty = 0;
+    while ((m = re.exec(c.text))) {
+      if (m.index > last) { box.appendChild(document.createTextNode(c.text.slice(last, m.index))); }
+      var s = document.createElement('span');
+      if (filled(m[1])) { s.className = 'filled'; s.textContent = values[m[1]].trim(); }
+      else { s.className = 'empty'; s.textContent = m[0]; empty++; }
+      box.appendChild(s);
+      last = m.index + m[0].length;
+    }
+    if (last < c.text.length) { box.appendChild(document.createTextNode(c.text.slice(last))); }
+    c.hint.textContent = empty > 0 ? 'まだ書きかえていない【 】が' + empty + 'か所あります。そのままコピーもできます。' : '書きかえは、すべて終わっています。';
+  }
+  function renderAll() {
+    cards.forEach(renderPreview);
+    clearAll.hidden = !anyValue();
+  }
+
+  // ---- コピー ----
+  function fallbackCopy(text) {
+    return new Promise(function (resolve, reject) {
+      var ta = document.createElement('textarea');
+      ta.value = text; ta.setAttribute('readonly', '');
+      ta.style.cssText = 'position:fixed;top:0;left:0;width:1px;height:1px;opacity:0';
+      document.body.appendChild(ta);
+      ta.select(); ta.setSelectionRange(0, text.length);
+      var ok = false;
+      try { ok = document.execCommand('copy'); } catch (e) {}
+      document.body.removeChild(ta);
+      ok ? resolve() : reject(new Error('copy failed'));
+    });
+  }
+  function copyText(text) {
+    if (navigator.clipboard && window.isSecureContext) {
+      return navigator.clipboard.writeText(text).catch(function () { return fallbackCopy(text); });
+    }
+    return fallbackCopy(text);
+  }
+  function onCopy(c) {
+    var text = fillPlain(c.text);
+    copyText(text).then(function () {
+      c.msg.className = 'copy-msg'; c.msg.textContent = 'コピーしました。AIの入力欄に貼ってね。';
+      c.copyBtn.classList.add('done'); c.copyBtn.textContent = 'コピーしました';
+      setTimeout(function () { c.copyBtn.classList.remove('done'); c.copyBtn.textContent = 'コピー'; }, 2200);
+    }, function () {
+      c.msg.className = 'copy-msg err'; c.msg.textContent = 'うまくコピーできませんでした。上の文を長押しして、コピーしてね。';
+    });
+  }
+
+  // ---- 画面を作る ----
+  function el(tag, cls, text) {
+    var e = document.createElement(tag);
+    if (cls) { e.className = cls; }
+    if (text !== undefined) { e.textContent = text; }
+    return e;
+  }
+  var CHEVRON = '<svg class="pchev" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>';
+
+  function buildCard(p, i) {
+    var c = { p: p, text: buildText(p) };
+    c.keys = keysOf(c.text);
+    var root = el('section', 'pcard');
+    var head = el('button', 'phead'); head.type = 'button';
+    var panelId = 'panel-' + current.id + '-' + i;
+    head.setAttribute('aria-controls', panelId);
+    head.appendChild(el('span', 'pnum', String(i + 1)));
+    var t = el('span', 'ptitle');
+    t.appendChild(el('b', '', p.title)); t.appendChild(el('small', '', p.when));
+    head.appendChild(t);
+    head.insertAdjacentHTML('beforeend', CHEVRON);
+    root.appendChild(head);
+
+    var panel = el('div', 'pbody'); panel.id = panelId;
+    var fields = el('div', 'fields');
+    c.keys.forEach(function (k, n) {
+      var def = VARS[k] || { ph: '' };
+      var f = el('div', 'field');
+      var id = 'f-' + current.id + '-' + i + '-' + n;
+      var lab = el('label', '', '【' + k + '】'); lab.setAttribute('for', id);
+      var input = def.multi ? document.createElement('textarea') : document.createElement('input');
+      if (!def.multi) { input.type = 'text'; input.setAttribute('enterkeyhint', 'done'); }
+      input.id = id; input.setAttribute('data-key', k);
+      input.placeholder = def.ph || '';
+      input.maxLength = def.multi ? 600 : 200;
+      input.setAttribute('autocomplete', 'off'); input.setAttribute('autocapitalize', 'off'); input.spellcheck = false;
+      input.value = values[k] || '';
+      input.addEventListener('input', function () {
+        values[k] = input.value;
+        // 同じ【 】は、ほかのプロンプトの入力欄にも同じ内容を入れる
+        Array.prototype.forEach.call(plist.querySelectorAll('[data-key]'), function (other) {
+          if (other !== input && other.getAttribute('data-key') === k) { other.value = input.value; }
+        });
+        save(); renderAll();
+      });
+      f.appendChild(lab); f.appendChild(input); fields.appendChild(f);
+    });
+    panel.appendChild(fields);
+    c.hint = el('p', 'pv-hint');
+    var copyBtn = el('button', 'copy', 'コピー'); copyBtn.type = 'button';
+    c.copyBtn = copyBtn;
+    c.msg = el('p', 'copy-msg'); c.msg.setAttribute('aria-live', 'polite');
+    copyBtn.addEventListener('click', function () { onCopy(c); });
+    c.preview = el('div', 'preview');
+    panel.appendChild(c.hint); panel.appendChild(copyBtn); panel.appendChild(c.msg);
+    panel.appendChild(el('p', 'pv-label', 'コピーされる文章（確認用）'));
+    panel.appendChild(c.preview);
+    root.appendChild(panel);
+
+    head.addEventListener('click', function () { openIndex = (openIndex === i) ? -1 : i; syncOpen(); });
+    c.root = root; c.head = head; c.panel = panel;
+    return c;
+  }
+
+  function syncOpen() {
+    cards.forEach(function (c, i) {
+      var on = (i === openIndex);
+      c.root.classList.toggle('open', on);
+      c.panel.hidden = !on;
+      c.head.setAttribute('aria-expanded', on ? 'true' : 'false');
+    });
+  }
+
+  function showScene(scene) {
+    current = scene; openIndex = 0;
+    plist.textContent = '';
+    cards = scene.prompts.map(buildCard);
+    cards.forEach(function (c) { plist.appendChild(c.root); });
+    syncOpen(); renderAll();
+  }
+
+  SCENES.forEach(function (sc, i) {
+    var label = el('label', 'catbtn' + (i === 0 ? ' on' : ''));
+    var input = document.createElement('input');
+    input.type = 'radio'; input.name = 'scene'; input.value = sc.id; input.className = 'sr';
+    if (i === 0) { input.checked = true; }
+    label.appendChild(input);
+    label.appendChild(el('span', 'n', String(i + 1)));
+    label.appendChild(el('span', 't', sc.name));
+    label.appendChild(el('span', 'd', sc.desc));
+    catsEl.appendChild(label);
+    input.addEventListener('change', function () {
+      Array.prototype.forEach.call(catsEl.children, function (x) { x.classList.remove('on'); });
+      label.classList.add('on');
+      showScene(sc);
+    });
+  });
+
+  clearAll.addEventListener('click', function () {
+    if (!window.confirm('入力した内容を、すべて消します。よろしいですか？')) { return; }
+    values = {};
+    save();
+    Array.prototype.forEach.call(plist.querySelectorAll('[data-key]'), function (inp) { inp.value = ''; });
+    renderAll();
+  });
+
+  // URLが入るまでは、押しても何も起きないようにする
+  lineBtn.addEventListener('click', function (e) {
+    if (!/^https?:\/\//.test(lineBtn.getAttribute('href') || '')) { e.preventDefault(); }
+  });
+
+  load();
+  showScene(SCENES[0]);
+})();
+</script>
+</body>
+</html>

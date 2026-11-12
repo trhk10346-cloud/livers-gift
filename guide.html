@@ -1,0 +1,456 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light">
+<meta name="theme-color" content="#ffffff">
+<meta name="robots" content="noindex">
+<meta name="description" content="初ライブで顔を出して話すときの、手元・横顔や後ろ姿・小物・背景の見せ方の工夫をまとめたガイドです。">
+<title>初ライブの見せ方ガイド｜SCENE 1 ライバーズ</title>
+<style>
+  :root {
+    --blue: #2F6FE4;
+    --blue-dark: #2358B8;
+    --blue-soft: #EAF2FF;
+    --blue-line: #CFE0FB;
+    --navy: #1F2A44;
+    --gray: #5A6B85;
+    --bg: #F6F9FF;
+    --white: #FFFFFF;
+    color-scheme: light;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+  html { -webkit-text-size-adjust: 100%; }
+  [hidden] { display: none !important; }
+  body {
+    background: var(--bg);
+    color: var(--navy);
+    font-family: "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Noto Sans JP", "Yu Gothic", "Meiryo", sans-serif;
+    font-size: 17px;
+    line-height: 1.65;
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+  .page { max-width: 560px; margin: 0 auto; }
+
+  /* ---- ヘッダー ---- */
+  .hero { padding: calc(20px + env(safe-area-inset-top)) 20px 22px; background: linear-gradient(180deg, #EEF4FF 0%, var(--bg) 100%); }
+  .tabs { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+  .tab {
+    text-align: center; padding: 10px 6px; border-radius: 999px; white-space: nowrap;
+    border: 1.5px solid var(--blue-line); background: var(--white); color: var(--gray);
+    font-size: 14px; font-weight: 600; text-decoration: none; line-height: 1.3;
+  }
+  .tab[aria-current="page"] { background: var(--blue); border-color: var(--blue); color: #fff; }
+  .tab:last-child:nth-child(odd) { grid-column: 1 / -1; }
+  .tab:focus-visible { outline: 3px solid var(--navy); outline-offset: 2px; }
+  .brand {
+    display: inline-block; margin-top: 20px; padding: 6px 14px; border-radius: 999px;
+    background: var(--white); border: 1.5px solid var(--blue-line);
+    color: var(--blue); font-size: 13px; font-weight: 600; letter-spacing: .04em;
+  }
+  h1 { margin-top: 14px; font-size: clamp(24px, 7vw, 30px); line-height: 1.35; font-weight: 700; letter-spacing: .01em; }
+  h1 em { font-style: normal; color: var(--blue); }
+  .intro { margin-top: 12px; font-size: 15px; color: var(--gray); text-wrap: pretty; word-break: auto-phrase; }
+
+  .hero.is-detail { padding-bottom: 4px; background: var(--bg); }
+  .hero.is-detail .brand, .hero.is-detail h1, .hero.is-detail .intro { display: none; }
+
+  main { padding: 18px 16px 8px; }
+  .step-label { margin: 0 4px 10px; font-size: 13px; font-weight: 700; color: var(--blue-dark); letter-spacing: .04em; }
+
+  /* ---- 大事な前提 ---- */
+  .notice { margin-bottom: 20px; padding: 16px 16px 14px; background: var(--white); border: 1.5px solid var(--blue); border-radius: 20px; box-shadow: 0 6px 18px rgba(47, 111, 228, .08); }
+  .notice h2 { display: flex; align-items: center; gap: 10px; font-size: 16px; line-height: 1.4; color: var(--blue-dark); }
+  .notice h2::before { content: ""; flex: none; width: 6px; height: 20px; border-radius: 3px; background: var(--blue); }
+  .notice ul { list-style: none; margin-top: 10px; display: grid; gap: 8px; }
+  .notice li { position: relative; padding-left: 16px; font-size: 14.5px; line-height: 1.7; text-wrap: pretty; word-break: auto-phrase; }
+  .notice li::before { content: ""; position: absolute; left: 3px; top: .8em; width: 6px; height: 6px; border-radius: 50%; background: var(--blue); }
+
+  /* ---- 画像（差し替え用。読み込めないときは、枠だけ出す） ---- */
+  .shot, .th-img { position: relative; overflow: hidden; background: var(--blue-soft); }
+  .shot img, .th-img img { display: block; width: 100%; height: auto; }
+  .shot.noimg, .th-img.noimg { display: flex; align-items: center; justify-content: center; aspect-ratio: 4 / 3; color: var(--blue); font-weight: 700; }
+  .shot.noimg img, .th-img.noimg img { display: none; }
+  .shot.noimg::after { content: "お手本画像"; font-size: 15px; }
+  .th-img.noimg::after { content: "画像"; font-size: 12px; }
+
+  /* ---- テーマ一覧 ---- */
+  .themes { list-style: none; display: grid; gap: 12px; }
+  .theme {
+    display: flex; align-items: center; gap: 14px; padding: 12px 14px 12px 12px;
+    background: var(--white); border: 1.5px solid var(--blue-line); border-radius: 20px;
+    text-decoration: none; color: var(--navy); box-shadow: 0 6px 18px rgba(47, 111, 228, .06);
+  }
+  .theme:active { background: var(--blue-soft); }
+  .theme:focus-visible { outline: 3px solid var(--blue); outline-offset: 3px; }
+  .th-img { flex: none; width: 96px; border-radius: 12px; border: 1.5px solid var(--blue-line); }
+  .th-body { flex: 1; min-width: 0; }
+  .th-num { display: block; font-size: 12px; font-weight: 700; color: var(--blue); }
+  .th-title { display: block; font-size: 17px; font-weight: 700; line-height: 1.4; text-wrap: balance; word-break: auto-phrase; }
+  .th-sub { display: block; margin-top: 2px; font-size: 12.5px; color: var(--gray); line-height: 1.5; }
+  .lc-arrow { flex: none; width: 34px; height: 34px; border-radius: 50%; background: var(--blue); display: flex; align-items: center; justify-content: center; }
+  .lc-arrow svg { width: 16px; height: 16px; stroke: #fff; stroke-width: 3; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+
+  /* ---- テーマの詳しいページ ---- */
+  .back { display: inline-flex; align-items: center; gap: 6px; min-height: 44px; padding: 0 4px; color: var(--blue-dark); font-size: 14.5px; font-weight: 700; text-decoration: none; }
+  .back svg { width: 14px; height: 14px; stroke: currentColor; stroke-width: 3; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+  .back:focus-visible, .pg:focus-visible { outline: 3px solid var(--blue); outline-offset: 3px; border-radius: 8px; }
+  .d-num { margin-top: 2px; font-size: 12.5px; font-weight: 700; color: var(--blue); letter-spacing: .04em; }
+  .detail h2 { margin-top: 2px; font-size: 25px; line-height: 1.35; text-wrap: balance; word-break: auto-phrase; }
+  .detail h2:focus { outline: none; }
+  .d-lead { margin-top: 10px; font-size: 15.5px; color: var(--gray); text-wrap: pretty; word-break: auto-phrase; }
+  .shot { margin-top: 16px; border-radius: 22px; border: 1.5px solid var(--blue-line); box-shadow: 0 6px 18px rgba(47, 111, 228, .06); }
+  .shot figcaption { padding: 8px 14px; background: var(--white); border-top: 1.5px solid var(--blue-line); font-size: 12.5px; color: var(--gray); }
+  .shot.noimg figcaption { position: absolute; left: 0; right: 0; bottom: 0; }
+  .remind { margin-top: 12px; padding: 10px 14px; border-radius: 14px; background: var(--blue-soft); color: var(--blue-dark); font-size: 14px; font-weight: 600; line-height: 1.6; text-wrap: pretty; word-break: auto-phrase; }
+
+  .block { margin-top: 20px; padding: 18px 14px 14px; background: var(--white); border: 1.5px solid var(--blue-line); border-radius: 24px; box-shadow: 0 6px 18px rgba(47, 111, 228, .06); }
+  .block h3 { display: flex; align-items: center; gap: 10px; padding: 0 4px; font-size: 18px; line-height: 1.4; }
+  .block h3::before { content: ""; flex: none; width: 6px; height: 22px; border-radius: 3px; background: var(--blue); }
+  .tips, .fails { list-style: none; margin-top: 12px; display: grid; gap: 10px; }
+  .tips li { display: flex; gap: 12px; padding: 12px 12px 12px 10px; background: var(--blue-soft); border-radius: 16px; }
+  .tips .n { flex: none; width: 30px; height: 30px; border-radius: 50%; background: var(--blue); color: #fff; font-size: 15px; font-weight: 700; display: flex; align-items: center; justify-content: center; margin-top: 1px; }
+  .tips p { font-size: 15.5px; line-height: 1.7; text-wrap: pretty; word-break: auto-phrase; }
+  .fails li { padding: 12px 14px; border: 1.5px solid var(--blue-line); border-radius: 16px; }
+  .fails .x { display: flex; align-items: flex-start; gap: 10px; font-size: 15.5px; font-weight: 600; line-height: 1.6; }
+  .fails .x::before { content: "×"; flex: none; width: 24px; height: 24px; margin-top: 2px; border-radius: 50%; background: var(--gray); color: #fff; font-size: 15px; font-weight: 700; line-height: 24px; text-align: center; }
+  .fails .fix { display: flex; align-items: flex-start; gap: 10px; margin-top: 6px; font-size: 14.5px; color: var(--blue-dark); line-height: 1.6; }
+  .fails .fix::before { content: "→"; flex: none; width: 24px; text-align: center; font-weight: 700; }
+  .try { margin-top: 16px; padding: 16px 18px; border-radius: 20px; background: var(--blue); color: #fff; }
+  .try b { display: block; font-size: 13px; letter-spacing: .06em; opacity: .9; }
+  .try p { margin-top: 2px; font-size: 16px; font-weight: 700; line-height: 1.6; text-wrap: pretty; word-break: auto-phrase; }
+
+  .pager { margin-top: 18px; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .pg { display: flex; flex-direction: column; justify-content: center; min-height: 64px; padding: 10px 14px; background: var(--white); border: 1.5px solid var(--blue-line); border-radius: 16px; text-decoration: none; color: var(--navy); }
+  .pg:active { background: var(--blue-soft); }
+  .pg small { font-size: 12px; font-weight: 600; color: var(--gray); }
+  .pg span { font-size: 14.5px; font-weight: 700; line-height: 1.4; }
+  .pg.next { text-align: right; }
+  .pg.solo { grid-column: 1 / -1; text-align: center; }
+
+  /* ---- 行き来・公式LINE ---- */
+  .linkcard {
+    display: flex; align-items: center; justify-content: space-between; gap: 12px;
+    margin: 0 0 16px; padding: 16px 18px; background: var(--white);
+    border: 1.5px solid var(--blue-line); border-radius: 20px; text-decoration: none; color: var(--navy);
+    box-shadow: 0 6px 18px rgba(47, 111, 228, .06);
+  }
+  .linkcard:active { background: var(--blue-soft); }
+  .linkcard:focus-visible { outline: 3px solid var(--blue); outline-offset: 3px; }
+  .lc-label { display: block; font-size: 12.5px; font-weight: 600; color: var(--gray); }
+  .lc-title { display: block; margin-top: 2px; font-size: 17px; font-weight: 700; }
+  .links { margin-top: 22px; }
+
+  .ask { margin-top: 26px; padding: 8px 4px 4px; text-align: center; }
+  .cta {
+    display: block; width: 100%; padding: 18px 16px; border-radius: 18px;
+    background: var(--blue); color: #fff; text-decoration: none;
+    font-size: 17px; font-weight: 700; line-height: 1.45;
+    box-shadow: 0 8px 18px rgba(47, 111, 228, .22);
+  }
+  .cta:active { background: var(--blue-dark); }
+  .cta:focus-visible { outline: 3px solid var(--navy); outline-offset: 3px; }
+  .ask small { display: block; margin-top: 10px; font-size: 13px; color: var(--gray); }
+
+  footer { padding: 22px 20px 36px; text-align: center; font-size: 12.5px; color: var(--gray); }
+  footer p + p { margin-top: 4px; }
+  .foot-brand { margin-top: 16px; font-weight: 700; color: var(--navy); letter-spacing: .02em; }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { transition: none !important; animation: none !important; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <header class="hero">
+    <nav class="tabs" aria-label="ページの切りかえ">
+      <a class="tab" href="index.html">チェックリスト</a>
+      <a class="tab" href="gacha.html">ネタガチャ</a>
+      <a class="tab" href="guide.html" aria-current="page">見せ方ガイド</a>
+      <a class="tab" href="prompts.html">AIプロンプト</a>
+      <a class="tab" href="script.html">30分台本</a>
+    </nav>
+    <span class="brand">SCENE 1 ライバーズ</span>
+    <h1>初ライブの<br><em>見せ方ガイド</em></h1>
+    <p class="intro">最初は、顔を出して話すだけで緊張します。見せ方を少し工夫すると、気持ちが軽くなります。気になるテーマから、のぞいてみてね。</p>
+  </header>
+
+  <main>
+
+    <!-- ===== テーマ一覧 ===== -->
+    <section id="hub">
+
+      <section class="notice" aria-labelledby="noticeTitle">
+        <h2 id="noticeTitle">このガイドの前提</h2>
+        <ul>
+          <li>ライブの土台は、顔が見えて、声と動きがあること。事務所に入ってライブをするには、顔を出した配信が必要です。</li>
+          <li>ここで紹介するのは、その土台に足せる「見せ方の工夫」です。顔を出すことに慣れていく、途中の一歩として使ってね。</li>
+          <li>手元だけ、物だけ、景色や部屋だけを映し続けるような、動きのない映像が続くと、配信の扱いが変わる場合があります。TikTokの案内は変わることがあるので、アプリ内でも確認してね。</li>
+        </ul>
+      </section>
+
+      <p class="step-label">4つのテーマ（タップで開く）</p>
+      <ul class="themes">
+        <li><a class="theme" href="#t1">
+          <span class="th-img"><img src="images/guide1.png" width="1200" height="900" alt="" loading="lazy" onerror="this.parentNode.classList.add('noimg')"></span>
+          <span class="th-body"><span class="th-num">テーマ 1</span><span class="th-title">手元を見せて、話のきっかけにする</span><span class="th-sub">顔と一緒に映る位置で、ゆっくり見せる</span></span>
+          <span class="lc-arrow" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg></span>
+        </a></li>
+        <li><a class="theme" href="#t2">
+          <span class="th-img"><img src="images/guide2.png" width="1200" height="900" alt="" loading="lazy" onerror="this.parentNode.classList.add('noimg')"></span>
+          <span class="th-body"><span class="th-num">テーマ 2</span><span class="th-title">横顔・後ろ姿は、アクセントに</span><span class="th-sub">斜めや横向きを、ほんの数秒まぜてみる</span></span>
+          <span class="lc-arrow" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg></span>
+        </a></li>
+        <li><a class="theme" href="#t3">
+          <span class="th-img"><img src="images/guide3.png" width="1200" height="900" alt="" loading="lazy" onerror="this.parentNode.classList.add('noimg')"></span>
+          <span class="th-body"><span class="th-num">テーマ 3</span><span class="th-title">小物やぬいぐるみで、話題をふくらませる</span><span class="th-sub">顔の近くに置いて、手に取って紹介する</span></span>
+          <span class="lc-arrow" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg></span>
+        </a></li>
+        <li><a class="theme" href="#t4">
+          <span class="th-img"><img src="images/guide4.png" width="1200" height="900" alt="" loading="lazy" onerror="this.parentNode.classList.add('noimg')"></span>
+          <span class="th-body"><span class="th-num">テーマ 4</span><span class="th-title">部屋の雰囲気は、背景に少しだけ</span><span class="th-sub">映り込ませる物を選んで、居場所は分からないように</span></span>
+          <span class="lc-arrow" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg></span>
+        </a></li>
+      </ul>
+
+      <div class="links">
+        <a class="linkcard" href="index.html">
+          <span><span class="lc-label">準備はできてる？</span><span class="lc-title">初ライブ前の準備チェックリスト</span></span>
+          <span class="lc-arrow" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg></span>
+        </a>
+        <a class="linkcard" href="gacha.html">
+          <span><span class="lc-label">話すネタに迷ったら</span><span class="lc-title">初ライブのネタガチャ</span></span>
+          <span class="lc-arrow" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg></span>
+        </a>
+        <a class="linkcard" href="prompts.html">
+          <span><span class="lc-label">AIに相談してみるなら</span><span class="lc-title">AIで配信を考えるプロンプト集</span></span>
+          <span class="lc-arrow" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg></span>
+        </a>
+        <a class="linkcard" href="script.html">
+          <span><span class="lc-label">本番の流れを決めたいなら</span><span class="lc-title">初ライブ30分台本</span></span>
+          <span class="lc-arrow" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg></span>
+        </a>
+      </div>
+    </section>
+
+    <!-- ===== テーマ1：手元 ===== -->
+    <article class="detail" id="t1">
+      <a class="back" href="#hub"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>テーマ一覧にもどる</a>
+      <p class="d-num">テーマ 1 / 4</p>
+      <h2 tabindex="-1">手元を見せて、話のきっかけにする</h2>
+      <p class="d-lead">話すことに迷ったら、手元の物を見せてみる方法があります。マグカップ、ノート、お気に入りの本など、身近な物で試せます。顔が映っている時間のなかで、ひとつの味つけとして使うのがポイントです。</p>
+      <figure class="shot"><img src="images/guide1.png" width="1200" height="900" alt="左：顔と手元が一緒に映っている図。右：手元だけが映り続けている図" loading="lazy" onerror="this.parentNode.classList.add('noimg')"><figcaption>左が、お手本。右は、避けたい例です。</figcaption></figure>
+      <p class="remind">顔と声と動きがある時間のなかで、使う工夫です。</p>
+
+      <section class="block">
+        <h3>スマホの置き方のコツ</h3>
+        <ol class="tips">
+          <li><span class="n">1</span><p>スマホは、顔と胸のあたりが一緒に映る距離に置きます。物を持ち上げたときも、顔が画面から外れません。</p></li>
+          <li><span class="n">2</span><p>物は、顔の横ではなく、胸の前あたりで見せます。顔と物が重ならず、どちらも見えやすくなります。</p></li>
+          <li><span class="n">3</span><p>見せるのは数秒だけ。「これはね」と声に出して紹介したら、手を下ろして、顔が映る位置にもどります。</p></li>
+        </ol>
+      </section>
+
+      <section class="block">
+        <h3>よくある失敗</h3>
+        <ul class="fails">
+          <li><p class="x">手元だけが、画面に映り続ける</p><p class="fix">物を見せたら、すぐ顔が映る位置にもどします</p></li>
+          <li><p class="x">物を近づけすぎて、顔が隠れる</p><p class="fix">胸の前あたりで見せます</p></li>
+          <li><p class="x">何も言わずに、物を見せる</p><p class="fix">見せるときは、声に出して紹介します</p></li>
+        </ul>
+      </section>
+
+      <div class="try"><b>ためしてみよう</b><p>手元の物をひとつ持って、「これね、」と声に出して紹介してみよう。終わったら、顔が映る位置にもどってね。</p></div>
+
+      <nav class="pager" aria-label="テーマの移動">
+        <a class="pg solo next" href="#t2"><small>次のテーマ</small><span>横顔・後ろ姿は、アクセントに</span></a>
+      </nav>
+    </article>
+
+    <!-- ===== テーマ2：横顔・後ろ姿 ===== -->
+    <article class="detail" id="t2">
+      <a class="back" href="#hub"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>テーマ一覧にもどる</a>
+      <p class="d-num">テーマ 2 / 4</p>
+      <h2 tabindex="-1">横顔・後ろ姿は、アクセントに</h2>
+      <p class="d-lead">ずっと正面だと、緊張が強くなる人もいます。体を少し斜めに向けたり、横顔を見せたりすると、表情がやわらかく見えることがあります。後ろ姿は、髪型や服、後ろの飾りを見せたいときの、ほんの数秒だけ。顔が映る時間を長くしておきます。</p>
+      <figure class="shot"><img src="images/guide2.png" width="1200" height="900" alt="左：体を斜めに向けて顔の一部が見えている図。右：後ろ向きのまま顔が映らない図" loading="lazy" onerror="this.parentNode.classList.add('noimg')"><figcaption>左が、お手本。右は、避けたい例です。</figcaption></figure>
+      <p class="remind">顔と声と動きがある時間のなかで、使う工夫です。</p>
+
+      <section class="block">
+        <h3>スマホの置き方のコツ</h3>
+        <ol class="tips">
+          <li><span class="n">1</span><p>体を少し左か右に向けて、斜めから映ります。顔の一部がしっかり見える角度を探します。</p></li>
+          <li><span class="n">2</span><p>横顔や後ろ姿は、見せたい物があるときの数秒だけ。たとえば、髪型や、後ろに貼った好きなポスターを紹介するときです。</p></li>
+          <li><span class="n">3</span><p>向きを変えるあいだも、声は止めません。「ちょっと後ろ向くね」と声に出して、見せたら正面にもどります。</p></li>
+        </ol>
+      </section>
+
+      <section class="block">
+        <h3>よくある失敗</h3>
+        <ul class="fails">
+          <li><p class="x">後ろを向いたまま、話し続ける</p><p class="fix">数秒見せたら、顔が映る向きにもどします</p></li>
+          <li><p class="x">横を向きすぎて、顔が画面から外れる</p><p class="fix">顔の一部が映る角度までにします</p></li>
+          <li><p class="x">向きを変えるあいだ、無言になる</p><p class="fix">動くときも、声に出して伝えます</p></li>
+        </ul>
+      </section>
+
+      <div class="try"><b>ためしてみよう</b><p>体を少し斜めにして、「はじめまして」と言ってみよう。そのあと、「ちょっと後ろ向くね」と言って、振り向いてもどる練習もしてみてね。</p></div>
+
+      <nav class="pager" aria-label="テーマの移動">
+        <a class="pg prev" href="#t1"><small>前のテーマ</small><span>手元を見せて、話のきっかけにする</span></a>
+        <a class="pg next" href="#t3"><small>次のテーマ</small><span>小物やぬいぐるみで、話題をふくらませる</span></a>
+      </nav>
+    </article>
+
+    <!-- ===== テーマ3：小物・ぬいぐるみ ===== -->
+    <article class="detail" id="t3">
+      <a class="back" href="#hub"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>テーマ一覧にもどる</a>
+      <p class="d-num">テーマ 3 / 4</p>
+      <h2 tabindex="-1">小物やぬいぐるみで、話題をふくらませる</h2>
+      <p class="d-lead">お気に入りの小物やぬいぐるみは、話のきっかけになります。名前をつけて紹介したり、「今日はこの子と一緒です」と話したり。顔と一緒に映る位置に置くのがポイントです。</p>
+      <figure class="shot"><img src="images/guide3.png" width="1200" height="900" alt="左：顔の近くでぬいぐるみを見せている図。右：ぬいぐるみだけが映っている図" loading="lazy" onerror="this.parentNode.classList.add('noimg')"><figcaption>左が、お手本。右は、避けたい例です。</figcaption></figure>
+      <p class="remind">顔と声と動きがある時間のなかで、使う工夫です。</p>
+
+      <section class="block">
+        <h3>スマホの置き方のコツ</h3>
+        <ol class="tips">
+          <li><span class="n">1</span><p>画面の端や、肩のあたりに置きます。顔と物が一緒に映って、どちらも見えます。</p></li>
+          <li><span class="n">2</span><p>話の途中で手に取って、物の名前や、好きな理由を声に出して紹介します。手が動くので、画面にも動きが出ます。</p></li>
+          <li><span class="n">3</span><p>置く数は、ひとつかふたつ。多すぎると、顔より物に目が行ってしまいます。</p></li>
+        </ol>
+      </section>
+
+      <section class="block">
+        <h3>よくある失敗</h3>
+        <ul class="fails">
+          <li><p class="x">物を画面いっぱいに映して、顔が見えない</p><p class="fix">画面の端に置いて、顔が映るようにします</p></li>
+          <li><p class="x">置いたまま、何も話さない</p><p class="fix">手に取って、声に出して紹介します</p></li>
+          <li><p class="x">小物がたくさんあって、ごちゃごちゃして見える</p><p class="fix">ひとつかふたつにして、余白をつくります</p></li>
+        </ul>
+      </section>
+
+      <div class="try"><b>ためしてみよう</b><p>好きな小物をひとつ選んで、10秒で紹介してみよう。「これはね、」から始めると言いやすいよ。</p></div>
+
+      <nav class="pager" aria-label="テーマの移動">
+        <a class="pg prev" href="#t2"><small>前のテーマ</small><span>横顔・後ろ姿は、アクセントに</span></a>
+        <a class="pg next" href="#t4"><small>次のテーマ</small><span>部屋の雰囲気は、背景に少しだけ</span></a>
+      </nav>
+    </article>
+
+    <!-- ===== テーマ4：風景・部屋の雰囲気 ===== -->
+    <article class="detail" id="t4">
+      <a class="back" href="#hub"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>テーマ一覧にもどる</a>
+      <p class="d-num">テーマ 4 / 4</p>
+      <h2 tabindex="-1">部屋の雰囲気は、背景に少しだけ</h2>
+      <p class="d-lead">部屋の雰囲気や好きな景色は、顔の後ろに少し映る形なら、その人らしさが伝わる味つけになります。スマホを景色や部屋に向けて、顔が映らない時間をつくらないようにします。</p>
+      <figure class="shot"><img src="images/guide4.png" width="1200" height="900" alt="左：顔の後ろに部屋の飾りが少し映っている図。右：景色や部屋だけが映っている図" loading="lazy" onerror="this.parentNode.classList.add('noimg')"><figcaption>左が、お手本。右は、避けたい例です。</figcaption></figure>
+      <p class="remind">顔と声と動きがある時間のなかで、使う工夫です。</p>
+
+      <section class="block">
+        <h3>スマホの置き方のコツ</h3>
+        <ol class="tips">
+          <li><span class="n">1</span><p>壁を背にして座り、後ろに映したい物を1〜2個だけ置きます。好きなポスターや小さな観葉植物など、自分らしさが伝わる物で足ります。</p></li>
+          <li><span class="n">2</span><p>窓の外の景色、住所が分かる物、制服や郵便物など、居場所や個人が分かりそうな物は、画面に入らないようにします。スマホで一度映して、端まで確認します。</p></li>
+          <li><span class="n">3</span><p>景色や部屋を見せたいときは、数秒だけ。「今日はこんな空だよ」と声に出して見せたら、顔が映る向きにもどします。</p></li>
+        </ol>
+      </section>
+
+      <section class="block">
+        <h3>よくある失敗</h3>
+        <ul class="fails">
+          <li><p class="x">景色や部屋だけを映して、顔が映らない</p><p class="fix">見せるのは数秒だけにして、顔が映る向きにもどします</p></li>
+          <li><p class="x">窓の外や、住所の分かる物が映り込む</p><p class="fix">映る範囲を確認して、壁を背にします</p></li>
+          <li><p class="x">暗くて、何が映っているか分からない</p><p class="fix">明るい場所に移ります。チェックリストの「光と背景」も見てね</p></li>
+        </ul>
+      </section>
+
+      <div class="try"><b>ためしてみよう</b><p>背景を整えたら、スマホでひと通り映して、映したくない物や、居場所が分かる物がないか見てみよう。</p></div>
+
+      <nav class="pager" aria-label="テーマの移動">
+        <a class="pg prev" href="#t3"><small>前のテーマ</small><span>小物やぬいぐるみで、話題をふくらませる</span></a>
+        <a class="pg next" href="#hub"><small>おわり</small><span>テーマ一覧にもどる</span></a>
+      </nav>
+    </article>
+
+    <!-- ===== 公式LINEへの案内（どの画面でも、いちばん下に出る） ===== -->
+    <section class="ask">
+      <!-- 公式LINEのURLが決まったら、下のボタンのリンク先（href）を、そのURLに置き換える（このページでは1か所だけ） -->
+      <a class="cta" id="lineBtn" href="【LINE URL】">わからないことは<br>公式LINEで気軽に聞いてね</a>
+      <small>見せ方のことも、気軽にどうぞ。</small>
+    </section>
+
+  </main>
+
+  <footer>
+    <p>お手本は、イメージです。部屋や時間帯で、見え方は変わります。</p>
+    <p>このページは、18歳以上の方に向けた内容です。</p>
+    <p class="foot-brand">SCENE 1 ライバーズ</p>
+  </footer>
+
+</div>
+
+<script>
+(function () {
+  var SUFFIX = '｜SCENE 1 ライバーズ';
+  var TITLES = {
+    hub: '初ライブの見せ方ガイド',
+    t1: '手元を見せて、話のきっかけにする',
+    t2: '横顔・後ろ姿は、アクセントに',
+    t3: '小物やぬいぐるみで、話題をふくらませる',
+    t4: '部屋の雰囲気は、背景に少しだけ'
+  };
+  var ids = ['hub', 't1', 't2', 't3', 't4'];
+  var views = {};
+  ids.forEach(function (id) { views[id] = document.getElementById(id); });
+  var current = null;
+  var hubY = 0;
+
+  // 画像がすでに読み込みに失敗していたら、枠だけ出す
+  Array.prototype.forEach.call(document.querySelectorAll('img'), function (img) {
+    if (img.complete && img.naturalWidth === 0) { img.parentNode.classList.add('noimg'); }
+  });
+
+  function route() {
+    var id = (location.hash || '').replace('#', '');
+    if (!views[id]) { id = 'hub'; }
+    if (id === current) { return; }
+    if (current === 'hub') { hubY = window.scrollY; }
+    ids.forEach(function (k) { views[k].hidden = (k !== id); });
+    document.querySelector('.hero').classList.toggle('is-detail', id !== 'hub');
+    document.title = (id === 'hub' ? TITLES.hub : TITLES[id] + '｜見せ方ガイド') + SUFFIX;
+    if (id === 'hub') {
+      window.scrollTo(0, current === null ? 0 : hubY);
+    } else {
+      window.scrollTo(0, 0);
+      var h = views[id].querySelector('h2');
+      if (h) { h.focus({ preventScroll: true }); }
+    }
+    current = id;
+  }
+
+  // ページ内のリンクは、自分で切りかえる（ブラウザの自動スクロールとぶつからないように）
+  try { history.scrollRestoration = 'manual'; } catch (e) {}
+  document.addEventListener('click', function (e) {
+    var a = e.target.closest ? e.target.closest('a[href^="#"]') : null;
+    if (!a || e.defaultPrevented || e.button || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) { return; }
+    e.preventDefault();
+    var href = a.getAttribute('href');
+    if (location.hash !== href) { history.pushState(null, '', href); }
+    route();
+  });
+  window.addEventListener('popstate', route);
+  window.addEventListener('hashchange', route);
+  route();
+
+  // URLが入るまでは、押しても何も起きないようにする
+  var lineBtn = document.getElementById('lineBtn');
+  lineBtn.addEventListener('click', function (e) {
+    if (!/^https?:\/\//.test(lineBtn.getAttribute('href') || '')) { e.preventDefault(); }
+  });
+})();
+</script>
+</body>
+</html>

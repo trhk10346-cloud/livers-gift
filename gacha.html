@@ -1,0 +1,558 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light">
+<meta name="theme-color" content="#ffffff">
+<meta name="robots" content="noindex">
+<meta name="description" content="何を話すか迷ったときに、ガチャで話すネタを1つ引ける、初ライブ向けのページです。">
+<title>初ライブのネタガチャ｜SCENE 1 ライバーズ</title>
+<style>
+  :root {
+    --blue: #2F6FE4;
+    --blue-dark: #2358B8;
+    --blue-soft: #EAF2FF;
+    --blue-line: #CFE0FB;
+    --navy: #1F2A44;
+    --gray: #5A6B85;
+    --bg: #F6F9FF;
+    --white: #FFFFFF;
+    color-scheme: light;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    background: var(--bg);
+    color: var(--navy);
+    font-family: "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Noto Sans JP", "Yu Gothic", "Meiryo", sans-serif;
+    font-size: 17px;
+    line-height: 1.65;
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+  .sr {
+    position: absolute; width: 1px; height: 1px; overflow: hidden;
+    clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap;
+  }
+  .page { max-width: 560px; margin: 0 auto; }
+
+  /* ---- ヘッダー ---- */
+  .hero { padding: calc(20px + env(safe-area-inset-top)) 20px 22px; background: linear-gradient(180deg, #EEF4FF 0%, var(--bg) 100%); }
+  .tabs { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+  .tab {
+    text-align: center; padding: 10px 6px; border-radius: 999px; white-space: nowrap;
+    border: 1.5px solid var(--blue-line); background: var(--white); color: var(--gray);
+    font-size: 14px; font-weight: 600; text-decoration: none; line-height: 1.3;
+  }
+  .tab[aria-current="page"] { background: var(--blue); border-color: var(--blue); color: #fff; }
+  .tab:last-child:nth-child(odd) { grid-column: 1 / -1; }
+  .tab:focus-visible { outline: 3px solid var(--navy); outline-offset: 2px; }
+  .brand {
+    display: inline-block; margin-top: 20px; padding: 6px 14px; border-radius: 999px;
+    background: var(--white); border: 1.5px solid var(--blue-line);
+    color: var(--blue); font-size: 13px; font-weight: 600; letter-spacing: .04em;
+  }
+  h1 { margin-top: 14px; font-size: clamp(25px, 7.4vw, 32px); line-height: 1.3; font-weight: 700; letter-spacing: .01em; }
+  h1 em { font-style: normal; color: var(--blue); }
+  .intro { margin-top: 12px; font-size: 15px; color: var(--gray); }
+
+  main { padding: 18px 16px 8px; }
+  .step-label { margin: 0 4px 10px; font-size: 13px; font-weight: 700; color: var(--blue-dark); letter-spacing: .04em; }
+
+  /* ---- カテゴリ選び ---- */
+  .cats { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 22px; }
+  .catbtn {
+    display: flex; flex-direction: column; gap: 2px; min-height: 92px;
+    padding: 12px 12px 12px 14px; background: var(--white);
+    border: 2px solid var(--blue-line); border-radius: 18px; cursor: pointer;
+    transition: background-color .15s ease, border-color .15s ease;
+  }
+  .catbtn:active { background: var(--blue-soft); }
+  .catbtn .n { font-size: 12px; font-weight: 700; color: var(--blue); }
+  .catbtn .t { font-size: 16px; font-weight: 700; line-height: 1.3; }
+  .catbtn .d { font-size: 12.5px; color: var(--gray); line-height: 1.4; }
+  .catbtn .t, .r-text, .favbody p { text-wrap: balance; word-break: auto-phrase; }
+  .intro, .stage-msg { text-wrap: pretty; word-break: auto-phrase; }
+  .catbtn.on { background: var(--blue-soft); border-color: var(--blue); box-shadow: inset 0 0 0 1px var(--blue); }
+  .catbtn:has(.sr:focus-visible) { outline: 3px solid var(--blue); outline-offset: 3px; }
+
+  /* ---- ガチャの舞台 ---- */
+  .stage {
+    position: relative; min-height: 300px; padding: 22px 16px;
+    display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center;
+    background: var(--white); border: 1.5px solid var(--blue-line); border-radius: 24px;
+    box-shadow: 0 6px 18px rgba(47, 111, 228, .06); overflow: hidden;
+  }
+  .stage-msg { margin-top: 18px; font-size: 14.5px; color: var(--gray); }
+
+  .capsule { position: relative; width: 132px; height: 132px; }
+  .capsule[hidden] { display: none; }
+  .cap-top, .cap-bot { position: absolute; left: 0; width: 132px; height: 66px; display: block; }
+  .cap-top { top: 0; background: var(--blue); border: 3px solid var(--blue); border-bottom: none; border-radius: 66px 66px 0 0; transform-origin: 0 100%; transition: transform .26s ease, opacity .26s ease; }
+  .cap-top::after { content: ""; position: absolute; left: 24px; top: 14px; width: 30px; height: 14px; border-radius: 50%; background: rgba(255, 255, 255, .45); transform: rotate(-24deg); }
+  .cap-bot { bottom: 0; background: var(--white); border: 3px solid var(--blue); border-top: 3px solid var(--blue-dark); border-radius: 0 0 66px 66px; }
+  .capsule.spinning { animation: roll 1s cubic-bezier(.3, .1, .3, 1); }
+  .capsule.open { opacity: 0; transition: opacity .26s ease .06s; }
+  .capsule.open .cap-top { transform: translate(-6px, -26px) rotate(-28deg); opacity: 0; }
+  @keyframes roll {
+    0%   { transform: rotate(0) scale(1); }
+    18%  { transform: rotate(-12deg) scale(1.05); }
+    55%  { transform: rotate(400deg) scale(1.1); }
+    100% { transform: rotate(720deg) scale(1); }
+  }
+
+  .result { width: 100%; animation: pop .42s cubic-bezier(.2, 1.3, .4, 1); }
+  .result[hidden] { display: none; }
+  @keyframes pop { 0% { opacity: 0; transform: scale(.6) translateY(14px); } 100% { opacity: 1; transform: none; } }
+  .chip { display: inline-block; padding: 3px 12px; border-radius: 999px; background: var(--blue-soft); border: 1.5px solid var(--blue-line); color: var(--blue-dark); font-size: 12.5px; font-weight: 700; }
+  .r-text { margin: 14px 4px 6px; font-size: clamp(20px, 5.8vw, 24px); line-height: 1.6; font-weight: 700; letter-spacing: .01em; }
+  .blank { color: var(--blue); }
+  .r-hint { font-size: 13px; color: var(--gray); }
+  .fav {
+    margin-top: 16px; display: inline-flex; align-items: center; gap: 8px;
+    min-height: 48px; padding: 8px 20px; border-radius: 999px;
+    background: var(--white); border: 2px solid var(--blue-line); color: var(--navy);
+    font: inherit; font-size: 15px; font-weight: 700; cursor: pointer;
+  }
+  .fav svg { width: 20px; height: 20px; stroke: var(--blue); stroke-width: 2.2; fill: none; stroke-linejoin: round; }
+  .fav[aria-pressed="true"] { background: var(--blue-soft); border-color: var(--blue); }
+  .fav[aria-pressed="true"] svg { fill: var(--blue); }
+  .fav:active { background: var(--blue-soft); }
+  .fav:focus-visible, .spin:focus-visible, .rm:focus-visible { outline: 3px solid var(--blue); outline-offset: 3px; }
+
+  .spin {
+    display: block; width: 100%; margin-top: 14px; min-height: 62px; padding: 16px;
+    border: none; border-radius: 18px; background: var(--blue); color: #fff;
+    font: inherit; font-size: 19px; font-weight: 700; letter-spacing: .04em; cursor: pointer;
+    box-shadow: 0 8px 18px rgba(47, 111, 228, .22);
+  }
+  .spin:active { background: var(--blue-dark); }
+  .spin:disabled { opacity: .65; cursor: default; }
+
+  /* ---- お気に入り ---- */
+  .favs { margin-top: 28px; }
+  .favs-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 0 4px; }
+  .favs-head h2 { font-size: 19px; line-height: 1.3; }
+  .favs-head h2 span { margin-left: 6px; font-size: 13px; font-weight: 700; color: var(--blue); background: var(--blue-soft); padding: 2px 10px; border-radius: 999px; vertical-align: 2px; }
+  .favs-empty { margin: 10px 4px 0; font-size: 14px; color: var(--gray); }
+  .favlist { list-style: none; margin-top: 12px; display: grid; gap: 10px; }
+  .favitem { display: flex; align-items: flex-start; gap: 8px; padding: 14px 8px 14px 16px; background: var(--white); border: 1.5px solid var(--blue-line); border-radius: 18px; }
+  .favbody { flex: 1; min-width: 0; }
+  .favbody .chip { font-size: 11.5px; padding: 2px 10px; }
+  .favbody p { margin-top: 6px; font-size: 15.5px; line-height: 1.6; font-weight: 600; }
+  .rm { flex: none; width: 44px; height: 44px; border-radius: 50%; background: none; border: none; color: var(--gray); font: inherit; font-size: 22px; line-height: 1; cursor: pointer; }
+  .rm:active { background: var(--blue-soft); }
+  .linklike { padding: 8px 14px; background: none; border: 1.5px solid var(--blue-line); border-radius: 999px; color: var(--gray); font: inherit; font-size: 13px; cursor: pointer; }
+  .linklike:active { background: var(--blue-soft); }
+  .linklike[hidden] { display: none; }
+
+  /* ---- 行き来・公式LINE ---- */
+  .linkcard {
+    display: flex; align-items: center; justify-content: space-between; gap: 12px;
+    margin: 26px 0 16px; padding: 16px 18px; background: var(--white);
+    border: 1.5px solid var(--blue-line); border-radius: 20px; text-decoration: none; color: var(--navy);
+    box-shadow: 0 6px 18px rgba(47, 111, 228, .06);
+  }
+  .linkcard:active { background: var(--blue-soft); }
+  .linkcard:focus-visible { outline: 3px solid var(--blue); outline-offset: 3px; }
+  .linkcard + .linkcard { margin-top: 0; }
+  .lc-label { display: block; font-size: 12.5px; font-weight: 600; color: var(--gray); }
+  .lc-title { display: block; margin-top: 2px; font-size: 17px; font-weight: 700; }
+  .lc-arrow { flex: none; width: 34px; height: 34px; border-radius: 50%; background: var(--blue); display: flex; align-items: center; justify-content: center; }
+  .lc-arrow svg { width: 16px; height: 16px; stroke: #fff; stroke-width: 3; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+
+  .ask { padding: 8px 4px 4px; text-align: center; }
+  .cta {
+    display: block; width: 100%; padding: 18px 16px; border-radius: 18px;
+    background: var(--blue); color: #fff; text-decoration: none;
+    font-size: 17px; font-weight: 700; line-height: 1.45;
+    box-shadow: 0 8px 18px rgba(47, 111, 228, .22);
+  }
+  .cta:active { background: var(--blue-dark); }
+  .cta:focus-visible { outline: 3px solid var(--navy); outline-offset: 3px; }
+  .ask small { display: block; margin-top: 10px; font-size: 13px; color: var(--gray); }
+
+  footer { padding: 22px 20px 36px; text-align: center; font-size: 12.5px; color: var(--gray); }
+  footer p + p { margin-top: 4px; }
+  .foot-brand { margin-top: 16px; font-weight: 700; color: var(--navy); letter-spacing: .02em; }
+  noscript p { margin: 16px; padding: 12px 14px; background: var(--blue-soft); border-radius: 12px; font-size: 14px; }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { transition: none !important; animation: none !important; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <header class="hero">
+    <nav class="tabs" aria-label="ページの切りかえ">
+      <a class="tab" href="index.html">チェックリスト</a>
+      <a class="tab" href="gacha.html" aria-current="page">ネタガチャ</a>
+      <a class="tab" href="guide.html">見せ方ガイド</a>
+      <a class="tab" href="prompts.html">AIプロンプト</a>
+      <a class="tab" href="script.html">30分台本</a>
+    </nav>
+    <span class="brand">SCENE 1 ライバーズ</span>
+    <h1>初ライブの<br><em>ネタガチャ</em></h1>
+    <p class="intro">何を話すか迷ったら、ガチャを回してみてね。出たネタは、そのまま声に出して言ってみるのもアリ。自分の言葉に直しても大丈夫です。</p>
+  </header>
+
+  <noscript><p>ガチャを回すには、JavaScriptをオンにしてください。</p></noscript>
+
+  <main>
+
+    <p class="step-label">① カテゴリを選ぶ</p>
+    <div class="cats" role="radiogroup" aria-label="ネタのカテゴリ" id="cats"></div>
+
+    <p class="step-label">② ガチャを回す</p>
+    <section class="stage" aria-live="polite">
+      <div class="capsule" id="capsule" aria-hidden="true"><span class="cap-top"></span><span class="cap-bot"></span></div>
+      <p class="stage-msg" id="stageMsg">カテゴリを選んで、ガチャを回してね。</p>
+      <article class="result" id="result" hidden>
+        <span class="chip" id="rChip"></span>
+        <p class="r-text" id="rText"></p>
+        <p class="r-hint">そのまま言っても、自分の言葉に直してもOK。</p>
+        <button class="fav" id="favBtn" type="button" aria-pressed="false">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.5l2.6 5.4 5.9.8-4.3 4.1 1 5.9L12 16.9l-5.2 2.8 1-5.9-4.3-4.1 5.9-.8L12 3.5z"/></svg>
+          <span id="favLabel">お気に入りに保存</span>
+        </button>
+      </article>
+    </section>
+    <button class="spin" id="spin" type="button">ガチャを回す</button>
+
+    <section class="favs" aria-labelledby="favTitle">
+      <div class="favs-head">
+        <h2 id="favTitle">お気に入り<span id="favCount">0</span></h2>
+        <button class="linklike" id="favClear" type="button" hidden>すべて削除</button>
+      </div>
+      <p class="favs-empty" id="favEmpty">気に入ったネタは、☆で保存できます。</p>
+      <ul class="favlist" id="favList"></ul>
+    </section>
+
+    <a class="linkcard" href="index.html">
+      <span><span class="lc-label">準備はできてる？</span><span class="lc-title">初ライブ前の準備チェックリスト</span></span>
+      <span class="lc-arrow" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg></span>
+    </a>
+    <a class="linkcard" href="guide.html">
+      <span><span class="lc-label">見せ方に迷ったら</span><span class="lc-title">初ライブの見せ方ガイド</span></span>
+      <span class="lc-arrow" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg></span>
+    </a>
+    <a class="linkcard" href="prompts.html">
+      <span><span class="lc-label">AIに相談してみるなら</span><span class="lc-title">AIで配信を考えるプロンプト集</span></span>
+      <span class="lc-arrow" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg></span>
+    </a>
+    <a class="linkcard" href="script.html">
+      <span><span class="lc-label">本番の流れを決めたいなら</span><span class="lc-title">初ライブ30分台本</span></span>
+      <span class="lc-arrow" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg></span>
+    </a>
+
+    <section class="ask">
+      <!-- 公式LINEのURLが決まったら、下のボタンのリンク先（href）を、そのURLに置き換える（このページでは1か所だけ） -->
+      <a class="cta" id="lineBtn" href="【LINE URL】">わからないことは<br>公式LINEで気軽に聞いてね</a>
+      <small>ネタが合わないときも、気軽にどうぞ。</small>
+    </section>
+
+  </main>
+
+  <footer>
+    <p>「◯◯」のところは、自分の言葉に置きかえてね。</p>
+    <p>本名・住所・勤務先など、個人が特定される情報は話さないでね。</p>
+    <p id="saveNote">お気に入りは、この端末のブラウザに保存されます。</p>
+    <p>このページは、18歳以上の方に向けた内容です。</p>
+    <p class="foot-brand">SCENE 1 ライバーズ</p>
+  </footer>
+
+</div>
+
+<script>
+(function () {
+  var DATA = [
+    {
+      id: 'start', name: '始まりのひと言', desc: '最初のあいさつ・自己紹介',
+      items: [
+        'はじめまして、◯◯です！初ライブです。緊張してるけど、よろしくね。',
+        '初ライブです、来てくれてありがとう！ゆっくり話していくので、のんびり見ていってね。',
+        'こんばんは〜、◯◯です。今日がはじめての配信です。見つけてくれてありがとう。',
+        'ニックネームは◯◯です。好きなものは◯◯。よろしくお願いします！',
+        'はじめて配信ボタンを押しました。心臓ドキドキしてます。ちょっとだけ付き合ってね。',
+        '今日は「ちょっとやってみたい」が勝って、配信を始めました。よろしくね。',
+        '聞こえてるかな？声、ちゃんと届いてるといいな。',
+        'はじめまして！今日は10分くらい、ゆるっとおしゃべりします。',
+        'こんにちは！◯◯です。今日は、自己紹介だけでもして帰りたいと思ってます。',
+        '見に来てくれた人、ありがとう！名前は◯◯、好きな食べ物は◯◯です。',
+        '初ライブなので、うまく話せないかも。でも、最後までちゃんと話します。',
+        '今日は、ライブってどんな感じか知りたくて始めてみました。一緒に体験してもらえるとうれしいです。',
+        'はじめまして。顔を出して話すのは緊張するけど、ちょっとずつ慣れていきたいです。',
+        '今日は、自己紹介と、好きなものの話をします。最後まで聞いてくれたらうれしいな。',
+        'こんばんは！今日が初ライブの◯◯です。まず深呼吸させてください。……ふぅ。よし、始めます。',
+        'はじめまして！今日のテーマは「自己紹介」です。まずは名前から。◯◯です！',
+        'ふらっと来てくれた人も、ありがとう。気軽に見ていってね。',
+        '手を振ってみます！ひらひら〜。来てくれてありがとう！'
+      ]
+    },
+    {
+      id: 'theme', name: '今日のテーマ', desc: '何を話すか決まらないとき',
+      items: [
+        '今日のテーマは「最近ハマっていること」。話し出すと止まらないかも！',
+        '今日のテーマは「今日あった小さな出来事」。ほんとに小さいやつ、話します。',
+        '今日のテーマは「好きな食べ物ベスト3」。みんなのも教えてね。',
+        '今日のテーマは「休みの日の過ごし方」。みんなはどう過ごしてる？',
+        '今日のテーマは「最近見てよかったもの」。ジャンルは決めずに話してみます。',
+        '今日のテーマは「子どものころ好きだったもの」。懐かしいって人、いるかな？',
+        '今日のテーマは「朝のルーティン」。みんなの朝も気になる！',
+        '今日のテーマは「ちょっとした相談」。今夜の晩ごはんで迷ってるので、聞いてください。',
+        '今日のテーマは「やってみたいこと」。いつかやりたいことを3つ話します。',
+        '今日のテーマは「好きな場所」。行ったことがない場所でもOKにします。',
+        '今日のテーマは「最近聞いている音楽」。ジャンルがバラバラだけど、話します。',
+        '今日のテーマは「ささやかな幸せ」。小さいけど好きな瞬間を紹介します。',
+        '今日のテーマは「どっち派？」。コーヒー派かお茶派か、みんなも教えてね。',
+        '今日のテーマは「最近のお気に入り」。小物でも食べ物でも、なんでもあり。',
+        '今日のテーマは「今のマイブーム」。昨日ハマったばっかりなんだけどね。',
+        '今日のテーマは「あるある話」。「わかる〜」ってなるかな？',
+        '今日のテーマは「ライブでやってみたいこと」。まず3つ言ってみます。',
+        '今日のテーマは「今日の気分」。天気と気分を、一緒に実況してみます。'
+      ]
+    },
+    {
+      id: 'quiet', name: '沈黙対策', desc: 'コメントがないとき',
+      items: [
+        'コメントがなくても、今日は話しちゃいます。まずは今日の天気から。',
+        'いま手元にあるものを、ひとつ紹介します。実はこれ、けっこう気に入ってて……。',
+        'みんなは朝型？夜型？ちなみに、私は夜型です。',
+        'ここでクイズです！今日の私の晩ごはんは何でしょう？ヒントは……あったかいです。',
+        '今日いちばん笑ったことを思い出してみます。……あ、あれだ。',
+        'ちょっと立ち上がって、伸びをしてみます。ん〜っ。はい、戻りました。',
+        'いま見てくれてる人、どんな気分？ひとことで教えてね。',
+        '話題が止まったので、好きな食べ物を5秒で言います。いくよ、せーの！',
+        'ちょっとだけ、今日のひとり反省会をします。今日は、これを頑張りました。',
+        '見てくれている人に質問です。最近、ちょっとうれしかったことは何ですか？',
+        'ここまでの感想を自分で言います。緊張はするけど、意外と楽しい。',
+        'あと少し、何を話そうかな。じゃあ、最近の癒やしの話をします。',
+        '好きな色を聞いてもいいですか？ちなみに私は青が好きです。',
+        'いまのうちに、次のライブの予告をしておきます。次回は◯◯の話をします。',
+        '見てくれてる人、猫派？犬派？どっちでもない派もOKです。',
+        'ちょっと深呼吸しよう。吸って〜、吐いて〜。よし、続けます。',
+        '静かだったので、私から質問します。「今日の気分を色にたとえると？」私は水色です。',
+        'いま「何話そうかな」って考えてます。声に出して考えるのも、ライブのうちだよね。'
+      ]
+    },
+    {
+      id: 'reply', name: 'コメントへの返し方', desc: '来てくれた人への返事',
+      items: [
+        '◯◯さん、いらっしゃい！来てくれてありがとう。',
+        '初見さん、はじめまして！ゆっくり見ていってね。',
+        'コメントありがとう！うれしい。読ませてもらうね。',
+        '◯◯さん、こんばんは！今日はどんな一日でしたか？',
+        'それ、わかる〜！◯◯さんは、どんなときにそう思う？',
+        'いい質問！ちょっと考えるね。……うーん、私は◯◯かな。',
+        'へえ、そうなんだ！もうちょっと聞いてもいい？それって、いつからなの？',
+        '◯◯さんのコメント、ちゃんと見てるよ。ありがとう。',
+        'みんなにも聞いてみたい！同じ人、いるかな？',
+        'おお、それは気になる。どんな感じか教えてもらえる？',
+        'なるほど！そういう考え方もあるんだね。勉強になります。',
+        '◯◯さん、また来てくれたんだね。うれしいな。',
+        'ありがとう！そう言ってもらえると、ちょっと照れます。',
+        'うまく答えられるかわからないけど、考えてみるね。',
+        'それ、あとでもう少し詳しく話してもいい？',
+        'ごめん、コメントを読み逃したかも。もう一回、送ってくれる？',
+        'ちょっと待ってね、いま読んでます！……お待たせ。',
+        '聞いてくれてありがとう。ほかにも聞きたいことがあったら、どうぞ。'
+      ]
+    }
+  ];
+
+  var FAV_KEY = 'scene1-livers-gacha-favs-v1';
+  var calm = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+
+  var catsEl = document.getElementById('cats');
+  var capsule = document.getElementById('capsule');
+  var stageMsg = document.getElementById('stageMsg');
+  var result = document.getElementById('result');
+  var rChip = document.getElementById('rChip');
+  var rText = document.getElementById('rText');
+  var favBtn = document.getElementById('favBtn');
+  var favLabel = document.getElementById('favLabel');
+  var spin = document.getElementById('spin');
+  var favCount = document.getElementById('favCount');
+  var favEmpty = document.getElementById('favEmpty');
+  var favList = document.getElementById('favList');
+  var favClear = document.getElementById('favClear');
+  var saveNote = document.getElementById('saveNote');
+  var lineBtn = document.getElementById('lineBtn');
+
+  var current = DATA[0];
+  var shown = null;      // いま出ているネタ {c, t}
+  var lastIndex = {};    // カテゴリごとに、前回出たネタ（続けて同じものを出さない）
+  var busy = false;
+  var favs = [];
+
+  // ---- カテゴリのボタンを作る ----
+  DATA.forEach(function (cat, i) {
+    var label = document.createElement('label');
+    label.className = 'catbtn' + (i === 0 ? ' on' : '');
+    var input = document.createElement('input');
+    input.type = 'radio'; input.name = 'cat'; input.value = cat.id; input.className = 'sr';
+    if (i === 0) input.checked = true;
+    var n = document.createElement('span'); n.className = 'n'; n.textContent = String(i + 1);
+    var t = document.createElement('span'); t.className = 't'; t.textContent = cat.name;
+    var d = document.createElement('span'); d.className = 'd'; d.textContent = cat.desc;
+    label.appendChild(input); label.appendChild(n); label.appendChild(t); label.appendChild(d);
+    catsEl.appendChild(label);
+    input.addEventListener('change', function () {
+      if (busy) { return; }
+      current = cat;
+      Array.prototype.forEach.call(catsEl.children, function (el) { el.classList.remove('on'); });
+      label.classList.add('on');
+      resetStage();
+    });
+  });
+
+  function resetStage() {
+    shown = null;
+    result.hidden = true;
+    capsule.hidden = false;
+    capsule.className = 'capsule';
+    stageMsg.hidden = false;
+    stageMsg.textContent = '「' + current.name + '」のガチャを回してみよう。';
+    spin.textContent = 'ガチャを回す';
+  }
+
+  // ---- ネタの表示（◯◯だけ青くする） ----
+  function setText(el, text) {
+    el.textContent = '';
+    var parts = text.split('◯◯');
+    parts.forEach(function (p, i) {
+      el.appendChild(document.createTextNode(p));
+      if (i < parts.length - 1) {
+        var s = document.createElement('span');
+        s.className = 'blank'; s.textContent = '◯◯';
+        el.appendChild(s);
+      }
+    });
+  }
+
+  function pick() {
+    var items = current.items;
+    var i = Math.floor(Math.random() * items.length);
+    if (items.length > 1 && i === lastIndex[current.id]) { i = (i + 1 + Math.floor(Math.random() * (items.length - 1))) % items.length; }
+    lastIndex[current.id] = i;
+    return items[i];
+  }
+
+  function showResult(text) {
+    shown = { c: current.id, t: text };
+    rChip.textContent = current.name;
+    setText(rText, text);
+    syncFavBtn();
+    stageMsg.hidden = true;
+    capsule.hidden = true;
+    result.hidden = false;
+    // アニメーションをもう一度かける
+    result.style.animation = 'none'; void result.offsetWidth; result.style.animation = '';
+    spin.textContent = 'もう一回';
+  }
+
+  function draw() {
+    if (busy) { return; }
+    busy = true;
+    spin.disabled = true;
+    result.hidden = true;
+    stageMsg.hidden = true;
+    capsule.hidden = false;
+    capsule.className = 'capsule';
+    var text = pick();
+    if (calm) { showResult(text); busy = false; spin.disabled = false; return; }
+    void capsule.offsetWidth;
+    capsule.classList.add('spinning');
+    setTimeout(function () {
+      capsule.classList.remove('spinning');
+      capsule.classList.add('open');
+      setTimeout(function () {
+        showResult(text);
+        busy = false;
+        spin.disabled = false;
+      }, 300);
+    }, 1000);
+  }
+
+  spin.addEventListener('click', draw);
+
+  // ---- お気に入り（端末に保存） ----
+  function loadFavs() {
+    try {
+      var raw = localStorage.getItem(FAV_KEY);
+      var arr = raw ? JSON.parse(raw) : [];
+      if (Array.isArray(arr)) {
+        favs = arr.filter(function (f) { return f && typeof f.c === 'string' && typeof f.t === 'string'; });
+      }
+    } catch (e) {}
+  }
+  function saveFavs() {
+    try { localStorage.setItem(FAV_KEY, JSON.stringify(favs)); }
+    catch (e) { saveNote.textContent = 'このブラウザでは保存できないため、閉じるとお気に入りは消えます。'; }
+  }
+  function favIndex(c, t) {
+    for (var i = 0; i < favs.length; i++) { if (favs[i].c === c && favs[i].t === t) { return i; } }
+    return -1;
+  }
+  function catName(id) {
+    for (var i = 0; i < DATA.length; i++) { if (DATA[i].id === id) { return DATA[i].name; } }
+    return '';
+  }
+  function syncFavBtn() {
+    var on = shown ? favIndex(shown.c, shown.t) !== -1 : false;
+    favBtn.setAttribute('aria-pressed', on ? 'true' : 'false');
+    favLabel.textContent = on ? 'お気に入りに保存ずみ' : 'お気に入りに保存';
+  }
+  function renderFavs() {
+    favCount.textContent = favs.length;
+    favEmpty.hidden = favs.length > 0;
+    favClear.hidden = favs.length === 0;
+    favList.textContent = '';
+    favs.forEach(function (f) {
+      var li = document.createElement('li');
+      li.className = 'favitem';
+      var body = document.createElement('div'); body.className = 'favbody';
+      var chip = document.createElement('span'); chip.className = 'chip'; chip.textContent = catName(f.c);
+      var p = document.createElement('p'); setText(p, f.t);
+      body.appendChild(chip); body.appendChild(p);
+      var rm = document.createElement('button');
+      rm.type = 'button'; rm.className = 'rm'; rm.textContent = '×';
+      rm.setAttribute('aria-label', 'お気に入りから外す：' + f.t);
+      rm.addEventListener('click', function () {
+        var i = favIndex(f.c, f.t);
+        if (i !== -1) { favs.splice(i, 1); }
+        saveFavs(); renderFavs(); syncFavBtn();
+      });
+      li.appendChild(body); li.appendChild(rm);
+      favList.appendChild(li);
+    });
+  }
+
+  favBtn.addEventListener('click', function () {
+    if (!shown) { return; }
+    var i = favIndex(shown.c, shown.t);
+    if (i === -1) { favs.unshift({ c: shown.c, t: shown.t }); } else { favs.splice(i, 1); }
+    saveFavs(); renderFavs(); syncFavBtn();
+  });
+
+  favClear.addEventListener('click', function () {
+    if (!window.confirm('お気に入りをすべて削除します。よろしいですか？')) { return; }
+    favs = [];
+    saveFavs(); renderFavs(); syncFavBtn();
+  });
+
+  // URLが入るまでは、押しても何も起きないようにする
+  lineBtn.addEventListener('click', function (e) {
+    if (!/^https?:\/\//.test(lineBtn.getAttribute('href') || '')) { e.preventDefault(); }
+  });
+
+  loadFavs();
+  renderFavs();
+  resetStage();
+  stageMsg.textContent = 'カテゴリを選んで、ガチャを回してね。';
+})();
+</script>
+</body>
+</html>
