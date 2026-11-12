@@ -172,6 +172,11 @@
 
   .banner { margin-top: 12px; padding: 12px 16px; border-radius: 16px; background: var(--navy); color: #fff; font-size: calc(17px * var(--s)); font-weight: 700; line-height: 1.5; text-align: center; }
   .banner.switch { background: var(--blue); }
+  .startbox { margin-top: 12px; text-align: center; }
+  .startbox .ctl { width: 100%; }
+  .startbox p { margin-top: 6px; font-size: 13px; color: var(--gray); }
+  .tohint { margin-top: 12px; padding: 12px 14px; background: var(--blue-soft); border-radius: 14px; font-size: 14px; line-height: 1.65; }
+  .tohint .act { margin-top: 8px; }
 
   .now { margin-top: 12px; padding: 18px 16px 16px; background: var(--white); border: 2px solid var(--blue); border-radius: 26px; box-shadow: 0 8px 22px rgba(47, 111, 228, .1); }
   .now-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
@@ -308,12 +313,12 @@
         <label class="mode" data-mode="pre">
           <input class="sr" type="radio" name="mode" value="pre">
           <span class="dot" aria-hidden="true"></span>
-          <span><b>スマホ1台だけ</b><span class="mname">ライブ前に確認するモード</span><p>台本を短い要点にまとめて見ます。スクショやメモに残して、ライブの前に声に出して読んでおこう。</p></span>
+          <span><b>スマホ1台だけ</b><span class="mname">ライブ前に確認するモード</span><p>台本を短い要点にまとめて見ます。スクショやメモに残して、ライブの前に声に出して読んでおこう。このモードには、タイマー（スタートボタン）はありません。</p></span>
         </label>
         <label class="mode" data-mode="live">
           <input class="sr" type="radio" name="mode" value="live">
           <span class="dot" aria-hidden="true"></span>
-          <span><b>2台目のスマホやタブレットがある</b><span class="mname">ライブ中に横で見るモード</span><p>30分のタイマーつきで、いまどのパートかが大きく出ます。配信に使わない画面を、横に置いて見てね。</p></span>
+          <span><b>2台目のスマホやタブレットがある</b><span class="mname">ライブ中に横で見るモード</span><p>30分のタイマーつきで、いまどのパートかが大きく出ます。配信に使わない画面を、横に置いて見てね。「スタート」を押すと、30分のタイマーが動き出します。</p></span>
         </label>
       </div>
       <p class="mode-err" id="modeErr" role="alert" hidden>どちらで使うか、ひとつ選んでね。</p>
@@ -354,6 +359,10 @@
       <div id="viewPre" hidden>
         <h2 class="v-title">ライブ前に確認する台本</h2>
         <p class="v-lead">ニックネーム：<b id="whoName"></b>／今日のテーマ：<b id="whoTheme"></b></p>
+        <div class="tohint">
+          <p>30分のタイマー（スタートボタン）を使いたいときは、「ライブ中に横で見るモード」に切りかえてね。</p>
+          <button class="act ghost" id="toLive" type="button">タイマーつきのモードに切りかえる</button>
+        </div>
         <div class="memo">
           <b>覚えるコツ</b>
           <ul>
@@ -386,6 +395,11 @@
           <div class="segs" id="segs"></div>
         </div>
         <div class="banner" id="banner" role="status" hidden></div>
+
+        <div class="startbox" id="startBox">
+          <button class="ctl main" id="tPrimaryTop" type="button">スタート</button>
+          <p id="startHint">押すと、30分のタイマーが動き出します。</p>
+        </div>
 
         <article class="now" id="now">
           <div class="now-head"><span class="chip" id="nowChip">じゅんび中</span><span class="range" id="nowRange"></span></div>
@@ -428,8 +442,8 @@
 
     <!-- ===== 公式LINEへの案内（どの画面でも、いちばん下に出る） ===== -->
     <section class="ask">
-      <!-- 公式LINEのURLが決まったら、下のボタンのリンク先（href）を、そのURLに置き換える（このページでは1か所だけ） -->
-      <a class="cta" id="lineBtn" href="【LINE URL】">わからないことは<br>公式LINEで気軽に聞いてね</a>
+      <!-- ライバーズの公式LINEのURL。変えるときは、下のボタンのリンク先（href）を直す（このページでは1か所だけ） -->
+      <a class="cta" id="lineBtn" href="https://lin.ee/980fgAi">わからないことは<br>公式LINEで気軽に聞いてね</a>
       <small>台本のことも、気軽にどうぞ。</small>
     </section>
 
@@ -905,7 +919,8 @@
     name: document.getElementById('nowName'), tPart: document.getElementById('tPart'), points: document.getElementById('nowPoints'), says: document.getElementById('nowSays'),
     bridge: document.getElementById('nowBridge'), netaBtn: document.getElementById('netaBtn'), netaOut: document.getElementById('netaOut'), next: document.getElementById('nowNext'),
     finish: document.getElementById('finish'), primary: document.getElementById('tPrimary'), nextBtn: document.getElementById('tNext'), resetBtn: document.getElementById('tReset'),
-    wake: document.getElementById('wakeNote')
+    wake: document.getElementById('wakeNote'),
+    primaryTop: document.getElementById('tPrimaryTop'), startHint: document.getElementById('startHint')
   };
 
   // 上のバー（5つのパート）
@@ -987,6 +1002,8 @@
       L.banner.hidden = true;
     }
     L.primary.textContent = done ? 'もう一回' : running ? '一時停止' : (sec > 0 ? 'さいかい' : 'スタート');
+    L.primaryTop.textContent = L.primary.textContent;
+    L.startHint.hidden = running || sec > 0 || done;
     L.nextBtn.disabled = done;
     L.resetBtn.disabled = (!running && sec === 0);
   }
@@ -1021,9 +1038,15 @@
     live.acc = target * 1000; if (live.running) { live.start = Date.now(); }
     saveTimer(); tick();
   }
-  L.primary.addEventListener('click', function () {
+  function onPrimary() {
     if (live.finished || live.idx >= 5) { resetLive(true); return; }
     if (live.running) { pauseLive(); } else { startLive(); }
+  }
+  L.primary.addEventListener('click', onPrimary);
+  L.primaryTop.addEventListener('click', onPrimary);
+  // ライブ前に確認するモードから、タイマーつきのモードへ切りかえる
+  document.getElementById('toLive').addEventListener('click', function () {
+    saved.mode = 'live'; persist(); syncModeUI(); enterScript();
   });
   L.nextBtn.addEventListener('click', nextPart);
   L.resetBtn.addEventListener('click', function () { resetLive(false); });
