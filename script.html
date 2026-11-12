@@ -318,7 +318,7 @@
         <label class="mode" data-mode="live">
           <input class="sr" type="radio" name="mode" value="live">
           <span class="dot" aria-hidden="true"></span>
-          <span><b>2台目のスマホやタブレットがある</b><span class="mname">ライブ中に横で見るモード</span><p>30分のタイマーつきで、いまどのパートかが大きく出ます。配信に使わない画面を、横に置いて見てね。「スタート」を押すと、30分のタイマーが動き出します。</p></span>
+          <span><b>2台目のスマホやタブレットがある</b><span class="mname">ライブ中に横で見るモード</span><p>30分のタイマーつきで、今どのパートかが大きく出ます。配信に使わない画面を、横に置いて見てね。「スタート」を押すと、30分のタイマーが動き出します。</p></span>
         </label>
       </div>
       <p class="mode-err" id="modeErr" role="alert" hidden>どちらで使うか、ひとつ選んでね。</p>
@@ -367,7 +367,7 @@
           <b>覚えるコツ</b>
           <ul>
             <li>ライブ前に1回、声に出して読んでみよう。</li>
-            <li>ぜんぶ覚えなくて大丈夫。各パートの「はじめのひと言」だけ覚えておこう。</li>
+            <li>全部覚えなくて大丈夫。各パートの「はじめのひと言」だけ覚えておこう。</li>
             <li>立って、表情もつけて読むと、本番に近づきます。</li>
           </ul>
         </div>
@@ -383,7 +383,7 @@
           <figcaption>保存できないときは、この画像を長押しして保存するか、この画面をスクショしてね。</figcaption>
         </figure>
         <details class="full">
-          <summary>セリフ例とつなぎのひと言を、ぜんぶ見る</summary>
+          <summary>セリフ例とつなぎのひと言を、全部見る</summary>
           <div class="fbody" id="fullParts"></div>
         </details>
       </div>
@@ -391,7 +391,7 @@
       <!-- ---- ライブ中に横で見るモード ---- -->
       <div id="viewLive" class="live" data-size="M" hidden>
         <div class="topbar">
-          <div class="times"><span>経過<b id="tEl">00:00</b></span><span>のこり<b id="tRem">30:00</b></span></div>
+          <div class="times"><span>経過<b id="tEl">00:00</b></span><span>残り<b id="tRem">30:00</b></span></div>
           <div class="segs" id="segs"></div>
         </div>
         <div class="banner" id="banner" role="status" hidden></div>
@@ -402,7 +402,7 @@
         </div>
 
         <article class="now" id="now">
-          <div class="now-head"><span class="chip" id="nowChip">じゅんび中</span><span class="range" id="nowRange"></span></div>
+          <div class="now-head"><span class="chip" id="nowChip">準備中</span><span class="range" id="nowRange"></span></div>
           <h2 id="nowName"></h2>
           <p class="partleft">このパートあと<b id="tPart"> 03:00</b></p>
           <h3>やること</h3>
@@ -973,7 +973,7 @@
     L.bridge.textContent = ''; p.bridge.forEach(function (t) { L.bridge.appendChild(rich(el('li'), t)); });
     L.netaOut.hidden = true;
     var nx = PARTS[i + 1];
-    L.next.textContent = nx ? 'つぎ：' + nx.name + '（' + nx.range + '）' : 'このパートが、さいごです。';
+    L.next.textContent = nx ? '次：' + nx.name + '（' + nx.range + '）' : 'このパートが、最後です。';
   }
 
   function paint(sec) {
@@ -993,11 +993,11 @@
       var warn = running && partLeft <= WARN_SEC;
       L.now.classList.toggle('warn', warn);
       var txt = '', cls = 'banner';
-      if (running && Date.now() < live.bannerUntil) { txt = 'いま「' + PARTS[idx].name + '」が始まりました'; cls = 'banner switch'; }
+      if (running && Date.now() < live.bannerUntil) { txt = '今「' + PARTS[idx].name + '」が始まりました'; cls = 'banner switch'; }
       else if (warn) { txt = idx < 4 ? 'あと1分で、次は「' + PARTS[idx + 1].name + '」' : 'あと1分で、終わりです。お礼と予告を言おう'; }
       L.banner.hidden = txt === '';
       if (txt) { L.banner.textContent = txt; L.banner.className = cls; }
-      L.chip.textContent = running ? 'いまここ' : (sec > 0 ? 'いったん停止中' : 'じゅんび中');
+      L.chip.textContent = running ? '今ここ' : (sec > 0 ? '一旦停止中' : '準備中');
     } else {
       L.banner.hidden = true;
     }
