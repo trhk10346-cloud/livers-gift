@@ -1001,7 +1001,7 @@
     } else {
       L.banner.hidden = true;
     }
-    L.primary.textContent = done ? 'もう一回' : running ? '一時停止' : (sec > 0 ? 'さいかい' : 'スタート');
+    L.primary.textContent = done ? 'もう一回' : running ? '一時停止' : (sec > 0 ? '再開' : 'スタート');
     L.primaryTop.textContent = L.primary.textContent;
     L.startHint.hidden = running || sec > 0 || done;
     L.nextBtn.disabled = done;
